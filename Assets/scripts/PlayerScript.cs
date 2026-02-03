@@ -61,7 +61,7 @@ namespace Player
         {
             bool hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
 
-            //print(sm.CurrentState);
+            print(sm.CurrentState);
 
             
 
@@ -78,33 +78,21 @@ namespace Player
             }
 
 
-            bool itemHitLeft = Physics2D.Raycast(transform.position, Vector2.left, 0.8f, LayerMask.GetMask("item"));
+           /* bool itemHit = Physics2D.Raycast(transform.position - new Vector3 (1f, 0, 0), new Vector3(2f, 0, 0), LayerMask.GetMask("item"));
 
-            if (itemHitLeft)
+            if (itemHit)
             {
-                Debug.DrawRay(transform.position, Vector2.left * 0.8f, Color.green);
+                Debug.DrawRay(transform.position - new Vector3(1f, 0, 0), new Vector3(2f, 0, 0), Color.green);
                 itemText.SetActive(true);
             }
 
             else
             {
-                Debug.DrawRay(transform.position, Vector2.left * 0.8f, Color.red);
+                Debug.DrawRay(transform.position - new Vector3(1f, 0, 0), new Vector3(2f, 0, 0), Color.red);
                 itemText.SetActive(false);
-            }
+            }*/
 
-            bool itemHitRight = Physics2D.Raycast(transform.position, Vector2.right, 0.8f, LayerMask.GetMask("item"));
-
-            if (itemHitRight)
-            {
-                Debug.DrawRay(transform.position, Vector2.right * 0.8f, Color.green);
-                itemText.SetActive(true);
-            }
-
-            else
-            {
-                Debug.DrawRay(transform.position, Vector2.right * 0.8f, Color.red);
-                itemText.SetActive(false);
-            }
+          
 
 
             sm.CurrentState.LogicUpdate();

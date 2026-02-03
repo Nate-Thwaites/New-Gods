@@ -9,16 +9,16 @@ namespace Player
         public JumpingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
-
+        public float initVelocity;
         public override void Enter()
         {
             base.Enter();
 
             
-            player.rb.AddForce(Vector2.up * player.jumpForce,ForceMode2D.Impulse);
-            
+            player.rb.AddForce(Vector2.up * player.jumpForce, ForceMode2D.Impulse);
 
-            
+
+            initVelocity = player.rb.linearVelocity.x;
             
             
 
@@ -40,19 +40,37 @@ namespace Player
 
             if(Input.GetKeyUp(KeyCode.Space))
             {
-                player.rb.AddForce(Vector2.down * player.jumpForce);
+                player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, 0);
+                player.rb.AddForce(Vector2.down * player.jumpForce * 0.3f, ForceMode2D.Impulse);
             }
 
-            if (Input.GetKey("d"))
+            if (Input.GetKey("d")) //&& initVelocity < 0)
             {
-                player.rb.linearVelocity = new Vector2(5, player.rb.linearVelocityY);
+                //initVelocity -= 2;
 
+                if (player.rb.linearVelocity.x > 0)
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
+                }
+                else
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
+
+                }
 
             }
 
-            if (Input.GetKey("a"))
+            if (Input.GetKey("a"))//&& initVelocity > 0)
             {
-                player.rb.linearVelocity = new Vector2(-5, player.rb.linearVelocityY);
+                if (player.rb.linearVelocity.x < 0)
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
+                }
+                else
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
+
+                }
 
 
             }

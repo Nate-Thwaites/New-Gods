@@ -9,7 +9,7 @@ namespace Player
         public FallingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
-
+        JumpingState jumpingState;
         public override void Enter()
         {
             base.Enter();
@@ -34,20 +34,25 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if (Input.GetKey("d"))
+            /*if (player.rb.linearVelocity.x > 0)
             {
-                player.rb.AddForce (Vector2.right * 5);
-                
-
+                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity, player.rb.linearVelocity.y);
+            }
+            else
+            {
+                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity * 0.5f, player.rb.linearVelocity.y);
 
             }
 
-            if (Input.GetKey("a"))
+            if (player.rb.linearVelocity.x < 0)
             {
-                
-                player.rb.AddForce(Vector2.left * 5);
-                
+                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity, player.rb.linearVelocity.y);
             }
+            else
+            {
+                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity * 0.5f, player.rb.linearVelocity.y);
+
+            }*/
 
             if (player.CheckForRun())
             {
@@ -59,7 +64,7 @@ namespace Player
                 sm.ChangeState(player.idleState);
             }
 
-            Mathf.Clamp(player.rb.linearVelocity.x, -5, 5);
+            
         
 
     }
