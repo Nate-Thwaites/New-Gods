@@ -44,7 +44,7 @@ namespace Player
                 player.rb.AddForce(Vector2.down * player.jumpForce * 0.3f, ForceMode2D.Impulse);
             }
 
-            if (Input.GetKey("d")) //&& initVelocity < 0)
+            if (Input.GetKey("d"))
             {
                 //initVelocity -= 2;
 
@@ -60,7 +60,7 @@ namespace Player
 
             }
 
-            if (Input.GetKey("a"))//&& initVelocity > 0)
+            if (Input.GetKey("a"))
             {
                 if (player.rb.linearVelocity.x < 0)
                 {
@@ -75,10 +75,23 @@ namespace Player
 
             }
 
+            if (player.rb.linearVelocity.x == 0)
+            {
+                if (Input.GetKey("d"))
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
+                }
+
+                if (Input.GetKey("a"))
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
+                }
+            }
+
             /*
-             if GetKeyUp(space) and isjumping
-            then!
-            fall
+                if GetKeyUp(space) and isjumping
+                then!
+                fall
 
             
 

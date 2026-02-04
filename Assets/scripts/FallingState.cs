@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting.FullSerializer;
 
 namespace Player
 {
@@ -34,34 +35,24 @@ namespace Player
         {
             base.LogicUpdate();
 
-            /*if (player.rb.linearVelocity.x > 0)
-            {
-                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity, player.rb.linearVelocity.y);
-            }
-            else
-            {
-                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity * 0.5f, player.rb.linearVelocity.y);
-
-            }
-
-            if (player.rb.linearVelocity.x < 0)
-            {
-                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity, player.rb.linearVelocity.y);
-            }
-            else
-            {
-                player.rb.linearVelocity = new Vector2(jumpingState.initVelocity * 0.5f, player.rb.linearVelocity.y);
-
-            }*/
-
+           
+            
             if (player.CheckForRun())
             {
                 sm.ChangeState(player.walkingState);
+                
             }
 
             if (player.CheckForIdle())
             {
                 sm.ChangeState(player.idleState);
+                
+
+            }
+
+            
+            {
+
             }
 
             

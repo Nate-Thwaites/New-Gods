@@ -35,14 +35,14 @@ namespace Player
 
             if (Input.GetKey("d"))
             {
-                player.rb.linearVelocity = new Vector2(10, player.rb.linearVelocityY);
+                player.rb.linearVelocity = new Vector2(10, player.rb.linearVelocity.y);
 
 
             }
 
             if (Input.GetKey("a"))
             {
-                player.rb.linearVelocity = new Vector2(-10, player.rb.linearVelocityY);
+                player.rb.linearVelocity = new Vector2(-10, player.rb.linearVelocity.y);
 
                 
             }
