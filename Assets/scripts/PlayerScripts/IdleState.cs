@@ -1,12 +1,12 @@
 using UnityEngine;
-using System;
+
 
 namespace Player
 {
-    public class WalkingState : State
+    public class IdleState : State
     {
         // constructor
-        public WalkingState(PlayerScript player, StateMachine sm) : base(player, sm)
+        public IdleState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
 
@@ -14,7 +14,8 @@ namespace Player
         {
             base.Enter();
 
-
+            player.rb.linearVelocity = new Vector2(0, 0);
+            
 
 
         }
@@ -33,27 +34,10 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if (Input.GetKey("d"))
+            if (player.CheckForRun())
             {
-                player.rb.linearVelocity = new Vector2(10, player.rb.linearVelocity.y);
-
-
+                sm.ChangeState(player.walkingState);
             }
-
-            if (Input.GetKey("a"))
-            {
-                player.rb.linearVelocity = new Vector2(-10, player.rb.linearVelocity.y);
-
-                
-            }
-
-
-            if (player.CheckForIdle())
-            {
-                sm.ChangeState(player.idleState);
-
-            }
-
 
             if (player.CheckForJump())
             {
@@ -64,6 +48,14 @@ namespace Player
             {
                 sm.ChangeState(player.fallingState);
             }
+
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+
+            
         }
     }
 }

@@ -51,11 +51,12 @@ namespace Player
                 if (player.rb.linearVelocity.x > 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
+                    
                 }
                 else
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
-
+                    player.jumpDirChange = true;
                 }
 
             }
@@ -65,11 +66,12 @@ namespace Player
                 if (player.rb.linearVelocity.x < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
+                    
                 }
                 else
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
-
+                    player.jumpDirChange = true;
                 }
 
 
@@ -80,11 +82,13 @@ namespace Player
                 if (Input.GetKey("d"))
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
+                    player.jumpDirChange = true;
                 }
 
                 if (Input.GetKey("a"))
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
+                    player.jumpDirChange = true;
                 }
             }
 
@@ -115,6 +119,11 @@ namespace Player
             
         }
 
-        
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+
+            
+        }
     }
 }

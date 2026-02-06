@@ -1,20 +1,21 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting.FullSerializer;
 
 namespace Player
 {
-    public class IdleState : State
+    public class FallingState : State
     {
         // constructor
-        public IdleState(PlayerScript player, StateMachine sm) : base(player, sm)
+        public FallingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
-
+        JumpingState jumpingState;
         public override void Enter()
         {
             base.Enter();
 
-            player.rb.linearVelocity = new Vector2(0, 0);
+            
             
 
 
@@ -34,26 +35,36 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if (player.CheckForRun())
+            if (player.isGrounded)
             {
-                sm.ChangeState(player.walkingState);
-            }
+                if (player.CheckForRun())
+                {
+                    sm.ChangeState(player.walkingState);
 
-            if (player.CheckForJump())
-            {
-                sm.ChangeState(player.jumpingState);
-            }
+                }
 
-            if (player.CheckForFall())
-            {
-                sm.ChangeState(player.fallingState);
-            }
+                if (player.CheckForIdle())
+                {
+                    sm.ChangeState(player.idleState);
 
-        }
+
+                }
+            }
+            
+            
+
+            
+
+            
+        
+
+    }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+
+          
         }
     }
 }

@@ -1,7 +1,6 @@
-using Unity.IO.LowLevel.Unsafe;
+
 using UnityEngine;
-using System;
-using JetBrains.Annotations;
+
 
 namespace Player
 {
@@ -9,7 +8,9 @@ namespace Player
 
     public class PlayerScript : MonoBehaviour
     {
+        [HideInInspector]
         public Rigidbody2D rb;
+        [HideInInspector]
         public Animator anim;
         public float jumpForce = 10f;
 
@@ -19,8 +20,8 @@ namespace Player
         public bool isGrounded;
         public LayerMask floor;
 
-        
-        
+
+        public bool jumpDirChange;
         
 
         // variables holding the different player states
@@ -62,8 +63,9 @@ namespace Player
         public void Update()
         {
             sm.CurrentState.LogicUpdate();
-           // print(sm.GetState().ToString());
-           stateText.text = "State: " + sm.CurrentState;
+            // print(sm.GetState().ToString());
+            stateText.text = "State: " + sm.CurrentState;
+           
         }
 
 
@@ -131,6 +133,30 @@ namespace Player
             }
 
             return false;
+        }
+
+        public void GroundCheck()
+        {
+            bool hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
+
+            //print(sm.CurrentState);
+
+
+
+            if (hit)
+            {
+                Debug.DrawRay(transform.position, Vector2.down * 0.55f, Color.green);
+
+                isGrounded = true;
+            }
+
+            else
+            {
+                Debug.DrawRay(transform.position, Vector2.down * 0.55f, Color.red);
+
+                isGrounded = false;
+                
+            }
         }
 
         void DoRayTest()
