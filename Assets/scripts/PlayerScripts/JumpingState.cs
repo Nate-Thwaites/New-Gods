@@ -38,13 +38,13 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if(Input.GetKeyUp(KeyCode.Space))
+            if(Input.GetKeyUp("Space"))
             {
                 player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, 0);
                 player.rb.AddForce(Vector2.down * player.jumpForce * 0.3f, ForceMode2D.Impulse);
             }
 
-            if (Input.GetKey("d"))
+            if (Input.GetKey("Space"))
             {
                 //initVelocity -= 2;
 
@@ -61,7 +61,7 @@ namespace Player
 
             }
 
-            if (Input.GetKey("a"))
+            if (Input.GetKey("d"))
             {
                 if (player.rb.linearVelocity.x < 0)
                 {
@@ -79,13 +79,13 @@ namespace Player
 
             if (player.rb.linearVelocity.x == 0)
             {
-                if (Input.GetKey("d"))
+                if (Input.GetKey("Space"))
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
                 }
 
-                if (Input.GetKey("a"))
+                if (Input.GetKey("Space"))
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;

@@ -36,11 +36,11 @@ namespace Enemy
 
             enemyVision.Add(see.transform.gameObject.layer);
 
-            foreach (LayerMask obj in enemyVision)
+           /* foreach (LayerMask obj in enemyVision)
             {
                 Debug.Log(obj);
                 
-            }
+            }*/
 
 
 

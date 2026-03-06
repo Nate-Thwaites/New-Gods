@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 namespace Player
@@ -13,6 +14,7 @@ namespace Player
         [HideInInspector]
         public Animator anim;
         public float jumpForce = 10f;
+        public float moveDir;
 
         public GameObject itemText;
         public TMPro.TextMeshProUGUI stateText;
@@ -22,6 +24,12 @@ namespace Player
 
 
         public bool jumpDirChange;
+
+        public ControlManager control;
+
+        public Transform attackPoint;
+        public float attackRange = 0.5f;
+        public LayerMask enemyLayer;
         
 
         // variables holding the different player states
@@ -29,7 +37,10 @@ namespace Player
         public WalkingState walkingState;
         public JumpingState jumpingState;
         public FallingState fallingState;
+        public AttackState attackState;
 
+        public InputAction moveAction;
+        public InputAction jumpAction;
 
         public StateMachine sm;
 
@@ -42,6 +53,10 @@ namespace Player
         {
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
+            control = FindFirstObjectByType<ControlManager>();
+
+            moveAction = InputSystem.actions.FindAction("Move");
+            jumpAction = InputSystem.actions.FindAction("Jump");
             //anim = GetComponent<Animator>();
 
             mask = LayerMask.GetMask("itemLayer");
@@ -51,20 +66,35 @@ namespace Player
             walkingState = new WalkingState(this, sm);
             jumpingState = new JumpingState(this, sm);
             fallingState = new FallingState(this, sm);
+            attackState = new AttackState(this,sm);
 
             // initialise the statemachine with the default state
             sm.Init(idleState);
 
-            print("layername=" + mask.value);
+
+
         }
 
 
         // Update is called once per frame
         public void Update()
         {
-            sm.CurrentState.LogicUpdate();
-            // print(sm.GetState().ToString());
             stateText.text = "State: " + sm.CurrentState;
+
+            if ((sm.CurrentState == null))
+            {
+                print("null");
+                return;
+            }
+
+
+            
+                
+           
+            sm.CurrentState.LogicUpdate();
+            
+
+            moveDir = moveAction.ReadValue<Vector2>().x;
            
         }
 
@@ -72,6 +102,11 @@ namespace Player
 
         void FixedUpdate()
         {
+            if ((sm.CurrentState == null))
+            {
+                print("physics update null"); return;
+            }
+
             sm.CurrentState.PhysicsUpdate();
 
 
@@ -81,11 +116,16 @@ namespace Player
         }
 
 
+        public void OnMove(InputValue value)
+        {
+            print("move");
+        }
+
 
         public bool CheckForRun()
         {
 
-            if (Input.GetKey("a") || Input.GetKey("d") && isGrounded)
+            if (Mathf.Abs(moveDir) > 0 && isGrounded)
             {
 
                 return true;
@@ -96,7 +136,7 @@ namespace Player
 
         public bool CheckForIdle()
         {
-            if (Input.GetKey("a") == false && Input.GetKey("d") == false && isGrounded)
+            if (moveDir == 0 && isGrounded)
             {
 
                 return true;
@@ -107,7 +147,7 @@ namespace Player
 
         public bool CheckForJump()
         {
-            if (Input.GetKey (KeyCode.Space) && isGrounded)
+            if (jumpAction.WasPressedThisFrame() && isGrounded)
             {
                return true;
             }
@@ -139,7 +179,6 @@ namespace Player
         {
             bool hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
 
-            //print(sm.CurrentState);
 
 
 
@@ -163,7 +202,6 @@ namespace Player
         {
             bool hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
 
-            //print(sm.CurrentState);
 
 
 

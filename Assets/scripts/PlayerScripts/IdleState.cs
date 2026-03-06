@@ -49,6 +49,10 @@ namespace Player
                 sm.ChangeState(player.fallingState);
             }
 
+            if (player.CheckForAttack())
+            {
+                sm.ChangeState(player.attackState);
+            }
         }
 
         public override void PhysicsUpdate()

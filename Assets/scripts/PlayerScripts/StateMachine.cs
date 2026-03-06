@@ -31,7 +31,7 @@ namespace Player
 
         }
 
-        public void logicUpdate()
+        public void LogicUpdate()
         {
 
         }

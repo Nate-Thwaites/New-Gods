@@ -5,7 +5,7 @@ namespace Player
 {
     public class WalkingState : State
     {
-        // constructor
+        
         public WalkingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
@@ -32,20 +32,8 @@ namespace Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-
-            if (Input.GetKey("d"))
-            {
-                player.rb.linearVelocity = new Vector2(10, player.rb.linearVelocity.y);
-
-
-            }
-
-            if (Input.GetKey("a"))
-            {
-                player.rb.linearVelocity = new Vector2(-10, player.rb.linearVelocity.y);
-
-                
-            }
+          
+            player.rb.linearVelocity = new Vector2(10 * player.moveDir, player.rb.linearVelocity.y);
 
 
             if (player.CheckForIdle())
