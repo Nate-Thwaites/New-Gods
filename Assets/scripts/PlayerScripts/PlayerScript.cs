@@ -41,6 +41,8 @@ namespace Player
 
         public InputAction moveAction;
         public InputAction jumpAction;
+        public InputAction attackAction;
+        public InputBinding moveLeft;
 
         public StateMachine sm;
 
@@ -57,6 +59,7 @@ namespace Player
 
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
+            attackAction = InputSystem.actions.FindAction("Attack");
             //anim = GetComponent<Animator>();
 
             mask = LayerMask.GetMask("itemLayer");
@@ -79,6 +82,10 @@ namespace Player
         // Update is called once per frame
         public void Update()
         {
+            GroundCheck();
+
+
+
             stateText.text = "State: " + sm.CurrentState;
 
             if ((sm.CurrentState == null))
@@ -88,14 +95,18 @@ namespace Player
             }
 
 
-            
-                
-           
+            moveDir = moveAction.ReadValue<Vector2>().x;
+
+
+
             sm.CurrentState.LogicUpdate();
             
 
-            moveDir = moveAction.ReadValue<Vector2>().x;
-           
+
+            //Debug.Log("x=" + moveAction.ReadValue<Vector2>().x);
+            //Debug.Log("y=" + moveAction.ReadValue<Vector2>().y);
+
+
         }
 
 
@@ -110,7 +121,7 @@ namespace Player
             sm.CurrentState.PhysicsUpdate();
 
 
-            DoRayTest();
+            //DoRayTest();
 
 
         }
@@ -167,7 +178,7 @@ namespace Player
 
         public bool CheckForAttack()
         {
-            if(Input.GetKey("e"))
+            if(attackAction.WasPressedThisFrame())
             {
                 return true;
             }
@@ -177,14 +188,21 @@ namespace Player
 
         public void GroundCheck()
         {
-            bool hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
+            Vector3 ofs1 = new Vector3 (0,0,0);
+            Vector3 ofs2 = new Vector3(-0.5f, 0, 0);
+            Vector3 ofs3 = new Vector3(0.5f, 0, 0);
+
+            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
+            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
+            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
+
+            print("h1= " + hit1 + "  h2=" + hit2 + "  h3=" + hit3);
 
 
-
-
-            if (hit)
+            if (hit1 || hit2 || hit3)
             {
                 Debug.DrawRay(transform.position, Vector2.down * 0.55f, Color.green);
+
 
                 isGrounded = true;
             }
@@ -235,15 +253,6 @@ namespace Player
                 Debug.DrawRay(transform.position - offset, Vector2.right * dist, Color.red);
                 itemText.SetActive(false);
             }
-
-
-
-
-
         }
-
-
-
-
     }
 }

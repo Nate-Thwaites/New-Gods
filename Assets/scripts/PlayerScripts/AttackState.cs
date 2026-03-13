@@ -14,6 +14,7 @@ namespace Player
         {
             base.Enter();
 
+            /*
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
 
 
@@ -21,6 +22,7 @@ namespace Player
             {
                 Debug.Log("hit enemy");
             }
+            */
         }
 
         public override void Exit()

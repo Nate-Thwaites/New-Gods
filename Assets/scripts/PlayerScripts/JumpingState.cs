@@ -38,13 +38,14 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if(Input.GetKeyUp("Space"))
+            if (player.jumpAction.WasPressedThisFrame())
             {
                 player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, 0);
                 player.rb.AddForce(Vector2.down * player.jumpForce * 0.3f, ForceMode2D.Impulse);
             }
 
-            if (Input.GetKey("Space"))
+
+            if (player.moveDir > 0)
             {
                 //initVelocity -= 2;
 
@@ -61,7 +62,7 @@ namespace Player
 
             }
 
-            if (Input.GetKey("d"))
+            if (player.moveDir < 0)
             {
                 if (player.rb.linearVelocity.x < 0)
                 {
@@ -79,27 +80,20 @@ namespace Player
 
             if (player.rb.linearVelocity.x == 0)
             {
-                if (Input.GetKey("Space"))
+                if (player.jumpAction.WasReleasedThisFrame())
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
                 }
 
-                if (Input.GetKey("Space"))
+                if (player.jumpAction.WasReleasedThisFrame())
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
                 }
             }
 
-            /*
-                if GetKeyUp(space) and isjumping
-                then!
-                fall
 
-            
-
-             */
 
 
 

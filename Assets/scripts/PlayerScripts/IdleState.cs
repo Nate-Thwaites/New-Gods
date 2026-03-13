@@ -32,6 +32,9 @@ namespace Player
 
         public override void LogicUpdate()
         {
+
+            //Debug.Log(player.moveAction.ReadValue<float>());
+
             base.LogicUpdate();
 
             if (player.CheckForRun())
