@@ -38,10 +38,10 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if (player.jumpAction.WasPressedThisFrame())
+            if (player.jumpAction.WasReleasedThisFrame())
             {
-                player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, 0);
-                player.rb.AddForce(Vector2.down * player.jumpForce * 0.3f, ForceMode2D.Impulse);
+                //player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, 0);
+                player.rb.AddForce(Vector2.down * player.jumpForce * 0.5f, ForceMode2D.Impulse);
             }
 
 
@@ -78,20 +78,24 @@ namespace Player
 
             }
 
-            if (player.rb.linearVelocity.x == 0)
+            if ( player.rb.linearVelocity.x < 0.1f && player.rb.linearVelocity.x > -0.1f)
             {
-                if (player.jumpAction.WasReleasedThisFrame())
+                if (player.moveDir > 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
+                    
                 }
 
-                if (player.jumpAction.WasReleasedThisFrame())
+                if (player.moveDir < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
+                    
                 }
             }
+
+            Debug.Log("xv=" + player.rb.linearVelocity.x);
 
 
 

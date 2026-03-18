@@ -6,9 +6,13 @@ using UnityEngine.InputSystem;
 namespace Player
 {
 
+    
 
     public class PlayerScript : MonoBehaviour
     {
+
+       
+
         [HideInInspector]
         public Rigidbody2D rb;
         [HideInInspector]
@@ -30,6 +34,7 @@ namespace Player
         public Transform attackPoint;
         public float attackRange = 0.5f;
         public LayerMask enemyLayer;
+        public int maxAttackNum = 4;
         
 
         // variables holding the different player states
@@ -90,7 +95,7 @@ namespace Player
 
             if ((sm.CurrentState == null))
             {
-                print("null");
+                
                 return;
             }
 
@@ -196,7 +201,6 @@ namespace Player
             bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
             bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
 
-            print("h1= " + hit1 + "  h2=" + hit2 + "  h3=" + hit3);
 
 
             if (hit1 || hit2 || hit3)

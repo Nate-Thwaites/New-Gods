@@ -10,7 +10,7 @@ namespace Player
         public FallingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
-        JumpingState jumpingState;
+        
         public override void Enter()
         {
             base.Enter();
@@ -35,7 +35,7 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if (player.isGrounded)
+            if (player.isGrounded) 
             {
                 if (player.CheckForRun())
                 {
