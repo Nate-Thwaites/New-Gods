@@ -15,9 +15,9 @@ namespace Player
 
         [HideInInspector]
         public Rigidbody2D rb;
-        [HideInInspector]
+        
         public Animator anim;
-        public float jumpForce = 10f;
+        public float jumpForce = 13f;
         public float moveDir;
 
         public GameObject itemText;
@@ -35,7 +35,9 @@ namespace Player
         public float attackRange = 0.5f;
         public LayerMask enemyLayer;
         public int maxAttackNum = 4;
-        
+
+        public float attackTimer = 2f;
+
 
         // variables holding the different player states
         public IdleState idleState;
@@ -102,8 +104,9 @@ namespace Player
 
             moveDir = moveAction.ReadValue<Vector2>().x;
 
+            attackTimer -= Time.deltaTime;
 
-
+            
             sm.CurrentState.LogicUpdate();
             
 
@@ -185,10 +188,27 @@ namespace Player
         {
             if(attackAction.WasPressedThisFrame())
             {
+                if (attackTimer >= 0)
+                {
+                    Debug.Log("next case");
+
+                    /*AttackState.case 1;*/
+
+                }
+
+                if(attackTimer < 0)
+                {
+                    Debug.Log("reset case");
+                }
                 return true;
             }
 
             return false;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(attackPoint.position, attackRange);
         }
 
         public void GroundCheck()

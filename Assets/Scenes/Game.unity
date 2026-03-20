@@ -3404,13 +3404,13 @@ GameObject:
   - component: {fileID: 1303692796}
   - component: {fileID: 1303692795}
   - component: {fileID: 1303692794}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1303692794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3549,7 +3549,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.58206177, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3832,6 +3832,7 @@ GameObject:
   - component: {fileID: 1979418673}
   - component: {fileID: 1979418676}
   - component: {fileID: 1979418677}
+  - component: {fileID: 1979418678}
   m_Layer: 7
   m_Name: player
   m_TagString: Untagged
@@ -3852,8 +3853,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerScript
   rb: {fileID: 0}
-  anim: {fileID: 0}
-  jumpForce: 10
+  anim: {fileID: 1979418678}
+  jumpForce: 13
   moveDir: 0
   itemText: {fileID: 983965393}
   stateText: {fileID: 1295871592}
@@ -3863,13 +3864,13 @@ MonoBehaviour:
     m_Bits: 8
   jumpDirChange: 0
   control: {fileID: 0}
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 785647293}
   attackRange: 0.5
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
-  attackNum: 0
+    m_Bits: 256
   maxAttackNum: 4
+  attackTimer: 2
   moveAction:
     m_Name: Move
     m_Type: 0
@@ -4075,6 +4076,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!95 &1979418678
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979418670}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b15a5a30d4be46742a25fee08b40218c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

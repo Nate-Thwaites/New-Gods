@@ -1,3 +1,7 @@
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 
@@ -14,8 +18,7 @@ namespace Player
     {
 
 
-
-        public AttackType attackNum;// = AttackType.SwipeUp;
+        public AttackType attackNum;
 
         // constructor
         public AttackState(PlayerScript player, StateMachine sm) : base(player, sm)
@@ -26,21 +29,47 @@ namespace Player
         {
             base.Enter();
 
+
+            Attack();
+            AttackSwitch();
+            
+            
+            
+        }
         
-            
-            
-            /*
-            switch(player.attackNum)
+        void Attack()
+        {
+            player.attackTimer = 2;
+
+            Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
+            foreach (Collider2D enemy in hitEnemy)
             {
+                Debug.Log("hit enemy");
+            }
+        }
+
+        public void AttackSwitch()
+        {
+            switch ((int)attackNum)
+            {
+
+
+                case 0:
+
+                    Attack();
+
+                    player.anim.SetTrigger("Attack trigger");
+
+
+
+                    break;
+
                 case 1:
 
-                    Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
+                    Attack();
 
+                    player.anim.SetTrigger("Attack trigger 2");
 
-                    foreach (Collider2D enemy in hitEnemy)
-                    {
-                        Debug.Log("hit enemy");
-                    }
 
                     break;
 
@@ -49,16 +78,14 @@ namespace Player
 
                 case 3:
                     break;
-
-                case 4: 
-                    break;
             }
-            */
         }
-            
+
+     
 
         public override void Exit()
         {
+            player.anim.SetTrigger("idle");
             base.Exit();
         }
 
@@ -71,7 +98,30 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if(player.CheckForIdle())
+            /*if attack and timer >= 0
+
+                THEN
+
+                go to next case
+                
+
+
+                if timer < 0
+
+                THEN
+
+                case = 0
+                
+                
+            */
+
+            
+
+            
+
+
+
+            if (player.CheckForIdle())
             {
                 sm.ChangeState(player.idleState);
             }
@@ -90,6 +140,8 @@ namespace Player
             {
                 sm.ChangeState(player.fallingState);
             }
+
+            
         }
 
         public override void PhysicsUpdate()

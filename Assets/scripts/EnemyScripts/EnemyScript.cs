@@ -1,7 +1,3 @@
-using NUnit.Framework;
-using Player;
-using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 
 namespace Enemy
@@ -32,34 +28,23 @@ namespace Enemy
 
             RaycastHit2D see = Physics2D.Raycast(transform.position, lookDir, 10f, LayerMask.GetMask("player") | LayerMask.GetMask("floor"));
 
-            List<int> enemyVision = new List<int>();
 
-            enemyVision.Add(see.transform.gameObject.layer);
-
-           /* foreach (LayerMask obj in enemyVision)
+            if( see )
             {
-                Debug.Log(obj);
+                if (see.transform.gameObject.layer == 7)
+                {
+                    Debug.DrawRay(transform.position, lookDir * 10f, Color.green);
+                    seePlayer = true;
                 
-            }*/
-
-
-
-            if (enemyVision[0] == 7)
-            {
-                Debug.DrawRay(transform.position, lookDir * 10f, Color.green);
-                seePlayer = true;
-                
+                }
+                else
+                {
+                    Debug.DrawRay(transform.position, lookDir * 10f, Color.red);
+                    seePlayer = false;
+                }
             }
-
-            else
-            {
-                Debug.DrawRay(transform.position, lookDir * 10f, Color.red);
-                seePlayer = false;
-            }
-
-            enemyVision.Clear();
         }
-   
+
 
         public void CheckForIdle()
         {
