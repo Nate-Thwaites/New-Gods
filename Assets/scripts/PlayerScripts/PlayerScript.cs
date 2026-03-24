@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,66 +9,104 @@ namespace Player
 
     public class PlayerScript : MonoBehaviour
     {
+        #region variables
 
-       
+        #region core variables
 
         [HideInInspector]
         public Rigidbody2D rb;
-        
-        public Animator anim;
-        public float jumpForce = 13f;
-        public float moveDir;
 
+        [Header("Core variables")]
+        [Space(10)]
+        public Animator anim;
+
+        #endregion core variables
+
+
+        #region UI variables
+
+        [Header("UI variables")]
+        [Space(10)]
         public GameObject itemText;
         public TMPro.TextMeshProUGUI stateText;
 
+        #endregion UI variables
+
+
+        #region Jump and Movement variables
+
+        [Header("Jump and Movement variables")]
+        [Space(10)]
+        public float jumpForce = 13f;
+        public float moveDir;
         public bool isGrounded;
         public LayerMask floor;
-
-
         public bool jumpDirChange;
 
-        public ControlManager control;
+        #endregion Jump and Movement variables
 
+        #region Attack variables
+
+        [Header("Attack variables")]
+        [Space(10)]
         public Transform attackPoint;
         public float attackRange = 0.5f;
         public LayerMask enemyLayer;
-        public int maxAttackNum = 4;
-
+        public int maxAttackNum = 3;
         public float attackTimer = 2f;
 
+        #endregion Attack variables
 
-        // variables holding the different player states
+        #region StateMachine variables
+
+        [Header("StateMachine variables")]
+        [Space(10)]
         public IdleState idleState;
         public WalkingState walkingState;
         public JumpingState jumpingState;
         public FallingState fallingState;
         public AttackState attackState;
+        public StateMachine sm;
 
+        #endregion StateMachine variables
+
+        #region input variables
+
+        [Header("Input variables")]
+        [Space(10)]
         public InputAction moveAction;
         public InputAction jumpAction;
         public InputAction attackAction;
-        public InputBinding moveLeft;
 
-        public StateMachine sm;
-
-
-        LayerMask mask;
+        #endregion input variables
 
 
-        // Start is called before the first frame update
+
+
+        #region Item Detection variables
+
+        [Header("Item Detection variables")]
+        [Space(10)]
+        LayerMask itemMask;
+
+        #endregion Item Detection variables
+
+        #endregion variables
+
+
+        #region unity methods
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
-            control = FindFirstObjectByType<ControlManager>();
+            
 
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
             attackAction = InputSystem.actions.FindAction("Attack");
             //anim = GetComponent<Animator>();
 
-            mask = LayerMask.GetMask("itemLayer");
+            itemMask = LayerMask.GetMask("itemLayer");
 
             // add new states here
             idleState = new IdleState(this, sm);
@@ -91,7 +128,7 @@ namespace Player
         {
             GroundCheck();
 
-
+            
 
             stateText.text = "State: " + sm.CurrentState;
 
@@ -133,12 +170,10 @@ namespace Player
 
 
         }
+        #endregion unity methods
 
 
-        public void OnMove(InputValue value)
-        {
-            print("move");
-        }
+        #region state checks
 
 
         public bool CheckForRun()
@@ -190,27 +225,38 @@ namespace Player
             {
                 if (attackTimer >= 0)
                 {
-                    Debug.Log("next case");
+                    print("attack case = " + attackState.attackNum);
+
+                    attackState.attackNum++;
 
                     /*AttackState.case 1;*/
 
                 }
 
-                if(attackTimer < 0)
+                if((int)attackState.attackNum > maxAttackNum || attackTimer < 0)
                 {
-                    Debug.Log("reset case");
+                    print("attack case = " + attackState.attackNum);
+
+                    attackState.attackNum = 0;
                 }
+
+                
                 return true;
             }
 
             return false;
         }
 
+        #endregion state checks
+
+        #region attack debug temp
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(attackPoint.position, attackRange);
         }
+        #endregion attack debug temp
 
+        #region Raycast detection 
         public void GroundCheck()
         {
             Vector3 ofs1 = new Vector3 (0,0,0);
@@ -240,31 +286,20 @@ namespace Player
             }
         }
 
-        void DoRayTest()
+
+
+
+       
+        public void ItemDetection()
         {
-            bool hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
-
-
-
-
-            if (hit)
-            {
-                isGrounded = true;
-                Debug.DrawRay(transform.position, Vector2.down * 0.55f, Color.green);
-            }
-
-            else
-            {
-                isGrounded = false;
-                Debug.DrawRay(transform.position, Vector2.down * 0.55f, Color.red);
-            }
+           
 
             float dist = 2;
 
 
             Vector3 offset = new Vector3(1, 0, 0);
 
-            bool itemHit = Physics2D.Raycast(transform.position - offset, Vector2.right, dist, mask);
+            bool itemHit = Physics2D.Raycast(transform.position - offset, Vector2.right, dist, itemMask);
 
             if (itemHit)
             {
@@ -278,5 +313,7 @@ namespace Player
                 itemText.SetActive(false);
             }
         }
+
+        #endregion Raycast detection
     }
 }

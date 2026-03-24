@@ -11,7 +11,9 @@ namespace Player
     public enum AttackType
     {
         SwipeLeft,
-        SwipeUp
+        SwipeRight,
+        SwipeUp,
+        SwipeDown
     }
 
     public class AttackState : State
@@ -39,7 +41,7 @@ namespace Player
         
         void Attack()
         {
-            player.attackTimer = 2;
+            player.attackTimer = 1.5f;
 
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
             foreach (Collider2D enemy in hitEnemy)
@@ -58,7 +60,7 @@ namespace Player
 
                     Attack();
 
-                    player.anim.SetTrigger("Attack trigger");
+                    player.anim.Play("attack temp", 0);
 
 
 
@@ -68,24 +70,34 @@ namespace Player
 
                     Attack();
 
-                    player.anim.SetTrigger("Attack trigger 2");
+                    player.anim.Play("attack temp no2", 0);
 
 
                     break;
 
                 case 2:
+                    Attack();
+
+                    player.anim.Play("Attack temp no3", 0);
+
                     break;
 
                 case 3:
+                    Attack();
+
+                    player.anim.Play("attack temp no4", 0);
+
                     break;
             }
+
+            
         }
 
      
 
         public override void Exit()
         {
-            player.anim.SetTrigger("idle");
+            
             base.Exit();
         }
 
