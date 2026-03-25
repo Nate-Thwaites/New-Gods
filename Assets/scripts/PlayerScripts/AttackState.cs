@@ -76,6 +76,7 @@ namespace Player
                     break;
 
                 case 2:
+
                     Attack();
 
                     player.anim.Play("Attack temp no3", 0);
@@ -83,11 +84,14 @@ namespace Player
                     break;
 
                 case 3:
+
                     Attack();
 
                     player.anim.Play("attack temp no4", 0);
 
                     break;
+
+                
             }
 
             

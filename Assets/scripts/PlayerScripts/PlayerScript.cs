@@ -225,7 +225,7 @@ namespace Player
             {
                 if (attackTimer >= 0)
                 {
-                    print("attack case = " + attackState.attackNum);
+                    //print("attack case = " + attackState.attackNum);
 
                     attackState.attackNum++;
 
@@ -235,8 +235,7 @@ namespace Player
 
                 if((int)attackState.attackNum > maxAttackNum || attackTimer < 0)
                 {
-                    print("attack case = " + attackState.attackNum);
-
+                    print("reset attack combo");
                     attackState.attackNum = 0;
                 }
 

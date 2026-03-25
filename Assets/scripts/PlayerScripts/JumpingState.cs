@@ -40,7 +40,6 @@ namespace Player
 
             if (player.jumpAction.WasReleasedThisFrame())
             {
-               
                 player.rb.AddForce(Vector2.down * player.jumpForce * 0.5f, ForceMode2D.Impulse);
             }
 

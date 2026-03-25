@@ -3854,23 +3854,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerScript
   rb: {fileID: 0}
   anim: {fileID: 1979418678}
-  jumpForce: 13
-  moveDir: 0
   itemText: {fileID: 983965393}
   stateText: {fileID: 1295871592}
+  jumpForce: 13
+  moveDir: 0
   isGrounded: 0
   floor:
     serializedVersion: 2
     m_Bits: 8
   jumpDirChange: 0
-  control: {fileID: 0}
   attackPoint: {fileID: 785647293}
   attackRange: 0.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  maxAttackNum: 4
+  maxAttackNum: 3
   attackTimer: 2
+  sm: {fileID: 0}
   moveAction:
     m_Name: Move
     m_Type: 0
@@ -3898,16 +3898,6 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  moveLeft:
-    m_Name: 
-    m_Id: 
-    m_Path: 
-    m_Interactions: 
-    m_Processors: 
-    m_Groups: 
-    m_Action: 
-    m_Flags: 0
-  sm: {fileID: 0}
 --- !u!50 &1979418673
 Rigidbody2D:
   serializedVersion: 5
