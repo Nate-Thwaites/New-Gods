@@ -56,7 +56,7 @@ namespace Player
             {
 
 
-                case 0:
+                case 0: //Swipe Left
 
                     Attack();
 
@@ -66,7 +66,7 @@ namespace Player
 
                     break;
 
-                case 1:
+                case 1: //Swipe Right
 
                     Attack();
 
@@ -75,7 +75,7 @@ namespace Player
 
                     break;
 
-                case 2:
+                case 2: // Swipe Up
 
                     Attack();
 
@@ -83,7 +83,7 @@ namespace Player
 
                     break;
 
-                case 3:
+                case 3: // Swipe Down
 
                     Attack();
 

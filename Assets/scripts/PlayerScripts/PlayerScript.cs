@@ -15,10 +15,9 @@ namespace Player
 
         [HideInInspector]
         public Rigidbody2D rb;
-
         [Header("Core variables")]
-        [Space(10)]
         public Animator anim;
+        [Space(10)]
 
         #endregion core variables
 
@@ -26,9 +25,9 @@ namespace Player
         #region UI variables
 
         [Header("UI variables")]
-        [Space(10)]
         public GameObject itemText;
         public TMPro.TextMeshProUGUI stateText;
+        [Space(10)]
 
         #endregion UI variables
 
@@ -36,47 +35,47 @@ namespace Player
         #region Jump and Movement variables
 
         [Header("Jump and Movement variables")]
-        [Space(10)]
         public float jumpForce = 13f;
         public float moveDir;
         public bool isGrounded;
         public LayerMask floor;
         public bool jumpDirChange;
+        [Space(10)]
 
         #endregion Jump and Movement variables
 
         #region Attack variables
 
         [Header("Attack variables")]
-        [Space(10)]
         public Transform attackPoint;
         public float attackRange = 0.5f;
         public LayerMask enemyLayer;
         public int maxAttackNum = 3;
         public float attackTimer = 2f;
+        [Space(10)]
 
         #endregion Attack variables
 
         #region StateMachine variables
 
         [Header("StateMachine variables")]
-        [Space(10)]
         public IdleState idleState;
         public WalkingState walkingState;
         public JumpingState jumpingState;
         public FallingState fallingState;
         public AttackState attackState;
         public StateMachine sm;
+        [Space(10)]
 
         #endregion StateMachine variables
 
         #region input variables
 
         [Header("Input variables")]
-        [Space(10)]
         public InputAction moveAction;
         public InputAction jumpAction;
         public InputAction attackAction;
+        [Space(10)]
 
         #endregion input variables
 
@@ -86,8 +85,8 @@ namespace Player
         #region Item Detection variables
 
         [Header("Item Detection variables")]
-        [Space(10)]
         LayerMask itemMask;
+
 
         #endregion Item Detection variables
 
@@ -113,7 +112,7 @@ namespace Player
             walkingState = new WalkingState(this, sm);
             jumpingState = new JumpingState(this, sm);
             fallingState = new FallingState(this, sm);
-            attackState = new AttackState(this,sm);
+            attackState = new AttackState(this, sm);
 
             // initialise the statemachine with the default state
             sm.Init(idleState);
@@ -160,7 +159,9 @@ namespace Player
         {
             if ((sm.CurrentState == null))
             {
-                print("physics update null"); return;
+                print("physics update null");
+                
+                return;
             }
 
             sm.CurrentState.PhysicsUpdate();
@@ -225,17 +226,12 @@ namespace Player
             {
                 if (attackTimer >= 0)
                 {
-                    //print("attack case = " + attackState.attackNum);
-
                     attackState.attackNum++;
-
-                    /*AttackState.case 1;*/
-
                 }
 
                 if((int)attackState.attackNum > maxAttackNum || attackTimer < 0)
                 {
-                    print("reset attack combo");
+                   
                     attackState.attackNum = 0;
                 }
 
