@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Player
 {
-    public class IdleState : State
+    public class BlockingState : State
     {
         // constructor
-        public IdleState(PlayerScript player, StateMachine sm) : base(player, sm)
+        public BlockingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
 
@@ -14,7 +14,8 @@ namespace Player
         {
             base.Enter();
 
-            player.rb.linearVelocity = new Vector2(0, 0);
+            Debug.Log("Blocking");
+
 
 
 
@@ -34,9 +35,14 @@ namespace Player
         public override void LogicUpdate()
         {
 
-            //Debug.Log(player.moveAction.ReadValue<float>());
+            
 
             base.LogicUpdate();
+
+            if(player.CheckForIdle())
+            {
+                sm.ChangeState(player.idleState);
+            }
 
             if (player.CheckForRun())
             {
@@ -57,18 +63,13 @@ namespace Player
             {
                 sm.ChangeState(player.attackState);
             }
-
-            if (player.CheckForBlock())
-            {
-                sm.ChangeState(player.blockingState);
-            }
         }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
 
-            
+
         }
     }
 }

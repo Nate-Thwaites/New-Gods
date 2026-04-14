@@ -22,7 +22,9 @@ namespace Enemy
         {
             base.Enter();
 
-            Debug.Log("enemy attack");
+            EnemyAttack();
+            EnemyAttackSwitch();
+
 
             enemy.seePlayer = false;
         }
@@ -34,7 +36,51 @@ namespace Enemy
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)
             {
-                Debug.Log("hit player");
+            }
+        }
+
+        public void EnemyAttackSwitch()
+        {
+            switch ((int)enemyAttackNum)
+            {
+
+
+                case 0: //Swipe Left
+
+                    EnemyAttack();
+                    
+                    enemy.anim.Play("enemy attack 1", 0);
+
+
+
+                    break;
+
+                case 1: //Swipe Right
+
+                    EnemyAttack();
+                    
+                    enemy.anim.Play("enemy attack 2", 0);
+
+
+                    break;
+
+                case 2: // Swipe Up
+
+                    EnemyAttack();
+                   
+                    enemy.anim.Play("enemy attack 3", 0);
+
+                    break;
+
+                case 3: // Swipe Down
+
+                    EnemyAttack();
+                    
+                    enemy.anim.Play("enemy attack 4", 0);
+
+                    break;
+
+
             }
         }
 
@@ -50,10 +96,11 @@ namespace Enemy
 
         public override void LogicUpdate()
         {
-            EnemyAttack();
             base.LogicUpdate();
 
-            if(enemy.CheckForIdle())
+          
+
+            if (enemy.CheckForIdle() || enemy.enemyAttackCompleteTimer >= 0 && enemy.enemyAttackCompleteTimer <= 0.6)
             {
                 esm.ChangeState(enemy.enemyIdleState);
             }

@@ -45,7 +45,7 @@ namespace Enemy
         public float enemyAttackTimer = 1.5f;
         public float enemyAttackCompleteTimer = 0.5f;
         public Transform enemyAttackPoint;
-        public int maxEnemyAttackNum = 4;
+        public int maxEnemyAttackNum = 3;
         public float enemyAttackRange = 0.5f;
         [Space(10)]
 
@@ -168,9 +168,10 @@ namespace Enemy
 
                     enemyAttackState.enemyAttackNum = 0;
                 }
+
+                
                 return true;
             }
-
             
             return false;
         }
@@ -224,7 +225,6 @@ namespace Enemy
             {
                  
                  Debug.DrawRay(transform.position, lookDir * 10f, Color.red);
-                 Debug.Log("can't see player");
                  seePlayer = false;
                 
             }

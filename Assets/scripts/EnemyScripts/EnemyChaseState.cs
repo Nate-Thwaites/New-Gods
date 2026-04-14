@@ -12,7 +12,6 @@ namespace Enemy
         {
             base.Enter();
 
-            Debug.Log("chase");
         }
 
         public override void Exit()

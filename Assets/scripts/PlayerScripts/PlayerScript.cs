@@ -57,6 +57,12 @@ namespace Player
 
         #endregion Attack variables
 
+        #region Block variables
+        [Header("Block variables")]
+        public bool isBlocking;
+        [Space(10)]
+        #endregion Block variables 
+
         #region StateMachine variables
 
         [Header("StateMachine variables")]
@@ -65,6 +71,7 @@ namespace Player
         public JumpingState jumpingState;
         public FallingState fallingState;
         public AttackState attackState;
+        public BlockingState blockingState;
         public StateMachine sm;
         [Space(10)]
 
@@ -76,6 +83,7 @@ namespace Player
         public InputAction moveAction;
         public InputAction jumpAction;
         public InputAction attackAction;
+        public InputAction blockAction;
         [Space(10)]
 
         #endregion input variables
@@ -104,6 +112,7 @@ namespace Player
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
             attackAction = InputSystem.actions.FindAction("Attack");
+            blockAction = InputSystem.actions.FindAction("Block");
             //anim = GetComponent<Animator>();
 
             itemMask = LayerMask.GetMask("itemLayer");
@@ -114,6 +123,7 @@ namespace Player
             jumpingState = new JumpingState(this, sm);
             fallingState = new FallingState(this, sm);
             attackState = new AttackState(this, sm);
+            blockingState = new BlockingState(this, sm);
 
             // initialise the statemachine with the default state
             sm.Init(idleState);
@@ -128,6 +138,15 @@ namespace Player
         {
             GroundCheck();
 
+            if (blockAction.WasPressedThisFrame())
+            {
+                isBlocking = true;
+            }
+
+            else if (blockAction.WasReleasedThisFrame())
+            {
+                isBlocking = false;
+            }
 
             stateText.text = "State: " + sm.CurrentState;
 
@@ -236,7 +255,24 @@ namespace Player
             return false;
         }
 
-        
+        public bool CheckForBlock()
+        {
+            if(isBlocking)
+            {
+
+                /*
+                 if(attack lands and block is pressed within a certain time frame)
+                {
+                    bool parry = true;
+                }
+                 */
+                return true;
+            }
+
+            return false;
+        }
+
+
 
         #endregion state checks
 

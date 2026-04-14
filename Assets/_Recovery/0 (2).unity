@@ -361,37 +361,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &314656508
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 314656509}
-  m_Layer: 8
-  m_Name: enemy attack point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &314656509
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 314656508}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.01, y: 0.42, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1303692798}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &421823511
 GameObject:
   m_ObjectHideFlags: 0
@@ -3573,7 +3542,6 @@ GameObject:
   - component: {fileID: 1303692794}
   - component: {fileID: 1303692796}
   - component: {fileID: 1303692795}
-  - component: {fileID: 1303692799}
   m_Layer: 8
   m_Name: enemy
   m_TagString: Untagged
@@ -3594,13 +3562,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyScript
   erb: {fileID: 0}
-  anim: {fileID: 1303692799}
+  anim: {fileID: 0}
   esm: {fileID: 0}
   enemyStateText: {fileID: 867999200}
   enemyAttackTimer: 1.5
   enemyAttackCompleteTimer: 0.5
-  enemyAttackPoint: {fileID: 314656509}
-  maxEnemyAttackNum: 3
+  enemyAttackPoint: {fileID: 0}
+  maxEnemyAttackNum: 4
   enemyAttackRange: 0.5
   seePlayer: 0
   attackPlayer: 0
@@ -3751,35 +3719,12 @@ Transform:
   m_GameObject: {fileID: 1303692793}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.4, y: 0.79, z: 0}
+  m_LocalPosition: {x: -9.9, y: 0.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 314656509}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1303692799
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303692793}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7510b05c3dbf05942be63e797cc9a83a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1896587993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3912,7 +3857,6 @@ MonoBehaviour:
   maxAttackNum: 3
   attackTimer: 2
   attackCompleteTimer: 0.5
-  isBlocking: 0
   sm: {fileID: 0}
   moveAction:
     m_Name: Move
@@ -3937,15 +3881,6 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 39309dad-062a-4c01-9706-6c9fae181707
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  blockAction:
-    m_Name: Block
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 0c1bcba8-87eb-491d-af32-638d1e60dc7b
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -4045,7 +3980,7 @@ Transform:
   m_GameObject: {fileID: 1979418670}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.11, y: 2, z: 0}
+  m_LocalPosition: {x: -13.78, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

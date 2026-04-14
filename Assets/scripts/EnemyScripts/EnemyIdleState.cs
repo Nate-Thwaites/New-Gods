@@ -12,7 +12,7 @@ namespace Enemy
         {
             base.Enter();
             enemy.erb.linearVelocity = new Vector2(0, 0);
-            Debug.Log("enemy idle");
+            
         }
 
         public override void Exit()
