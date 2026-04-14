@@ -17,6 +17,7 @@ namespace Enemy
 
         public override void Exit()
         {
+            enemy.erb.linearVelocity = new Vector2(0, enemy.erb.linearVelocity.y);
             base.Exit();
         }
 
@@ -28,6 +29,8 @@ namespace Enemy
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+            
+            enemy.erb.linearVelocity = new Vector2(7 * enemy.enemyMoveDir, enemy.erb.linearVelocity.y);
 
             if(enemy.CheckForIdle())
             {

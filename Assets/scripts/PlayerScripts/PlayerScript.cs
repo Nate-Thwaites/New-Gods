@@ -52,6 +52,7 @@ namespace Player
         public LayerMask enemyLayer;
         public int maxAttackNum = 3;
         public float attackTimer = 2f;
+        public float attackCompleteTimer = 0.5f;
         [Space(10)]
 
         #endregion Attack variables
@@ -127,7 +128,6 @@ namespace Player
         {
             GroundCheck();
 
-            
 
             stateText.text = "State: " + sm.CurrentState;
 
@@ -141,16 +141,10 @@ namespace Player
             moveDir = moveAction.ReadValue<Vector2>().x;
 
             attackTimer -= Time.deltaTime;
+            attackCompleteTimer -= Time.deltaTime;
 
             
             sm.CurrentState.LogicUpdate();
-            
-
-
-            //Debug.Log("x=" + moveAction.ReadValue<Vector2>().x);
-            //Debug.Log("y=" + moveAction.ReadValue<Vector2>().y);
-
-
         }
 
 
@@ -222,7 +216,7 @@ namespace Player
 
         public bool CheckForAttack()
         {
-            if(attackAction.WasPressedThisFrame())
+            if(attackAction.WasPressedThisFrame() && attackCompleteTimer <= 0)
             {
                 if (attackTimer >= 0)
                 {
@@ -241,6 +235,8 @@ namespace Player
 
             return false;
         }
+
+        
 
         #endregion state checks
 

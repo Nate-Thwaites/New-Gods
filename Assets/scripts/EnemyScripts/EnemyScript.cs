@@ -39,6 +39,18 @@ namespace Enemy
 
         #endregion UI variables
 
+        #region enemy attack variables
+
+        [Header("enemy attack variables")]
+        public float enemyAttackTimer = 1.5f;
+        public float enemyAttackCompleteTimer = 0.5f;
+        public Transform enemyAttackPoint;
+        public int maxEnemyAttackNum = 4;
+        public float enemyAttackRange = 0.5f;
+        [Space(10)]
+
+        #endregion eneny attack variables
+
         #region player detecting variables
 
         [Header("Player detecting variables")]
@@ -46,9 +58,17 @@ namespace Enemy
         public bool attackPlayer;   
         public Transform player;
         public LayerMask playerLayer;
-        //[Space(10)]
+        [Space(10)]
 
         #endregion player detecting variables
+
+        #region enemy movement variables
+
+        [Header("enemy movement Variables")]
+        public float enemySpeed = 4f;
+        public int enemyMoveDir;
+
+        #endregion enemy movement variables
 
         #endregion variables
 
@@ -71,13 +91,25 @@ namespace Enemy
             DetectAttackPlayer();
             enemyStateText.text = "State: " + esm.CurrentState;
 
-           
+            if(player.transform.position.x < transform.position.x)
+            {
+                enemyMoveDir = -1;
+            }
+
+            else
+            {
+                enemyMoveDir = 1;
+            }
 
             if ((esm.CurrentState == null))
             {
 
                 return;
             }
+
+            enemyAttackTimer -= Time.deltaTime;
+            enemyAttackCompleteTimer -= Time.deltaTime;
+
 
             esm.CurrentState.LogicUpdate();
         }
@@ -124,8 +156,18 @@ namespace Enemy
 
         public bool CheckForAttack()
         {
-            if (attackPlayer)
+            if (attackPlayer && enemyAttackCompleteTimer <= 0)
             {
+                if (enemyAttackTimer >= 0)
+                {
+                    enemyAttackState.enemyAttackNum++;
+                }
+
+                if ((int)enemyAttackState.enemyAttackNum > maxEnemyAttackNum || enemyAttackTimer < 0)
+                {
+
+                    enemyAttackState.enemyAttackNum = 0;
+                }
                 return true;
             }
 

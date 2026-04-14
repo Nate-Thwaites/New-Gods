@@ -42,6 +42,7 @@ namespace Player
         void Attack()
         {
             player.attackTimer = 1.5f;
+            player.attackCompleteTimer = 1f;
 
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
             foreach (Collider2D enemy in hitEnemy)
@@ -114,29 +115,6 @@ namespace Player
         {
             base.LogicUpdate();
 
-            /*if attack and timer >= 0
-
-                THEN
-
-                go to next case
-                
-
-
-                if timer < 0
-
-                THEN
-
-                case = 0
-                
-                
-            */
-
-            
-
-            
-
-
-
             if (player.CheckForIdle())
             {
                 sm.ChangeState(player.idleState);
@@ -164,42 +142,6 @@ namespace Player
         {
             base.PhysicsUpdate();
         }
-
-
-/*        public void Test()
-        {
-            if( attackNum == AttackType.SwipeUp )
-            {
-                goto Attack0;
-            }
-            //if (attackNum == 1)
-            {
-                goto Attack1;
-            }
-
-
-
-
-        Attack0:
-            //do stuff
-
-            goto Attack2;
-
-            return;
-
-
-        Attack1:
-
-
-        Attack2:
-            //goto Attack0;
-            return;
-
-
-        }*/
-
-
-
     }
 }
 
