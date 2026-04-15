@@ -1,6 +1,8 @@
 using Player;
 using UnityEngine;
 
+
+
 namespace Enemy
 {
     public enum EnemyAttackType
@@ -10,6 +12,8 @@ namespace Enemy
         SwipeUp,
         SwipeDown
     }
+
+
     public class EnemyAttackState : EnemyState
     {
         public EnemyAttackType enemyAttackNum;
@@ -36,6 +40,8 @@ namespace Enemy
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)
             {
+                enemy.hitPlayer = true;
+                enemy.healthValues.playerHealth -= 10;
             }
         }
 

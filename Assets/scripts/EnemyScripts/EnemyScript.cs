@@ -20,6 +20,16 @@ namespace Enemy
 
         #endregion core variables
 
+        #region scriptable object variables
+
+        [Header("Scriptable Object variables")]
+
+        public HealthValues healthValues;
+
+        [Space(10)]
+
+        #endregion scriptable object variables
+
         #region StateMachine variables
 
         [Header("StateMachine variables")]
@@ -47,6 +57,8 @@ namespace Enemy
         public Transform enemyAttackPoint;
         public int maxEnemyAttackNum = 3;
         public float enemyAttackRange = 0.5f;
+        public bool hitPlayer;
+
         [Space(10)]
 
         #endregion eneny attack variables
@@ -81,7 +93,12 @@ namespace Enemy
             enemyChaseState = new EnemyChaseState(this, esm);
             enemyAttackState = new EnemyAttackState(this, esm);
 
+            
+
+
             esm.Init(enemyIdleState);
+
+
         }
 
         // Update is called once per frame
@@ -106,6 +123,8 @@ namespace Enemy
 
                 return;
             }
+
+            print("player health = " + healthValues.playerHealth);
 
             enemyAttackTimer -= Time.deltaTime;
             enemyAttackCompleteTimer -= Time.deltaTime;

@@ -2695,7 +2695,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 421823511}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -3580,7 +3580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1303692794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3595,7 +3595,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyScript
   erb: {fileID: 0}
   anim: {fileID: 1303692799}
-  healthValues: {fileID: 11400000, guid: 4f9cd632eed0a0b46b1770aa1a71c9df, type: 2}
   esm: {fileID: 0}
   enemyStateText: {fileID: 867999200}
   enemyAttackTimer: 1.5
@@ -3603,7 +3602,6 @@ MonoBehaviour:
   enemyAttackPoint: {fileID: 314656509}
   maxEnemyAttackNum: 3
   enemyAttackRange: 0.5
-  hitPlayer: 0
   seePlayer: 0
   attackPlayer: 0
   player: {fileID: 1979418675}
@@ -3952,7 +3950,6 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  healthValues: {fileID: 11400000, guid: 4f9cd632eed0a0b46b1770aa1a71c9df, type: 2}
 --- !u!50 &1979418673
 Rigidbody2D:
   serializedVersion: 5

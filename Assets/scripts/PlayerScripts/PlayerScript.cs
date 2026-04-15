@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.SceneManagement;
 
 namespace Player
 {
@@ -88,8 +88,13 @@ namespace Player
 
         #endregion input variables
 
+        #region health variables
 
-
+        [Header("Health variables")]
+        public HealthValues healthValues;
+        [Space(10)]
+        
+        #endregion health variables
 
         #region Item Detection variables
 
@@ -108,6 +113,7 @@ namespace Player
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
             
+            healthValues.playerHealth = healthValues.maxPlayerHealth;
 
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
@@ -156,6 +162,7 @@ namespace Player
                 return;
             }
 
+            PlayerDie();
 
             moveDir = moveAction.ReadValue<Vector2>().x;
 
@@ -342,5 +349,19 @@ namespace Player
         }
 
         #endregion Raycast detection
+
+        #region player death
+
+        void PlayerDie()
+        {
+            if (healthValues.playerHealth <= healthValues.minPlayerHealth)
+            {
+                print("player died");
+                SceneManager.LoadSceneAsync("Game");
+                
+            }
+        }
+
+        #endregion player death
     }
 }
