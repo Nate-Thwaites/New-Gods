@@ -3673,6 +3673,7 @@ MonoBehaviour:
   attackTimer: 2
   attackCompleteTimer: 0.5
   blockingAndParrying: {fileID: 11400000, guid: a4570fbda4a696a46b53d5fa025d9520, type: 2}
+  parryTimer: 0.18
   sm: {fileID: 0}
   moveAction:
     m_Name: Move
@@ -3977,7 +3978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2072033695
 Transform:
   m_ObjectHideFlags: 0

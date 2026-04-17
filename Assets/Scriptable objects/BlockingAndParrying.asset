@@ -15,4 +15,3 @@ MonoBehaviour:
   hitPlayer: 0
   isBlocking: 0
   playerParry: 0
-  parryTimer: 0.18
