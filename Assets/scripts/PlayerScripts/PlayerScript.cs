@@ -27,6 +27,7 @@ namespace Player
         [Header("UI variables")]
         public GameObject itemText;
         public TMPro.TextMeshProUGUI stateText;
+        public TMPro.TextMeshProUGUI healthText;
         [Space(10)]
 
         #endregion UI variables
@@ -58,9 +59,14 @@ namespace Player
         #endregion Attack variables
 
         #region Block variables
+
         [Header("Block variables")]
-        public bool isBlocking;
+        
+        public BlockingAndParrying blockingAndParrying;
+        //public bool isBlocking;
+        public float parryTimer = 0.18f;
         [Space(10)]
+
         #endregion Block variables 
 
         #region StateMachine variables
@@ -146,15 +152,19 @@ namespace Player
 
             if (blockAction.WasPressedThisFrame())
             {
-                isBlocking = true;
+                blockingAndParrying.isBlocking = true;
+                
+
             }
 
             else if (blockAction.WasReleasedThisFrame())
             {
-                isBlocking = false;
+                blockingAndParrying.isBlocking = false;
             }
 
             stateText.text = "State: " + sm.CurrentState;
+            healthText.text = "Health: " + healthValues.playerHealth;
+
 
             if ((sm.CurrentState == null))
             {
@@ -170,6 +180,7 @@ namespace Player
             attackCompleteTimer -= Time.deltaTime;
 
             
+
             sm.CurrentState.LogicUpdate();
         }
 
@@ -224,7 +235,8 @@ namespace Player
         {
             if (jumpAction.WasPressedThisFrame() && isGrounded)
             {
-               return true;
+                
+                return true;
             }
 
             return false;
@@ -234,6 +246,7 @@ namespace Player
         {
             if(rb.linearVelocity.y < 0 && !isGrounded)
             {
+               
                 return true;
             }
 
@@ -264,15 +277,9 @@ namespace Player
 
         public bool CheckForBlock()
         {
-            if(isBlocking)
+            if(blockingAndParrying.isBlocking)
             {
-
-                /*
-                 if(attack lands and block is pressed within a certain time frame)
-                {
-                    bool parry = true;
-                }
-                 */
+                
                 return true;
             }
 
@@ -356,9 +363,10 @@ namespace Player
         {
             if (healthValues.playerHealth <= healthValues.minPlayerHealth)
             {
-                print("player died");
-                SceneManager.LoadSceneAsync("Game");
                 
+                SceneManager.LoadSceneAsync("Game");
+                sm.ChangeState(idleState);
+
             }
         }
 

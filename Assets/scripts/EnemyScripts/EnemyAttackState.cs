@@ -29,6 +29,10 @@ namespace Enemy
             EnemyAttack();
             EnemyAttackSwitch();
 
+            if (enemy.blockingAndParrying.hitPlayer && !enemy.blockingAndParrying.isBlocking)
+            {
+                enemy.healthValues.playerHealth -= 10;
+            }
 
             enemy.seePlayer = false;
         }
@@ -40,8 +44,9 @@ namespace Enemy
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)
             {
-                enemy.hitPlayer = true;
-                enemy.healthValues.playerHealth -= 10;
+                enemy.blockingAndParrying.hitPlayer = true;
+
+                
             }
         }
 

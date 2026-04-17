@@ -6,7 +6,7 @@ namespace Player
 {
     public class FallingState : State
     {
-        // constructor
+        public float initVelocity;
         public FallingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
@@ -16,7 +16,9 @@ namespace Player
             base.Enter();
 
             
-            
+
+            initVelocity = player.rb.linearVelocity.x;
+
 
 
         }
@@ -33,7 +35,62 @@ namespace Player
 
         public override void LogicUpdate()
         {
+
+            if (player.moveDir > 0)
+            {
+                if (player.rb.linearVelocity.x > 0)
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
+                    
+                }
+                else
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
+                    player.jumpDirChange = true;
+                    
+                }
+
+            }
+
+            if(player.moveDir < 0)
+            {
+                
+                if (player.rb.linearVelocity.x < 0)
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
+                    
+                }
+                else
+                {
+                    player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
+                    player.jumpDirChange = true;
+                    
+                }
+
+
+            }
+
+            if (player.rb.linearVelocity.x < 0.1f && player.rb.linearVelocity.x > -0.1f)
+            {
+                if (player.moveDir > 0)
+                {
+                   
+                    player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
+                    player.jumpDirChange = true;
+                    
+                }
+
+                if (player.moveDir < 0)
+                {
+                   
+                    player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
+                    player.jumpDirChange = true;
+                    
+                }
+            }
             base.LogicUpdate();
+
+           
 
             if (player.isGrounded) 
             {

@@ -25,6 +25,7 @@ namespace Enemy
         [Header("Scriptable Object variables")]
 
         public HealthValues healthValues;
+        public BlockingAndParrying blockingAndParrying;
 
         [Space(10)]
 
@@ -35,7 +36,8 @@ namespace Enemy
         [Header("StateMachine variables")]
         public EnemyIdleState enemyIdleState;
         public EnemyChaseState enemyChaseState;
-        public EnemyAttackState enemyAttackState;   
+        public EnemyAttackState enemyAttackState;
+        public EnemyStunState enemyStunState;
         public EnemyStateMachine esm;
         [Space(10)]
 
@@ -57,7 +59,6 @@ namespace Enemy
         public Transform enemyAttackPoint;
         public int maxEnemyAttackNum = 3;
         public float enemyAttackRange = 0.5f;
-        public bool hitPlayer;
 
         [Space(10)]
 
@@ -67,7 +68,7 @@ namespace Enemy
 
         [Header("Player detecting variables")]
         public bool seePlayer;
-        public bool attackPlayer;   
+        public bool attackPlayer;
         public Transform player;
         public LayerMask playerLayer;
         [Space(10)]
@@ -92,8 +93,9 @@ namespace Enemy
             enemyIdleState = new EnemyIdleState(this, esm);
             enemyChaseState = new EnemyChaseState(this, esm);
             enemyAttackState = new EnemyAttackState(this, esm);
+            enemyStunState = new EnemyStunState(this, esm);
 
-            
+
 
 
             esm.Init(enemyIdleState);
@@ -106,9 +108,10 @@ namespace Enemy
         {
             DetectPlayer();
             DetectAttackPlayer();
-            enemyStateText.text = "State: " + esm.CurrentState;
+            EnemyDie();
+            //enemyStateText.text = "State: " + esm.CurrentState;
 
-            if(player.transform.position.x < transform.position.x)
+            if (player.transform.position.x < transform.position.x)
             {
                 enemyMoveDir = -1;
             }
@@ -124,7 +127,6 @@ namespace Enemy
                 return;
             }
 
-            print("player health = " + healthValues.playerHealth);
 
             enemyAttackTimer -= Time.deltaTime;
             enemyAttackCompleteTimer -= Time.deltaTime;
@@ -138,13 +140,13 @@ namespace Enemy
             if ((esm.CurrentState == null))
             {
                 print("physics update null");
-                
+
                 return;
             }
 
             esm.CurrentState.PhysicsUpdate();
 
-           
+
 
 
 
@@ -188,13 +190,21 @@ namespace Enemy
                     enemyAttackState.enemyAttackNum = 0;
                 }
 
-                
+
                 return true;
             }
-            
+
             return false;
         }
 
+        public bool CheckForStun()
+        {
+            if (blockingAndParrying.playerParry)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public void DetectAttackPlayer()
         {
@@ -209,7 +219,7 @@ namespace Enemy
             {
                 Debug.DrawRay(transform.position - offset, Vector2.right * dist, Color.blue);
                 attackPlayer = true;
-                
+
 
             }
 
@@ -219,7 +229,7 @@ namespace Enemy
                 attackPlayer = false;
             }
         }
-        
+
 
         void DetectPlayer()
         {
@@ -237,17 +247,25 @@ namespace Enemy
 
                 }
 
-               
+
             }
 
             else
             {
-                 
-                 Debug.DrawRay(transform.position, lookDir * 10f, Color.red);
-                 seePlayer = false;
-                
+
+                Debug.DrawRay(transform.position, lookDir * 10f, Color.red);
+                seePlayer = false;
+
             }
 
+        }
+
+        void EnemyDie()
+        {
+            if (healthValues.enemyHealth <= healthValues.minEnemyHealth)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

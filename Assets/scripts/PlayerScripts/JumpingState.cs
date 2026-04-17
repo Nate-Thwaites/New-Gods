@@ -52,11 +52,14 @@ namespace Player
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
                     
+
                 }
                 else
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
+                    
+
                 }
 
             }
@@ -66,12 +69,14 @@ namespace Player
                 if (player.rb.linearVelocity.x < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
-                    
+
                 }
-                else
+                else 
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
+                    
+
                 }
 
 
@@ -83,24 +88,24 @@ namespace Player
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
-                    
+
                 }
 
                 if (player.moveDir < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
-                    
+                   
                 }
             }
 
-            
 
 
 
 
 
 
+          
 
 
 

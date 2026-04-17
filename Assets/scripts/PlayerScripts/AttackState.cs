@@ -47,6 +47,7 @@ namespace Player
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
             foreach (Collider2D enemy in hitEnemy)
             {
+                player.healthValues.enemyHealth -= 100;
                 Debug.Log("hit enemy");
             }
         }
