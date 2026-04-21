@@ -31,7 +31,7 @@ namespace Enemy
 
             if (enemy.blockingAndParrying.hitPlayer && !enemy.blockingAndParrying.isBlocking)
             {
-                enemy.healthValues.playerHealth -= 10;
+                enemy.healthManager.playerHealth -= 10;
             }
 
             enemy.seePlayer = false;

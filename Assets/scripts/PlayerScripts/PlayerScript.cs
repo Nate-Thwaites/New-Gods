@@ -90,6 +90,8 @@ namespace Player
         public InputAction jumpAction;
         public InputAction attackAction;
         public InputAction blockAction;
+        public InputAction healAction;
+        public InputAction interactAction;
         [Space(10)]
 
         #endregion input variables
@@ -97,7 +99,7 @@ namespace Player
         #region health variables
 
         [Header("Health variables")]
-        public HealthValues healthValues;
+        public HealthManager healthManager;
         [Space(10)]
         
         #endregion health variables
@@ -106,7 +108,8 @@ namespace Player
 
         [Header("Item Detection variables")]
         LayerMask itemMask;
-
+        public bool hasHealItem;
+        public GameObject HealItem;
 
         #endregion Item Detection variables
 
@@ -116,16 +119,21 @@ namespace Player
         #region unity methods
         void Start()
         {
+            hasHealItem = false;
+
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
-            
-            healthValues.playerHealth = healthValues.maxPlayerHealth;
+            anim = GetComponent<Animator>();
+
+            healthManager.playerHealth = healthManager.maxPlayerHealth;
 
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
             attackAction = InputSystem.actions.FindAction("Attack");
             blockAction = InputSystem.actions.FindAction("Block");
-            //anim = GetComponent<Animator>();
+            healAction = InputSystem.actions.FindAction("Heal");
+            interactAction = InputSystem.actions.FindAction("Interact");
+            
 
             itemMask = LayerMask.GetMask("itemLayer");
 
@@ -149,6 +157,8 @@ namespace Player
         public void Update()
         {
             GroundCheck();
+            ItemDetection();
+            PlayerHeal();
 
             if (blockAction.WasPressedThisFrame())
             {
@@ -163,7 +173,7 @@ namespace Player
             }
 
             stateText.text = "State: " + sm.CurrentState;
-            healthText.text = "Health: " + healthValues.playerHealth;
+            healthText.text = "Health: " + healthManager.playerHealth;
 
 
             if ((sm.CurrentState == null))
@@ -335,10 +345,10 @@ namespace Player
         {
            
 
-            float dist = 2;
+            float dist = 4;
 
 
-            Vector3 offset = new Vector3(1, 0, 0);
+            Vector3 offset = new Vector3(2, 0, 0);
 
             bool itemHit = Physics2D.Raycast(transform.position - offset, Vector2.right, dist, itemMask);
 
@@ -346,12 +356,21 @@ namespace Player
             {
                 Debug.DrawRay(transform.position - offset, Vector2.right * dist, Color.green);
                 itemText.SetActive(true);
+
+               
             }
 
             else
             {
                 Debug.DrawRay(transform.position - offset, Vector2.right * dist, Color.red);
                 itemText.SetActive(false);
+            }
+
+            if (itemHit &&  interactAction.WasPressedThisFrame())
+            {
+                print("pick up");
+                Destroy(HealItem);
+                hasHealItem = true;
             }
         }
 
@@ -361,7 +380,7 @@ namespace Player
 
         void PlayerDie()
         {
-            if (healthValues.playerHealth <= healthValues.minPlayerHealth)
+            if (healthManager.playerHealth <= healthManager.minPlayerHealth)
             {
                 
                 SceneManager.LoadSceneAsync("Game");
@@ -371,5 +390,18 @@ namespace Player
         }
 
         #endregion player death
+
+        #region heal void
+
+        void PlayerHeal()
+        {
+            if (hasHealItem && healAction.WasPressedThisFrame())
+            {
+                healthManager.playerHealth = healthManager.playerHealth + 30;
+                hasHealItem = false;
+            }
+        }
+
+        #endregion heal void
     }
 }

@@ -16,7 +16,7 @@ namespace Player
             base.Enter();
             
 
-            if (player.parryTimer > 0 )
+            if (player.parryTimer > 0 && player.blockingAndParrying.hitPlayer)
             {
                 Debug.Log("Parried attack");
                 player.blockingAndParrying.playerParry = true;

@@ -20,16 +20,17 @@ namespace Enemy
 
         #endregion core variables
 
-        #region scriptable object variables
+        #region scriptable object, and manager script variables
 
         [Header("Scriptable Object variables")]
 
-        public HealthValues healthValues;
+        public HealthManager healthManager;
+
         public BlockingAndParrying blockingAndParrying;
 
         [Space(10)]
 
-        #endregion scriptable object variables
+        #endregion scriptable object, and manager script variables
 
         #region StateMachine variables
 
@@ -84,7 +85,7 @@ namespace Enemy
         #endregion enemy movement variables
 
         #endregion variables
-
+        
         void Start()
         {
             erb = GetComponent<Rigidbody2D>();
@@ -96,7 +97,7 @@ namespace Enemy
             enemyStunState = new EnemyStunState(this, esm);
 
 
-
+            
 
             esm.Init(enemyIdleState);
 
@@ -262,7 +263,7 @@ namespace Enemy
 
         void EnemyDie()
         {
-            if (healthValues.enemyHealth <= healthValues.minEnemyHealth)
+            if (healthManager.enemyHealth <= healthManager.minEnemyHealth)
             {
                 Destroy(gameObject);
             }
