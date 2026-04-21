@@ -202,6 +202,7 @@ namespace Enemy
         {
             if (blockingAndParrying.playerParry)
             {
+                print("stunned");
                 return true;
             }
             return false;

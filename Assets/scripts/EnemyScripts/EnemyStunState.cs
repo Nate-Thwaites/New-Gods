@@ -11,7 +11,7 @@ public class EnemyStunState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        
+        Debug.Log("Enemy Stunned");
         enemy.erb.AddForce(5 * enemy.transform.right * 0.5f, ForceMode2D.Impulse);
     }
 

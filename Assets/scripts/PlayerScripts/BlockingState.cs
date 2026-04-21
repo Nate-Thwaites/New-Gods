@@ -14,7 +14,7 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-            
+
 
             if (player.parryTimer > 0 && player.blockingAndParrying.hitPlayer)
             {
@@ -27,7 +27,7 @@ namespace Player
         public override void Exit()
         {
             base.Exit();
-            player.blockingAndParrying.playerParry = false;
+            
             player.blockingAndParrying.isBlocking = false;
             player.parryTimer = 0.18f;
         }
@@ -42,17 +42,19 @@ namespace Player
             if (player.blockingAndParrying.hitPlayer && player.blockingAndParrying.isBlocking)
             {
                 Debug.Log("Blocked attack");
-                player.blockingAndParrying.hitPlayer = false;
-                player.blockingAndParrying.playerParry = false;
+                //player.blockingAndParrying.hitPlayer = false;
+                //player.blockingAndParrying.playerParry = false;
                 player.blockingAndParrying.isBlocking = false;
             }
-            
+
+          
+
             player.parryTimer -= Time.deltaTime;
 
             base.LogicUpdate();
             if (!player.CheckForBlock())
             {
-
+                player.blockingAndParrying.playerParry = false;
 
                 if (player.CheckForIdle())
                 {

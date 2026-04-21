@@ -47,7 +47,13 @@ namespace Enemy
                 enemy.blockingAndParrying.hitPlayer = true;
 
                 
+                
+                
+                
             }
+
+                     
+            
         }
 
         public void EnemyAttackSwitch()
