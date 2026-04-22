@@ -26,7 +26,7 @@ namespace Enemy
 
         public HealthManager healthManager;
 
-        public BlockingAndParrying blockingAndParrying;
+        //public BlockingAndParrying blockingAndParrying;
 
         [Space(10)]
 
@@ -47,7 +47,7 @@ namespace Enemy
         #region UI variables
 
         [Header("UI variables")]
-        public TMPro.TextMeshProUGUI enemyStateText;
+        
         [Space(10)]
 
         #endregion UI variables
@@ -70,8 +70,14 @@ namespace Enemy
         [Header("Player detecting variables")]
         public bool seePlayer;
         public bool attackPlayer;
-        public Transform player;
+
+        //public Transform player;
         public LayerMask playerLayer;
+
+        public GameObject player;
+        public PlayerScript playerScript;
+
+
         [Space(10)]
 
         #endregion player detecting variables
@@ -97,7 +103,9 @@ namespace Enemy
             enemyStunState = new EnemyStunState(this, esm);
 
 
-            
+            player = GameObject.Find("player");
+            playerScript = player.GetComponent<PlayerScript>();
+
 
             esm.Init(enemyIdleState);
 
@@ -110,7 +118,7 @@ namespace Enemy
             DetectPlayer();
             DetectAttackPlayer();
             EnemyDie();
-            //enemyStateText.text = "State: " + esm.CurrentState;
+            
 
             if (player.transform.position.x < transform.position.x)
             {
@@ -200,7 +208,7 @@ namespace Enemy
 
         public bool CheckForStun()
         {
-            if (blockingAndParrying.playerParry)
+            if (playerScript.playerParry)
             {
                 print("stunned");
                 return true;
@@ -235,7 +243,7 @@ namespace Enemy
 
         void DetectPlayer()
         {
-            Vector2 lookDir = (player.position - transform.position).normalized;
+            Vector2 lookDir = (player.transform.position - transform.position).normalized;
 
             RaycastHit2D see = Physics2D.Raycast(transform.position, lookDir, 10f, LayerMask.GetMask("player") | LayerMask.GetMask("floor"));
 

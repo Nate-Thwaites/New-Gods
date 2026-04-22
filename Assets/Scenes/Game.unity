@@ -3142,7 +3142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Enemy State:'
+  m_text: 'Posture:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3788,9 +3788,7 @@ MonoBehaviour:
   erb: {fileID: 0}
   anim: {fileID: 1887698200}
   healthManager: {fileID: 1231171773}
-  blockingAndParrying: {fileID: 11400000, guid: a4570fbda4a696a46b53d5fa025d9520, type: 2}
   esm: {fileID: 0}
-  enemyStateText: {fileID: 0}
   enemyAttackTimer: 1.5
   enemyAttackCompleteTimer: 0.5
   enemyAttackPoint: {fileID: 365335599}
@@ -3798,10 +3796,11 @@ MonoBehaviour:
   enemyAttackRange: 0.5
   seePlayer: 0
   attackPlayer: 0
-  player: {fileID: 1979418675}
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  player: {fileID: 1979418675}
+  playerScript: {fileID: 0}
   enemySpeed: 4
   enemyMoveDir: 0
 --- !u!212 &1887698204
@@ -4089,9 +4088,7 @@ MonoBehaviour:
   erb: {fileID: 0}
   anim: {fileID: 1925876746}
   healthManager: {fileID: 1231171773}
-  blockingAndParrying: {fileID: 11400000, guid: a4570fbda4a696a46b53d5fa025d9520, type: 2}
   esm: {fileID: 0}
-  enemyStateText: {fileID: 0}
   enemyAttackTimer: 1.5
   enemyAttackCompleteTimer: 0.5
   enemyAttackPoint: {fileID: 1865512451}
@@ -4099,10 +4096,11 @@ MonoBehaviour:
   enemyAttackRange: 0.5
   seePlayer: 0
   attackPlayer: 0
-  player: {fileID: 1979418675}
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  player: {fileID: 1979418675}
+  playerScript: {fileID: 0}
   enemySpeed: 4
   enemyMoveDir: 0
 --- !u!212 &1925876750
@@ -4203,6 +4201,7 @@ MonoBehaviour:
   itemText: {fileID: 983965393}
   stateText: {fileID: 1295871592}
   healthText: {fileID: 781969264}
+  postureText: {fileID: 0}
   jumpForce: 13
   moveDir: 0
   isGrounded: 0
@@ -4218,8 +4217,10 @@ MonoBehaviour:
   maxAttackNum: 3
   attackTimer: 2
   attackCompleteTimer: 0.5
-  blockingAndParrying: {fileID: 11400000, guid: a4570fbda4a696a46b53d5fa025d9520, type: 2}
-  parryTimer: 0.18
+  hitPlayer: 0
+  isBlocking: 0
+  playerParry: 0
+  parryTimer: 2.18
   sm: {fileID: 0}
   moveAction:
     m_Name: Move
@@ -4276,6 +4277,9 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   healthManager: {fileID: 1231171773}
+  playerPostureBar: 0
+  maxPlayerPostureBar: 100
+  minPlayerPostureBar: 0
   hasHealItem: 0
   HealItem: {fileID: 70357246}
 --- !u!50 &1979418673

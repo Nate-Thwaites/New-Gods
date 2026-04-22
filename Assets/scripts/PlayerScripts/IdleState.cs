@@ -13,7 +13,6 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-
             player.rb.linearVelocity = new Vector2(0, 0);
 
 

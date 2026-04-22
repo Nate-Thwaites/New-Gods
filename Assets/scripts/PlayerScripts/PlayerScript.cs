@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -28,6 +29,7 @@ namespace Player
         public GameObject itemText;
         public TMPro.TextMeshProUGUI stateText;
         public TMPro.TextMeshProUGUI healthText;
+        public TMPro.TextMeshProUGUI postureText;
         [Space(10)]
 
         #endregion UI variables
@@ -61,10 +63,16 @@ namespace Player
         #region Block variables
 
         [Header("Block variables")]
-        
-        public BlockingAndParrying blockingAndParrying;
+
+        //public BlockingAndParrying blockingAndParrying;
+
+        public bool hitPlayer = false;
+        public bool isBlocking;
+        public bool playerParry;
+
+
         //public bool isBlocking;
-        public float parryTimer = 0.18f;
+        public float parryTimer = 2.18f;
         [Space(10)]
 
         #endregion Block variables 
@@ -101,8 +109,18 @@ namespace Player
         [Header("Health variables")]
         public HealthManager healthManager;
         [Space(10)]
-        
+
         #endregion health variables
+
+        #region posture variables
+
+        [Header("Posture variables")]
+
+        public float playerPostureBar;
+        public float maxPlayerPostureBar = 100;
+        public float minPlayerPostureBar = 0;
+        [Space(10)]
+        #endregion posture variables
 
         #region Item Detection variables
 
@@ -120,6 +138,7 @@ namespace Player
         void Start()
         {
             hasHealItem = false;
+            playerPostureBar = minPlayerPostureBar;
 
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
@@ -162,19 +181,25 @@ namespace Player
 
             if (blockAction.WasPressedThisFrame())
             {
-                blockingAndParrying.isBlocking = true;
+                isBlocking = true;
                 
 
             }
 
             else if (blockAction.WasReleasedThisFrame())
             {
-                blockingAndParrying.isBlocking = false;
+                isBlocking = false;
             }
 
             stateText.text = "State: " + sm.CurrentState;
             healthText.text = "Health: " + healthManager.playerHealth;
+            postureText.text = "Posture: " + playerPostureBar;
 
+            if (playerParry)
+            {
+                Debug.Log("Parried attack");
+
+            }
 
             if ((sm.CurrentState == null))
             {
@@ -287,7 +312,7 @@ namespace Player
 
         public bool CheckForBlock()
         {
-            if(blockingAndParrying.isBlocking)
+            if(isBlocking)
             {
                 
                 return true;
@@ -306,6 +331,15 @@ namespace Player
             Gizmos.DrawSphere(attackPoint.position, attackRange);
         }
         #endregion attack debug temp
+
+        #region leave parry coroutine
+        public IEnumerator LeaveParry()
+        {
+            yield return new WaitForSeconds(0.1f);
+            playerParry = false;
+        }
+
+        #endregion leave parry coroutines
 
         #region Raycast detection 
         public void GroundCheck()

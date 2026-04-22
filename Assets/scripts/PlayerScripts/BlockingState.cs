@@ -1,5 +1,6 @@
 using UnityEngine;
-using Enemy;
+using System.Collections;
+using System;
 
 namespace Player
 {
@@ -16,11 +17,7 @@ namespace Player
             base.Enter();
 
 
-            if (player.parryTimer > 0 && player.blockingAndParrying.hitPlayer)
-            {
-                Debug.Log("Parried attack");
-                player.blockingAndParrying.playerParry = true;
-            }
+            
 
         }
 
@@ -28,8 +25,8 @@ namespace Player
         {
             base.Exit();
             
-            player.blockingAndParrying.isBlocking = false;
-            player.parryTimer = 0.18f;
+            player.isBlocking = false;
+            player.parryTimer = 2.18f;
         }
 
         public override void HandleInput()
@@ -39,22 +36,26 @@ namespace Player
 
         public override void LogicUpdate()
         {
-            if (player.blockingAndParrying.hitPlayer && player.blockingAndParrying.isBlocking)
+            if (player.hitPlayer && player.isBlocking)
             {
                 Debug.Log("Blocked attack");
                 //player.blockingAndParrying.hitPlayer = false;
                 //player.blockingAndParrying.playerParry = false;
-                player.blockingAndParrying.isBlocking = false;
+                player.isBlocking = false;
             }
 
-          
+            
+            if (player.parryTimer > 0 && player.hitPlayer)
+            {
+                player.playerParry = true;
+            }
 
             player.parryTimer -= Time.deltaTime;
-
+            
             base.LogicUpdate();
             if (!player.CheckForBlock())
             {
-                player.blockingAndParrying.playerParry = false;
+                player.StartCoroutine(player.LeaveParry());
 
                 if (player.CheckForIdle())
                 {
@@ -83,11 +84,16 @@ namespace Player
             }
         }
 
+        
+
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
 
 
         }
+        
+       
+
     }
 }
