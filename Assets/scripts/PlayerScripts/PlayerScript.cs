@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Enemy;
 
 namespace Player
 {
@@ -18,8 +19,9 @@ namespace Player
         public Rigidbody2D rb;
         [Header("Core variables")]
         public Animator anim;
+        public EnemyScript enemyScript;
         [Space(10)]
-
+        
         #endregion core variables
 
 
@@ -33,7 +35,6 @@ namespace Player
         [Space(10)]
 
         #endregion UI variables
-
 
         #region Jump and Movement variables
 
@@ -86,6 +87,7 @@ namespace Player
         public FallingState fallingState;
         public AttackState attackState;
         public BlockingState blockingState;
+        public ParryState parryState;
         public StateMachine sm;
         [Space(10)]
 
@@ -111,6 +113,8 @@ namespace Player
         [Space(10)]
 
         #endregion health variables
+
+        
 
         #region posture variables
 
@@ -163,6 +167,7 @@ namespace Player
             fallingState = new FallingState(this, sm);
             attackState = new AttackState(this, sm);
             blockingState = new BlockingState(this, sm);
+            parryState = new ParryState(this, sm);
 
             // initialise the statemachine with the default state
             sm.Init(idleState);
@@ -321,6 +326,19 @@ namespace Player
             return false;
         }
 
+        public bool CheckForParry()
+        {
+            if (parryTimer > 0 && hitPlayer && isBlocking)
+            {
+                playerParry = true;
+                return true;
+            }
+
+            playerParry = false;
+
+            return false;
+        }
+
 
 
         #endregion state checks
@@ -336,7 +354,8 @@ namespace Player
         public IEnumerator LeaveParry()
         {
             yield return new WaitForSeconds(0.1f);
-            playerParry = false;
+            CheckForParry();
+            
         }
 
         #endregion leave parry coroutines

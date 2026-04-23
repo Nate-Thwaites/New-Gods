@@ -39,23 +39,23 @@ namespace Player
             if (player.hitPlayer && player.isBlocking)
             {
                 Debug.Log("Blocked attack");
+                player.playerPostureBar = player.playerPostureBar + 10;
                 //player.blockingAndParrying.hitPlayer = false;
                 //player.blockingAndParrying.playerParry = false;
                 player.isBlocking = false;
             }
 
             
-            if (player.parryTimer > 0 && player.hitPlayer)
-            {
-                player.playerParry = true;
-            }
+            
+
+            
 
             player.parryTimer -= Time.deltaTime;
             
             base.LogicUpdate();
             if (!player.CheckForBlock())
             {
-                player.StartCoroutine(player.LeaveParry());
+               
 
                 if (player.CheckForIdle())
                 {
@@ -80,6 +80,11 @@ namespace Player
                 if (player.CheckForAttack())
                 {
                     sm.ChangeState(player.attackState);
+                }
+
+                if (player.CheckForParry())
+                {
+                    sm.ChangeState(player.parryState);
                 }
             }
         }

@@ -3116,7 +3116,7 @@ GameObject:
   - component: {fileID: 867999201}
   - component: {fileID: 867999200}
   m_Layer: 5
-  m_Name: enemy state temp
+  m_Name: posture temp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4198,10 +4198,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerScript
   rb: {fileID: 0}
   anim: {fileID: 1979418678}
+  enemyScript: {fileID: 0}
   itemText: {fileID: 983965393}
   stateText: {fileID: 1295871592}
   healthText: {fileID: 781969264}
-  postureText: {fileID: 0}
+  postureText: {fileID: 867999200}
   jumpForce: 13
   moveDir: 0
   isGrounded: 0
