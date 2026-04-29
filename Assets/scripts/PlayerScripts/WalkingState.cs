@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 namespace Player
 {
@@ -32,16 +31,20 @@ namespace Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-          
+            
             player.rb.linearVelocity = new Vector2(10 * player.moveDir, player.rb.linearVelocity.y);
 
+
+            if (player.playerPostureBar > player.minPlayerPostureBar)
+            {
+                player.playerPostureBar = player.playerPostureBar - Time.deltaTime;
+            }
 
             if (player.CheckForIdle())
             {
                 sm.ChangeState(player.idleState);
 
             }
-
 
             if (player.CheckForJump())
             {

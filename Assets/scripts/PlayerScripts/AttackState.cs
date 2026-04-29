@@ -40,12 +40,12 @@ namespace Player
             player.attackTimer = 1.5f;
             player.attackCompleteTimer = 1f;
 
-           /* Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
+            Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
             foreach (Collider2D enemy in hitEnemy)
             {
-                player.healthManager.enemyHealth -= 100;
+                player.enemyScript.enemyHealth -= 100;
                 Debug.Log("hit enemy");
-            }*/
+            }
         }
 
         public void AttackSwitch()

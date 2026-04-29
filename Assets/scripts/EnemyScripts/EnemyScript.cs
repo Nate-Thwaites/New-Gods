@@ -1,4 +1,5 @@
 using Player;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -38,11 +39,21 @@ namespace Enemy
         public EnemyIdleState enemyIdleState;
         public EnemyChaseState enemyChaseState;
         public EnemyAttackState enemyAttackState;
-        public EnemyStunState enemyStunState;
+        public EnemyParryStunState enemyParryStunState;
         public EnemyStateMachine esm;
         [Space(10)]
 
         #endregion StateMachine variables
+
+        #region stun variables
+
+        [Header("Stun variables")]
+        public bool parryStunEnemy;
+        public bool attackStunEnemy;
+        public bool postureBreakStunEnemy;
+        [Space(10)]
+
+        #endregion stun variables
 
         #region UI variables
 
@@ -52,6 +63,16 @@ namespace Enemy
 
         #endregion UI variables
 
+        #region health variables
+
+        [Header("Health variables")]
+        public float maxEnemyHealth = 100;
+        public float minEnemyHealth = 0;
+        public float enemyHealth;
+        [Space(10)]
+
+        #endregion health variables
+
         #region enemy attack variables
 
         [Header("enemy attack variables")]
@@ -60,6 +81,7 @@ namespace Enemy
         public Transform enemyAttackPoint;
         public int maxEnemyAttackNum = 3;
         public float enemyAttackRange = 0.5f;
+        public bool attackReset;
 
         [Space(10)]
 
@@ -100,12 +122,12 @@ namespace Enemy
             enemyIdleState = new EnemyIdleState(this, esm);
             enemyChaseState = new EnemyChaseState(this, esm);
             enemyAttackState = new EnemyAttackState(this, esm);
-            enemyStunState = new EnemyStunState(this, esm);
+            enemyParryStunState = new EnemyParryStunState(this, esm);
 
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
-
+            enemyHealth = maxEnemyHealth;
 
             esm.Init(enemyIdleState);
 
@@ -188,8 +210,9 @@ namespace Enemy
         {
             if (attackPlayer && enemyAttackCompleteTimer <= 0)
             {
-                if (enemyAttackTimer >= 0)
+                if (enemyAttackTimer > 0)
                 {
+
                     enemyAttackState.enemyAttackNum++;
                 }
 
@@ -199,16 +222,17 @@ namespace Enemy
                     enemyAttackState.enemyAttackNum = 0;
                 }
 
-
                 return true;
             }
+            
+
 
             return false;
         }
 
-        public bool CheckForStun()
+        public bool CheckForParryStun()
         {
-            if (playerScript.playerParry)
+            if (parryStunEnemy)
             {
                 print("stunned");
                 return true;
@@ -270,9 +294,22 @@ namespace Enemy
 
         }
 
-        void EnemyDie()
+        public IEnumerator Attackreset()
         {
-            if (healthManager.enemyHealth <= healthManager.minEnemyHealth)
+            yield return new WaitForSeconds(1f);
+            print("reset attack");
+            attackReset = false;
+        }
+
+        public IEnumerator ParryStun()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            parryStunEnemy = false;
+        }
+            void EnemyDie()
+        {
+            if (enemyHealth <= minEnemyHealth)
             {
                 Destroy(gameObject);
             }

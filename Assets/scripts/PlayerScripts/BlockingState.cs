@@ -1,6 +1,5 @@
 using UnityEngine;
-using System.Collections;
-using System;
+
 
 namespace Player
 {
@@ -26,7 +25,7 @@ namespace Player
             base.Exit();
             
             player.isBlocking = false;
-            player.parryTimer = 2.18f;
+            player.parryTimer = 0.18f;
         }
 
         public override void HandleInput()
@@ -36,26 +35,41 @@ namespace Player
 
         public override void LogicUpdate()
         {
+            if (player.parryTimer > 0 && player.hitPlayer)
+            {
+                Debug.Log("Parried attack");
+                player.playerParry = true;
+                player.enemyScript.parryStunEnemy = true;
+                if (player.playerParry)
+                {
+                    player.playerPostureBar = player.playerPostureBar + 0;
+                }
+            }
+
             if (player.hitPlayer && player.isBlocking)
             {
                 Debug.Log("Blocked attack");
-                player.playerPostureBar = player.playerPostureBar + 10;
                 //player.blockingAndParrying.hitPlayer = false;
                 //player.blockingAndParrying.playerParry = false;
                 player.isBlocking = false;
+
+                if(!player.playerParry)
+                {
+                    player.playerPostureBar = player.playerPostureBar + 100;
+                }
             }
 
             
-            
 
-            
+
+
 
             player.parryTimer -= Time.deltaTime;
             
             base.LogicUpdate();
             if (!player.CheckForBlock())
             {
-               
+                player.StartCoroutine(player.LeaveParry());
 
                 if (player.CheckForIdle())
                 {
@@ -82,10 +96,11 @@ namespace Player
                     sm.ChangeState(player.attackState);
                 }
 
-                if (player.CheckForParry())
+                if (player.CheckForPostureStun())
                 {
-                    sm.ChangeState(player.parryState);
+                    sm.ChangeState(player.postureStunState);
                 }
+
             }
         }
 

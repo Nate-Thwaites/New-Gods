@@ -35,6 +35,10 @@ namespace Player
 
         public override void LogicUpdate()
         {
+            if (player.playerPostureBar > player.minPlayerPostureBar)
+            {
+                player.playerPostureBar = player.playerPostureBar - Time.deltaTime;
+            }
 
             if (player.moveDir > 0)
             {

@@ -32,9 +32,13 @@ namespace Player
 
         public override void LogicUpdate()
         {
+            if (player.playerPostureBar > player.minPlayerPostureBar)
+            { 
+                player.playerPostureBar = player.playerPostureBar -3 * Time.deltaTime;
+            }
 
-            //Debug.Log(player.moveAction.ReadValue<float>());
 
+            
             base.LogicUpdate();
 
             if (player.CheckForRun())

@@ -28,10 +28,12 @@ namespace Enemy
 
             EnemyAttack();
             EnemyAttackSwitch();
+            
+            enemy.enemyMoveDir = 0;
 
             if (enemy.playerScript.hitPlayer && !enemy.playerScript.isBlocking)
             {
-                enemy.healthManager.playerHealth -= 10;
+                enemy.playerScript.playerHealth -= 10;
             }
 
             enemy.seePlayer = false;
@@ -128,6 +130,11 @@ namespace Enemy
             if (enemy.CheckForChase())
             {
                 esm.ChangeState(enemy.enemyChaseState);
+            }
+
+            if (enemy.CheckForParryStun())
+            {
+                esm.ChangeState(enemy.enemyParryStunState);
             }
         }
 

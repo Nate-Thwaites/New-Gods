@@ -70,10 +70,11 @@ namespace Player
         public bool hitPlayer = false;
         public bool isBlocking;
         public bool playerParry;
+        public bool stunEnemy;
 
 
         //public bool isBlocking;
-        public float parryTimer = 2.18f;
+        public float parryTimer = 0.18f;
         [Space(10)]
 
         #endregion Block variables 
@@ -87,7 +88,7 @@ namespace Player
         public FallingState fallingState;
         public AttackState attackState;
         public BlockingState blockingState;
-        public ParryState parryState;
+        public PostureStunState postureStunState;
         public StateMachine sm;
         [Space(10)]
 
@@ -109,7 +110,15 @@ namespace Player
         #region health variables
 
         [Header("Health variables")]
-        public HealthManager healthManager;
+
+        public int maxPlayerHealth = 100;
+
+        public int minPlayerHealth = 0;
+
+        public int playerHealth;
+
+        public PlayerHealthBar playerHealthBar;
+
         [Space(10)]
 
         #endregion health variables
@@ -121,8 +130,8 @@ namespace Player
         [Header("Posture variables")]
 
         public float playerPostureBar;
-        public float maxPlayerPostureBar = 100;
-        public float minPlayerPostureBar = 0;
+        public int maxPlayerPostureBar = 100;
+        public int minPlayerPostureBar = 0;
         [Space(10)]
         #endregion posture variables
 
@@ -141,6 +150,9 @@ namespace Player
         #region unity methods
         void Start()
         {
+            playerHealthBar.SetMaxHealth(maxPlayerHealth);
+
+
             hasHealItem = false;
             playerPostureBar = minPlayerPostureBar;
 
@@ -148,7 +160,7 @@ namespace Player
             sm = gameObject.AddComponent<StateMachine>();
             anim = GetComponent<Animator>();
 
-            healthManager.playerHealth = healthManager.maxPlayerHealth;
+            playerHealth = maxPlayerHealth;
 
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
@@ -167,7 +179,7 @@ namespace Player
             fallingState = new FallingState(this, sm);
             attackState = new AttackState(this, sm);
             blockingState = new BlockingState(this, sm);
-            parryState = new ParryState(this, sm);
+            postureStunState = new PostureStunState(this, sm);
 
             // initialise the statemachine with the default state
             sm.Init(idleState);
@@ -180,6 +192,24 @@ namespace Player
         // Update is called once per frame
         public void Update()
         {
+            playerHealthBar.UpdateHealthBar(playerHealth);
+            if (playerPostureBar < 0)
+            {
+                playerPostureBar = 0;
+            }
+
+            if (playerPostureBar > maxPlayerPostureBar)
+            {
+                playerPostureBar = maxPlayerPostureBar;
+            }
+
+            if (playerHealth > maxPlayerHealth)
+            {
+                playerHealth = maxPlayerHealth;
+            }
+
+
+
             GroundCheck();
             ItemDetection();
             PlayerHeal();
@@ -197,15 +227,10 @@ namespace Player
             }
 
             stateText.text = "State: " + sm.CurrentState;
-            healthText.text = "Health: " + healthManager.playerHealth;
+            healthText.text = "Health: " + playerHealth;
             postureText.text = "Posture: " + playerPostureBar;
 
-            if (playerParry)
-            {
-                Debug.Log("Parried attack");
-
-            }
-
+           
             if ((sm.CurrentState == null))
             {
                 
@@ -326,18 +351,18 @@ namespace Player
             return false;
         }
 
-        public bool CheckForParry()
+        public bool CheckForPostureStun()
         {
-            if (parryTimer > 0 && hitPlayer && isBlocking)
+            if(playerPostureBar >= maxPlayerPostureBar)
             {
-                playerParry = true;
+                
                 return true;
             }
 
-            playerParry = false;
-
             return false;
         }
+
+
 
 
 
@@ -354,11 +379,19 @@ namespace Player
         public IEnumerator LeaveParry()
         {
             yield return new WaitForSeconds(0.1f);
-            CheckForParry();
-            
+            playerParry = false;
         }
 
         #endregion leave parry coroutines
+
+        #region stun couroutines
+        public IEnumerator PostureStun()
+        {
+            yield return new WaitForSeconds(1f);
+            playerPostureBar = 0;
+        }
+
+        #endregion stun couroutines
 
         #region Raycast detection 
         public void GroundCheck()
@@ -433,7 +466,7 @@ namespace Player
 
         void PlayerDie()
         {
-            if (healthManager.playerHealth <= healthManager.minPlayerHealth)
+            if (playerHealth <= minPlayerHealth)
             {
                 
                 SceneManager.LoadSceneAsync("Game");
@@ -450,7 +483,7 @@ namespace Player
         {
             if (hasHealItem && healAction.WasPressedThisFrame())
             {
-                healthManager.playerHealth = healthManager.playerHealth + 30;
+                playerHealth = playerHealth + 30;
                 hasHealItem = false;
             }
         }

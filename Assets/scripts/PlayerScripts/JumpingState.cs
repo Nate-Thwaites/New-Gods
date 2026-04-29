@@ -38,6 +38,11 @@ namespace Player
         {
             base.LogicUpdate();
 
+            if (player.playerPostureBar > player.minPlayerPostureBar)
+            {
+                player.playerPostureBar = player.playerPostureBar - Time.deltaTime;
+            }
+
             if (player.jumpAction.WasReleasedThisFrame())
             {
                 player.rb.AddForce(Vector2.down * player.jumpForce * 0.5f, ForceMode2D.Impulse);
