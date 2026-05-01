@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using UnityEngine;
 
 
@@ -28,10 +29,10 @@ namespace Player
             base.Enter();
 
             player.rb.linearVelocity = new Vector2(0, 0);
-            Attack();
+            //Attack();
             AttackSwitch();
             
-            
+           
             
         }
         
@@ -43,9 +44,25 @@ namespace Player
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
             foreach (Collider2D enemy in hitEnemy)
             {
-                player.enemyScript.enemyHealth -= 100;
-                Debug.Log("hit enemy");
+                player.RandomNumForEnemyBlock();
+
+                player.hitEnemy = true;
+
+              
+
+                if (!player.enemyScript.blockEnemy && !player.enemyScript.parryEnemy)
+                {
+                    player.StartCoroutine(player.AttackDelay());
+                }
+                /*if (!player.enemyScript.blockEnemy)
+                {
+                    player.enemyScript.enemyHealth -= 10;
+                }*/
+
+                Debug.Log("enemy health: " + player.enemyScript.enemyHealth);
             }
+
+
         }
 
         public void AttackSwitch()
@@ -99,7 +116,7 @@ namespace Player
 
         public override void Exit()
         {
-            
+            player.hitEnemy = false;
             base.Exit();
         }
 

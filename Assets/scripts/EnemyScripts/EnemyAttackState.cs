@@ -26,7 +26,7 @@ namespace Enemy
         {
             base.Enter();
 
-            EnemyAttack();
+            //EnemyAttack();
             EnemyAttackSwitch();
             
             enemy.enemyMoveDir = 0;
@@ -135,6 +135,16 @@ namespace Enemy
             if (enemy.CheckForParryStun())
             {
                 esm.ChangeState(enemy.enemyParryStunState);
+            }
+
+            if (enemy.CheckForBlock())
+            {
+                esm.ChangeState(enemy.enemyBlockState);
+            }
+
+            if(enemy.CheckForParry())
+            {
+                esm.ChangeState(enemy.enemyParryState);
             }
         }
 

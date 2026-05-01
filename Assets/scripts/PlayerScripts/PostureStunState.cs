@@ -15,7 +15,7 @@ namespace Player
             Debug.Log("stun");
             player.rb.AddForce(5 * player.transform.right * 0.5f, ForceMode2D.Impulse);
 
-
+            
 
         }
 

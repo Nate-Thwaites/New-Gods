@@ -40,11 +40,22 @@ namespace Enemy
         public EnemyChaseState enemyChaseState;
         public EnemyAttackState enemyAttackState;
         public EnemyParryStunState enemyParryStunState;
+        public EnemyBlockState enemyBlockState;
+        public EnemyParryState enemyParryState;
         public EnemyStateMachine esm;
         [Space(10)]
 
         #endregion StateMachine variables
 
+        #region block and parry variables
+
+        [Header("Block and parry variables")]
+        public int blockOrParryChance;
+        public bool blockEnemy;
+        public bool parryEnemy;
+        [Space(10)]
+
+        #endregion block and parry variables
         #region stun variables
 
         [Header("Stun variables")]
@@ -58,7 +69,9 @@ namespace Enemy
         #region UI variables
 
         [Header("UI variables")]
-        
+
+        public TMPro.TextMeshProUGUI enemyStateText;
+
         [Space(10)]
 
         #endregion UI variables
@@ -113,7 +126,7 @@ namespace Enemy
         #endregion enemy movement variables
 
         #endregion variables
-        
+
         void Start()
         {
             erb = GetComponent<Rigidbody2D>();
@@ -123,7 +136,8 @@ namespace Enemy
             enemyChaseState = new EnemyChaseState(this, esm);
             enemyAttackState = new EnemyAttackState(this, esm);
             enemyParryStunState = new EnemyParryStunState(this, esm);
-
+            enemyBlockState = new EnemyBlockState(this, esm);
+            enemyParryState = new EnemyParryState(this, esm);
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
@@ -140,7 +154,7 @@ namespace Enemy
             DetectPlayer();
             DetectAttackPlayer();
             EnemyDie();
-            
+
 
             if (player.transform.position.x < transform.position.x)
             {
@@ -157,6 +171,8 @@ namespace Enemy
 
                 return;
             }
+
+            enemyStateText.text = "Enemy State: " + esm.CurrentState;
 
 
             enemyAttackTimer -= Time.deltaTime;
@@ -183,6 +199,27 @@ namespace Enemy
 
         }
 
+        public bool CheckForBlock()
+        {
+            if (blockOrParryChance <= 50 && blockOrParryChance > 0 && playerScript.hitEnemy)
+            {
+                return true;
+            }
+
+            blockEnemy = false;
+            return false;
+        }
+
+        public bool CheckForParry()
+        {
+            if (blockOrParryChance <= 90 && blockOrParryChance > 50 && playerScript.hitEnemy)
+            {
+                return true;
+            }
+
+            parryEnemy = false;
+            return false;
+        }
 
         public bool CheckForIdle()
         {
@@ -224,7 +261,7 @@ namespace Enemy
 
                 return true;
             }
-            
+
 
 
             return false;
@@ -301,14 +338,22 @@ namespace Enemy
             attackReset = false;
         }
 
+        /*public IEnumerator LeaveEnemyBlockOrParry()
+        {
+            yield return new WaitForSeconds(0.1f);
+            print("leave block or parry");
+            blockEnemy = false;
+            parryEnemy = false;
+        }*/
+
         public IEnumerator ParryStun()
         {
             yield return new WaitForSeconds(0.5f);
 
             parryStunEnemy = false;
         }
-            void EnemyDie()
-        {
+        void EnemyDie()
+        { 
             if (enemyHealth <= minEnemyHealth)
             {
                 Destroy(gameObject);

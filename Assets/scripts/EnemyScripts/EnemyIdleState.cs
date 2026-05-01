@@ -44,6 +44,16 @@ namespace Enemy
             {
                 esm.ChangeState(enemy.enemyParryStunState);
             }
+
+            if (enemy.CheckForBlock())
+            {
+                esm.ChangeState(enemy.enemyBlockState);
+            }
+
+            if(enemy.CheckForParry())
+            {
+                esm.ChangeState(enemy.enemyParryState);
+            }
         }
 
         public override void PhysicsUpdate()

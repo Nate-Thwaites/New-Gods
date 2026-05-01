@@ -1,8 +1,9 @@
+using Enemy;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using Enemy;
 
 namespace Player
 {
@@ -30,7 +31,7 @@ namespace Player
         [Header("UI variables")]
         public GameObject itemText;
         public TMPro.TextMeshProUGUI stateText;
-        public TMPro.TextMeshProUGUI healthText;
+        
         public TMPro.TextMeshProUGUI postureText;
         [Space(10)]
 
@@ -57,6 +58,7 @@ namespace Player
         public int maxAttackNum = 3;
         public float attackTimer = 2f;
         public float attackCompleteTimer = 0.5f;
+        public bool hitEnemy;
         [Space(10)]
 
         #endregion Attack variables
@@ -123,7 +125,15 @@ namespace Player
 
         #endregion health variables
 
-        
+        #region rng variables
+
+        [Header("RNG variables")]
+
+        public RandomNumberGenerator rng;
+
+        [Space(10)]
+
+        #endregion rng variables
 
         #region posture variables
 
@@ -227,7 +237,6 @@ namespace Player
             }
 
             stateText.text = "State: " + sm.CurrentState;
-            healthText.text = "Health: " + playerHealth;
             postureText.text = "Posture: " + playerPostureBar;
 
            
@@ -384,6 +393,14 @@ namespace Player
 
         #endregion leave parry coroutines
 
+        public IEnumerator AttackDelay()
+        {
+            yield return new WaitForSeconds(0.5f);
+            print("hit enemy");
+            enemyScript.enemyHealth -= 10;
+
+        }
+
         #region stun couroutines
         public IEnumerator PostureStun()
         {
@@ -489,5 +506,37 @@ namespace Player
         }
 
         #endregion heal void
+
+        public void RandomNumForEnemyBlock()
+        {
+            if (rng == null)
+            {
+                rng = RandomNumberGenerator.Create();
+            }
+
+            // Use 4 bytes to produce a 32-bit unsigned int, then map to 1..100
+            byte[] buffer = new byte[4];
+            rng.GetBytes(buffer);
+            uint rand = System.BitConverter.ToUInt32(buffer, 0);
+            int rngValue = (int)(rand % 100) + 1;
+
+            enemyScript.blockOrParryChance = rngValue; 
+
+            
+
+           
+
+            Debug.Log(rngValue);
+
+            /* rng = RandomNumberGenerator.Create();
+
+             byte[] randomNumber = new byte[1];
+             rng.GetBytes(randomNumber);
+             int rngValue = randomNumber[0] % 100;
+
+             rngValue = enemyScript.blockOrParryChance;
+
+             Debug.Log(rngValue);*/
+        }
     }
 }
