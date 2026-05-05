@@ -13,7 +13,6 @@ namespace Enemy
             Debug.Log("block");
             enemy.blockEnemy = true;
 
-            enemy.enemyHealth = enemy.enemyHealth - 0;
         }
 
         public override void Exit()

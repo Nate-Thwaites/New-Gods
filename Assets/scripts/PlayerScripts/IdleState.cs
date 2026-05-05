@@ -32,9 +32,9 @@ namespace Player
 
         public override void LogicUpdate()
         {
-            if (player.playerPostureBar > player.minPlayerPostureBar)
+            if (player.playerPosture > player.minPlayerPosture)
             { 
-                player.playerPostureBar = player.playerPostureBar -3 * Time.deltaTime;
+                player.playerPosture = player.playerPosture -3 * Time.deltaTime;
             }
 
 

@@ -1,3 +1,4 @@
+using Enemy;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -53,6 +54,7 @@ namespace Player
                 if (!player.enemyScript.blockEnemy && !player.enemyScript.parryEnemy)
                 {
                     player.StartCoroutine(player.AttackDelay());
+                    //player.enemyScript.enemyHealth -= 10;
                 }
                 /*if (!player.enemyScript.blockEnemy)
                 {

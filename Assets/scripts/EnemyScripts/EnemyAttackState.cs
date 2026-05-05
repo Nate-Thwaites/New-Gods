@@ -28,7 +28,8 @@ namespace Enemy
 
             //EnemyAttack();
             EnemyAttackSwitch();
-            
+
+            enemy.blockOrParryChance = 0;
             enemy.enemyMoveDir = 0;
 
             if (enemy.playerScript.hitPlayer && !enemy.playerScript.isBlocking)

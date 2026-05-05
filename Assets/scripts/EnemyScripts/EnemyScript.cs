@@ -71,6 +71,9 @@ namespace Enemy
         [Header("UI variables")]
 
         public TMPro.TextMeshProUGUI enemyStateText;
+        public EnemyHealthBar enemyHealthBar;
+        //public EnemyPostureBar enemyPostureBar;
+
 
         [Space(10)]
 
@@ -79,9 +82,9 @@ namespace Enemy
         #region health variables
 
         [Header("Health variables")]
-        public float maxEnemyHealth = 100;
-        public float minEnemyHealth = 0;
-        public float enemyHealth;
+        public int maxEnemyHealth = 100;
+        public int minEnemyHealth = 0;
+        public int enemyHealth;
         [Space(10)]
 
         #endregion health variables
@@ -129,6 +132,8 @@ namespace Enemy
 
         void Start()
         {
+            //enemyPostureBar.SetMaxPosture(maxEnemyPosture);
+            enemyHealthBar.SetMaxHealth(maxEnemyHealth);
             erb = GetComponent<Rigidbody2D>();
             esm = gameObject.AddComponent<EnemyStateMachine>();
 
@@ -141,7 +146,6 @@ namespace Enemy
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
-            enemyHealth = maxEnemyHealth;
 
             esm.Init(enemyIdleState);
 
@@ -155,6 +159,8 @@ namespace Enemy
             DetectAttackPlayer();
             EnemyDie();
 
+            enemyHealthBar.UpdateHealthBar(enemyHealth);
+            //enemyPostureBar.UpdatePostureBar(enemyPosture);
 
             if (player.transform.position.x < transform.position.x)
             {
@@ -206,18 +212,18 @@ namespace Enemy
                 return true;
             }
 
-            blockEnemy = false;
+            //blockEnemy = false;
             return false;
         }
 
         public bool CheckForParry()
         {
-            if (blockOrParryChance <= 90 && blockOrParryChance > 50 && playerScript.hitEnemy)
+            if (blockOrParryChance <= 90 && blockOrParryChance > 50 && blockOrParryChance > 0 && playerScript.hitEnemy)
             {
                 return true;
             }
 
-            parryEnemy = false;
+            //parryEnemy = false;
             return false;
         }
 

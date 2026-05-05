@@ -35,9 +35,9 @@ namespace Player
             player.rb.linearVelocity = new Vector2(10 * player.moveDir, player.rb.linearVelocity.y);
 
 
-            if (player.playerPostureBar > player.minPlayerPostureBar)
+            if (player.playerPosture > player.minPlayerPosture)
             {
-                player.playerPostureBar = player.playerPostureBar - Time.deltaTime;
+                player.playerPosture = player.playerPosture - Time.deltaTime;
             }
 
             if (player.CheckForIdle())

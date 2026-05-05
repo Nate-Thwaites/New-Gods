@@ -31,7 +31,10 @@ namespace Player
         [Header("UI variables")]
         public GameObject itemText;
         public TMPro.TextMeshProUGUI stateText;
-        
+        public PlayerHealthBar playerHealthBar;
+        public PlayerPostureBar playerPostureBar;
+
+
         public TMPro.TextMeshProUGUI postureText;
         [Space(10)]
 
@@ -119,7 +122,6 @@ namespace Player
 
         public int playerHealth;
 
-        public PlayerHealthBar playerHealthBar;
 
         [Space(10)]
 
@@ -139,9 +141,9 @@ namespace Player
 
         [Header("Posture variables")]
 
-        public float playerPostureBar;
-        public int maxPlayerPostureBar = 100;
-        public int minPlayerPostureBar = 0;
+        public float playerPosture;
+        public int maxPlayerPosture = 100;
+        public int minPlayerPosture = 0;
         [Space(10)]
         #endregion posture variables
 
@@ -161,10 +163,10 @@ namespace Player
         void Start()
         {
             playerHealthBar.SetMaxHealth(maxPlayerHealth);
-
+            playerPostureBar.SetMaxPosture(maxPlayerPosture);
 
             hasHealItem = false;
-            playerPostureBar = minPlayerPostureBar;
+            playerPosture = minPlayerPosture;
 
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
@@ -203,14 +205,16 @@ namespace Player
         public void Update()
         {
             playerHealthBar.UpdateHealthBar(playerHealth);
-            if (playerPostureBar < 0)
+            playerPostureBar.UpdatePostureBar(playerPosture);
+            
+            if (playerPosture < 0)
             {
-                playerPostureBar = 0;
+                playerPosture = 0;
             }
 
-            if (playerPostureBar > maxPlayerPostureBar)
+            if (playerPosture > maxPlayerPosture)
             {
-                playerPostureBar = maxPlayerPostureBar;
+                playerPosture = maxPlayerPosture;
             }
 
             if (playerHealth > maxPlayerHealth)
@@ -362,7 +366,7 @@ namespace Player
 
         public bool CheckForPostureStun()
         {
-            if(playerPostureBar >= maxPlayerPostureBar)
+            if(playerPosture >= maxPlayerPosture)
             {
                 
                 return true;
@@ -397,15 +401,18 @@ namespace Player
         {
             yield return new WaitForSeconds(0.5f);
             print("hit enemy");
-            enemyScript.enemyHealth -= 10;
-
+            //hitEnemy = true;
+            if (!enemyScript.blockEnemy && !enemyScript.parryEnemy)
+            {
+                enemyScript.enemyHealth -= 10;
+            }
         }
 
         #region stun couroutines
         public IEnumerator PostureStun()
         {
             yield return new WaitForSeconds(1f);
-            playerPostureBar = 0;
+            playerPosture = 0;
         }
 
         #endregion stun couroutines
