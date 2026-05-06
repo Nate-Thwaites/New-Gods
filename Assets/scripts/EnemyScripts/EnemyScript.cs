@@ -42,7 +42,6 @@ namespace Enemy
         public EnemyParryStunState enemyParryStunState;
         public EnemyBlockState enemyBlockState;
         public EnemyParryState enemyParryState;
-        public EnemyPostureStunState enemyPostureStunState;
         public EnemyStateMachine esm;
         [Space(10)]
 
@@ -57,8 +56,6 @@ namespace Enemy
         [Space(10)]
 
         #endregion block and parry variables
-
-
         #region stun variables
 
         [Header("Stun variables")]
@@ -75,7 +72,7 @@ namespace Enemy
 
         public TMPro.TextMeshProUGUI enemyStateText;
         public EnemyHealthBar enemyHealthBar;
-        public EnemyPostureBar enemyPostureBar;
+        //public EnemyPostureBar enemyPostureBar;
 
 
         [Space(10)]
@@ -131,25 +128,12 @@ namespace Enemy
 
         #endregion enemy movement variables
 
-        #region enemy posture variables
-
-        [Header("Enemy posture variables")]
-        public float maxEnemyPosture = 100;
-        public float minEnemyPosture = 0;
-        public float enemyPosture;
-
-
-        #endregion enemy posture variables
-
-
         #endregion variables
+
         void Start()
         {
-            enemyPostureBar.SetMaxPosture(maxEnemyPosture);
+            //enemyPostureBar.SetMaxPosture(maxEnemyPosture);
             enemyHealthBar.SetMaxHealth(maxEnemyHealth);
-
-            enemyHealth = maxEnemyHealth;
-            enemyPosture = minEnemyPosture;
             erb = GetComponent<Rigidbody2D>();
             esm = gameObject.AddComponent<EnemyStateMachine>();
 
@@ -159,7 +143,6 @@ namespace Enemy
             enemyParryStunState = new EnemyParryStunState(this, esm);
             enemyBlockState = new EnemyBlockState(this, esm);
             enemyParryState = new EnemyParryState(this, esm);
-            enemyPostureStunState = new EnemyPostureStunState(this, esm);
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
@@ -177,7 +160,7 @@ namespace Enemy
             EnemyDie();
 
             enemyHealthBar.UpdateHealthBar(enemyHealth);
-            enemyPostureBar.UpdatePostureBar(enemyPosture);
+            //enemyPostureBar.UpdatePostureBar(enemyPosture);
 
             if (player.transform.position.x < transform.position.x)
             {
@@ -222,7 +205,6 @@ namespace Enemy
 
         }
 
-        #region state checkers
         public bool CheckForBlock()
         {
             if (blockOrParryChance <= 50 && blockOrParryChance > 0 && playerScript.hitEnemy)
@@ -230,6 +212,7 @@ namespace Enemy
                 return true;
             }
 
+            //blockEnemy = false;
             return false;
         }
 
@@ -240,7 +223,7 @@ namespace Enemy
                 return true;
             }
 
-            
+            //parryEnemy = false;
             return false;
         }
 
@@ -299,23 +282,6 @@ namespace Enemy
             }
             return false;
         }
-
-        public bool CheckForPostureStun()
-        {
-            if (enemyPosture >= maxEnemyPosture)
-            {
-                postureBreakStunEnemy = true;
-
-                if (postureBreakStunEnemy)
-                {
-                    print("posture break stunned");
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        #endregion state checkers
 
         public void DetectAttackPlayer()
         {
@@ -378,9 +344,10 @@ namespace Enemy
             attackReset = false;
         }
 
-       /* public IEnumerator LeaveEnemyBlockOrParry()
+        /*public IEnumerator LeaveEnemyBlockOrParry()
         {
             yield return new WaitForSeconds(0.1f);
+            print("leave block or parry");
             blockEnemy = false;
             parryEnemy = false;
         }*/

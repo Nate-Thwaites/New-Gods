@@ -49,8 +49,9 @@ namespace Player
 
                 player.hitEnemy = true;
 
+              
 
-                if (player.hitEnemy)
+                if (!player.enemyScript.blockEnemy && !player.enemyScript.parryEnemy)
                 {
                     player.StartCoroutine(player.AttackDelay());
                     //player.enemyScript.enemyHealth -= 10;

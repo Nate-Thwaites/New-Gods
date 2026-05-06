@@ -10,14 +10,16 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
+            Debug.Log("block");
             enemy.blockEnemy = true;
-            enemy.enemyPosture = enemy.enemyPosture + 30f;
+
         }
 
         public override void Exit()
         {
             base.Exit();
             enemy.blockEnemy = false;
+            Debug.Log("leave block");
         }
 
         public override void HandleInput()
@@ -28,23 +30,19 @@ namespace Enemy
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            
-            
-
-
-            if (enemy.CheckForChase())
-            {
-                esm.ChangeState(enemy.enemyChaseState);
-            }
-
-            if (enemy.CheckForAttack())
-            {
-                esm.ChangeState(enemy.enemyAttackState);
-            }
 
             
-
             
+
+                if (enemy.CheckForChase())
+                {
+                    esm.ChangeState(enemy.enemyChaseState);
+                }
+
+                if (enemy.CheckForAttack())
+                {
+                    esm.ChangeState(enemy.enemyAttackState);
+                }
             
         }
 

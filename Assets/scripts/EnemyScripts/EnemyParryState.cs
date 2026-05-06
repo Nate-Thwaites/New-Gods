@@ -11,6 +11,7 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
+            Debug.Log("parry");
             enemy.parryEnemy = true;
 
         }
@@ -19,7 +20,7 @@ namespace Enemy
         {
             base.Exit();
             enemy.parryEnemy = false;
-
+            Debug.Log("leave parry");
         }
 
         public override void HandleInput()
@@ -31,19 +32,19 @@ namespace Enemy
         {
             base.LogicUpdate();
 
+           
+                //enemy.StartCoroutine(enemy.LeaveEnemyBlockOrParry());
 
+                if (enemy.CheckForChase())
+                {
+                    esm.ChangeState(enemy.enemyChaseState);
+                }
 
-
-            if (enemy.CheckForChase())
-            {
-                esm.ChangeState(enemy.enemyChaseState);
-            }
-
-            if (enemy.CheckForAttack())
-            {
-                esm.ChangeState(enemy.enemyAttackState);
-            }
-
+                if (enemy.CheckForAttack())
+                {
+                    esm.ChangeState(enemy.enemyAttackState);
+                }
+            
             
         }
 

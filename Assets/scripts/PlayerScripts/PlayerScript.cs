@@ -401,10 +401,9 @@ namespace Player
         {
             yield return new WaitForSeconds(0.5f);
             print("hit enemy");
+            //hitEnemy = true;
             if (!enemyScript.blockEnemy && !enemyScript.parryEnemy)
             {
-                hitEnemy = true;
-
                 enemyScript.enemyHealth -= 10;
             }
         }
