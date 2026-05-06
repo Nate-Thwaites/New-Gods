@@ -12,7 +12,7 @@ namespace Enemy
             base.Enter();
             Debug.Log("block");
             enemy.blockEnemy = true;
-
+            enemy.enemyPosture = enemy.enemyPosture + 30;
         }
 
         public override void Exit()
@@ -31,9 +31,12 @@ namespace Enemy
         {
             base.LogicUpdate();
 
-            
-            
 
+            enemy.StartCoroutine(enemy.LeaveEnemyBlock());
+
+
+            if (!enemy.blockEnemy)
+            {
                 if (enemy.CheckForChase())
                 {
                     esm.ChangeState(enemy.enemyChaseState);
@@ -43,7 +46,12 @@ namespace Enemy
                 {
                     esm.ChangeState(enemy.enemyAttackState);
                 }
-            
+
+                if(enemy.CheckForPostureStun())
+                {
+                    esm.ChangeState(enemy.enemyPostureStunState);
+                }   
+            }
         }
 
         public override void PhysicsUpdate()

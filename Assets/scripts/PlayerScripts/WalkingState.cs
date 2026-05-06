@@ -37,8 +37,10 @@ namespace Player
 
             if (player.playerPosture > player.minPlayerPosture)
             {
-                player.playerPosture = player.playerPosture - Time.deltaTime;
+                player.playerPosture = player.playerPosture - 3 * Time.deltaTime;
+
             }
+ 
 
             if (player.CheckForIdle())
             {

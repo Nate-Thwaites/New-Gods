@@ -13,7 +13,7 @@ namespace Enemy
             base.Enter();
             Debug.Log("parry");
             enemy.parryEnemy = true;
-
+            enemy.playerScript.playerPosture += 10;
         }
 
         public override void Exit()
@@ -33,8 +33,11 @@ namespace Enemy
             base.LogicUpdate();
 
            
-                //enemy.StartCoroutine(enemy.LeaveEnemyBlockOrParry());
+            enemy.StartCoroutine(enemy.LeaveEnemyParry());
 
+
+            if (!enemy.parryEnemy)
+            {
                 if (enemy.CheckForChase())
                 {
                     esm.ChangeState(enemy.enemyChaseState);
@@ -44,7 +47,7 @@ namespace Enemy
                 {
                     esm.ChangeState(enemy.enemyAttackState);
                 }
-            
+            }
             
         }
 

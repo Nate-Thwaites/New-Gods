@@ -42,7 +42,7 @@ namespace Player
                 player.enemyScript.parryStunEnemy = true;
                 if (player.playerParry)
                 {
-                    player.playerPosture = player.playerPosture + 0;
+                    player.playerPosture += 10;
                 }
             }
 
@@ -55,7 +55,7 @@ namespace Player
 
                 if(!player.playerParry)
                 {
-                    player.playerPosture = player.playerPosture + 10;
+                    player.playerPosture += 10;
                 }
             }
 

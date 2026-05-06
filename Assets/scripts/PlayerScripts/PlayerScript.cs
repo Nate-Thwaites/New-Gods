@@ -61,6 +61,7 @@ namespace Player
         public int maxAttackNum = 3;
         public float attackTimer = 2f;
         public float attackCompleteTimer = 0.5f;
+        public int attackDamage = 10;
         public bool hitEnemy;
         [Space(10)]
 
@@ -399,12 +400,12 @@ namespace Player
 
         public IEnumerator AttackDelay()
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
             print("hit enemy");
             //hitEnemy = true;
             if (!enemyScript.blockEnemy && !enemyScript.parryEnemy)
             {
-                enemyScript.enemyHealth -= 10;
+                enemyScript.enemyHealth -= attackDamage;
             }
         }
 

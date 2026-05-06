@@ -28,8 +28,12 @@ namespace Enemy
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            
-            
+
+            if (enemy.enemyPosture > enemy.minEnemyPosture)
+            {
+                enemy.enemyPosture = enemy.enemyPosture - 3 * Time.deltaTime;
+            }
+
             if (enemy.CheckForChase())
             {
                 esm.ChangeState(enemy.enemyChaseState);

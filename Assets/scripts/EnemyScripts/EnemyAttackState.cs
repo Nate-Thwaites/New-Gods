@@ -34,7 +34,7 @@ namespace Enemy
 
             if (enemy.playerScript.hitPlayer && !enemy.playerScript.isBlocking)
             {
-                enemy.playerScript.playerHealth -= 10;
+                //enemy.playerScript.playerHealth -= 10;
             }
 
             enemy.seePlayer = false;
@@ -146,6 +146,11 @@ namespace Enemy
             if(enemy.CheckForParry())
             {
                 esm.ChangeState(enemy.enemyParryState);
+            }
+
+            if (enemy.CheckForPostureStun())
+            {
+                esm.ChangeState(enemy.enemyPostureStunState);
             }
         }
 

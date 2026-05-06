@@ -31,7 +31,13 @@ namespace Enemy
             
             enemy.erb.linearVelocity = new Vector2(7 * enemy.enemyMoveDir, enemy.erb.linearVelocity.y);
 
-            if(enemy.CheckForIdle())
+            if (enemy.enemyPosture > enemy.minEnemyPosture)
+            {
+                enemy.enemyPosture = enemy.enemyPosture - 2 * Time.deltaTime;
+            }
+
+
+            if (enemy.CheckForIdle())
             {
                 esm.ChangeState(enemy.enemyIdleState);
             }

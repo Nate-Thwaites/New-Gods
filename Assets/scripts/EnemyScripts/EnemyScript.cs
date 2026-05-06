@@ -42,6 +42,7 @@ namespace Enemy
         public EnemyParryStunState enemyParryStunState;
         public EnemyBlockState enemyBlockState;
         public EnemyParryState enemyParryState;
+        public EnemyPostureStunState enemyPostureStunState;
         public EnemyStateMachine esm;
         [Space(10)]
 
@@ -56,6 +57,7 @@ namespace Enemy
         [Space(10)]
 
         #endregion block and parry variables
+
         #region stun variables
 
         [Header("Stun variables")]
@@ -72,7 +74,7 @@ namespace Enemy
 
         public TMPro.TextMeshProUGUI enemyStateText;
         public EnemyHealthBar enemyHealthBar;
-        //public EnemyPostureBar enemyPostureBar;
+        public EnemyPostureBar enemyPostureBar;
 
 
         [Space(10)]
@@ -128,12 +130,22 @@ namespace Enemy
 
         #endregion enemy movement variables
 
+        #region enemy posture variables
+
+        [Header("Enemy posture variables")]
+        public float maxEnemyPosture = 100;
+        public float minEnemyPosture = 0;
+        public float enemyPosture;
+
+        #endregion enemy posture variables
+
         #endregion variables
 
         void Start()
         {
             //enemyPostureBar.SetMaxPosture(maxEnemyPosture);
             enemyHealthBar.SetMaxHealth(maxEnemyHealth);
+            enemyPostureBar.SetMaxPosture(maxEnemyPosture);
             erb = GetComponent<Rigidbody2D>();
             esm = gameObject.AddComponent<EnemyStateMachine>();
 
@@ -143,9 +155,11 @@ namespace Enemy
             enemyParryStunState = new EnemyParryStunState(this, esm);
             enemyBlockState = new EnemyBlockState(this, esm);
             enemyParryState = new EnemyParryState(this, esm);
+            enemyPostureStunState = new EnemyPostureStunState(this, esm);
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
+            enemyHealth = maxEnemyHealth;  
 
             esm.Init(enemyIdleState);
 
@@ -160,7 +174,7 @@ namespace Enemy
             EnemyDie();
 
             enemyHealthBar.UpdateHealthBar(enemyHealth);
-            //enemyPostureBar.UpdatePostureBar(enemyPosture);
+            enemyPostureBar.UpdatePostureBar(enemyPosture);
 
             if (player.transform.position.x < transform.position.x)
             {
@@ -283,6 +297,16 @@ namespace Enemy
             return false;
         }
 
+        public bool CheckForPostureStun()
+        {
+            if (enemyPosture >= maxEnemyPosture)
+            {
+                print("posture break");
+                return true;
+            }
+            return false;
+        }
+
         public void DetectAttackPlayer()
         {
             float dist = 4;
@@ -344,19 +368,31 @@ namespace Enemy
             attackReset = false;
         }
 
-        /*public IEnumerator LeaveEnemyBlockOrParry()
+        public IEnumerator LeaveEnemyBlock()
         {
-            yield return new WaitForSeconds(0.1f);
-            print("leave block or parry");
+            yield return new WaitForSeconds(0.2f);
+            print("leave block");
             blockEnemy = false;
+        }
+
+        public IEnumerator LeaveEnemyParry()
+        {
+            yield return new WaitForSeconds(0.2f);
+            print("leave parry");
             parryEnemy = false;
-        }*/
+        }
 
         public IEnumerator ParryStun()
         {
             yield return new WaitForSeconds(0.5f);
 
             parryStunEnemy = false;
+        }
+
+        public IEnumerator PostureBreakStun()
+        {
+            yield return new WaitForSeconds(3f);
+            postureBreakStunEnemy = false;
         }
         void EnemyDie()
         { 
