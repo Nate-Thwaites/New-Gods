@@ -2,22 +2,22 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public class EnemyBlockState : EnemyState
+    public class EnemyPostureStunState : EnemyState
     {
-        public EnemyBlockState(EnemyScript enemy, EnemyStateMachine esm) : base(enemy, esm)
+        public EnemyPostureStunState(EnemyScript enemy, EnemyStateMachine esm) : base(enemy, esm)
         {
         }
+
         public override void Enter()
         {
             base.Enter();
-            enemy.blockEnemy = true;
-            enemy.enemyPosture = enemy.enemyPosture + 30f;
+            enemy.erb.linearVelocity = new Vector2(0, 0);
+
         }
 
         public override void Exit()
         {
             base.Exit();
-            enemy.blockEnemy = false;
         }
 
         public override void HandleInput()
@@ -28,8 +28,6 @@ namespace Enemy
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            
-            
 
 
             if (enemy.CheckForChase())
@@ -42,15 +40,19 @@ namespace Enemy
                 esm.ChangeState(enemy.enemyAttackState);
             }
 
-            
+            if(enemy.CheckForIdle())
+            {
+                esm.ChangeState(enemy.enemyIdleState);
+            }
 
-            
-            
+           
         }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+
+
         }
     }
 }

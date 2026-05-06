@@ -6,7 +6,7 @@ namespace Player
     {
         public State CurrentState { get; private set; }
         public State LastState { get; private set; }
-
+        private int lastChangeFrame = -1;
         public void Init(State startingState)
         {
             CurrentState = startingState;
@@ -23,7 +23,17 @@ namespace Player
             CurrentState = newState;
             newState.Enter();
 
+            if(lastChangeFrame == Time.frameCount)
+            {
+                return;
+            }
 
+            lastChangeFrame = Time.frameCount;
+
+            if (CurrentState != null)
+            {
+                CurrentState.Exit();
+            }
         }
 
         public void PhysicsUpdate()

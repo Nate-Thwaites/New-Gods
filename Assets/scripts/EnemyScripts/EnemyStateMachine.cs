@@ -6,6 +6,7 @@ namespace Enemy
     {
         public EnemyState CurrentState { get; private set; }
         public EnemyState LastState { get; private set; }
+        //private int lastChangeFrame = -1;
         public void Init(EnemyState startingState)
         {
             CurrentState = startingState;
@@ -22,6 +23,17 @@ namespace Enemy
             CurrentState = newState;
             newState.Enter();
 
+           /* if (lastChangeFrame == Time.frameCount)
+            {
+                return;
+            }
+
+            lastChangeFrame = Time.frameCount;
+
+            if (CurrentState != null)
+            {
+                CurrentState.Exit();
+            }*/
 
         }
 
