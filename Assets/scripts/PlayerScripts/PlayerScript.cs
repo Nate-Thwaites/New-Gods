@@ -47,6 +47,7 @@ namespace Player
         public float moveDir;
         public bool isGrounded;
         public LayerMask floor;
+        public LayerMask slope;
         public bool jumpDirChange;
         [Space(10)]
 
@@ -412,6 +413,7 @@ namespace Player
             }
         }
 
+       
         #region stun couroutines
         public IEnumerator PostureStun()
         {
@@ -428,15 +430,24 @@ namespace Player
             Vector3 ofs2 = new Vector3(-0.5f, 0, 0);
             Vector3 ofs3 = new Vector3(0.5f, 0, 0);
 
-            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 1.55f, floor);
-            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 1.55f, floor);
-            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 1.55f, floor);
+            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.85f, floor);
+            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.85f, floor);
+            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.85f, floor);
 
-
+            bool slopeHit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.85f, slope);
+            bool slopeHit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.85f, slope);
+            bool slopeHit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.85f, slope);
+    
+            if (slopeHit1 || slopeHit2 || slopeHit3)
+            {
+                    Debug.DrawRay(transform.position, Vector2.down * 0.85f, Color.blue);
+    
+                    Physics2D.gravity = new Vector2(0, 0);
+            }
 
             if (hit1 || hit2 || hit3)
             {
-                Debug.DrawRay(transform.position, Vector2.down * 1.55f, Color.green);
+                Debug.DrawRay(transform.position, Vector2.down * 0.85f, Color.green);
 
 
                 isGrounded = true;
@@ -444,7 +455,7 @@ namespace Player
 
             else
             {
-                Debug.DrawRay(transform.position, Vector2.down * 1.55f, Color.red);
+                Debug.DrawRay(transform.position, Vector2.down * 0.85f, Color.red);
 
                 isGrounded = false;
                 

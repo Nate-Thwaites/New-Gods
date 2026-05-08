@@ -15,7 +15,7 @@ namespace Player
         {
             base.Enter();
 
-            
+            player.anim.Play("fall");
 
             initVelocity = player.rb.linearVelocity.x;
 

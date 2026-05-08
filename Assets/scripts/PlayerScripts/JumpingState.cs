@@ -14,7 +14,8 @@ namespace Player
         {
             base.Enter();
 
-            
+            player.anim.Play("jump");
+
             player.rb.AddForce(Vector2.up * player.jumpForce, ForceMode2D.Impulse);
 
 

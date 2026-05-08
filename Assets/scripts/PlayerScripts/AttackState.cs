@@ -32,7 +32,6 @@ namespace Player
             player.rb.linearVelocity = new Vector2(0, 0);
             //Attack();
             AttackSwitch();
-            
            
             
         }
@@ -144,27 +143,31 @@ namespace Player
         {
             base.LogicUpdate();
 
-            if (player.CheckForIdle())
-            {
-                sm.ChangeState(player.idleState);
-            }
 
-            if (player.CheckForRun())
-            {
-                sm.ChangeState(player.walkingState);
-            }
 
-            if (player.CheckForJump())
+            if (player.attackCompleteTimer <= 0)
             {
-                sm.ChangeState(player.jumpingState);
-            }
+                if (player.CheckForIdle())
+                {
+                    sm.ChangeState(player.idleState);
+                }
 
-            if (player.CheckForFall())
-            {
-                sm.ChangeState(player.fallingState);
-            }
+                if (player.CheckForRun())
+                {
+                    sm.ChangeState(player.walkingState);
+                }
 
-            
+                if (player.CheckForJump())
+                {
+                    sm.ChangeState(player.jumpingState);
+                }
+
+                if (player.CheckForFall())
+                {
+                    sm.ChangeState(player.fallingState);
+                }
+
+            }
         }
 
         public override void PhysicsUpdate()
