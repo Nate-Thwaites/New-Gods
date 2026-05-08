@@ -12,7 +12,7 @@ namespace Enemy
             base.Enter();
             Debug.Log("block");
             enemy.blockEnemy = true;
-            enemy.enemyPosture = enemy.enemyPosture + 30;
+            enemy.enemyPosture += enemy.playerScript.postureDamage;
         }
 
         public override void Exit()

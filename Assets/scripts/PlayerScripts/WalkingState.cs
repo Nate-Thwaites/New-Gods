@@ -34,6 +34,7 @@ namespace Player
             
             player.rb.linearVelocity = new Vector2(10 * player.moveDir, player.rb.linearVelocity.y);
 
+            player.anim.Play("run anim");
 
             if (player.playerPosture > player.minPlayerPosture)
             {

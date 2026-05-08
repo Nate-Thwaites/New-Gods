@@ -60,8 +60,8 @@ namespace Player
         public LayerMask enemyLayer;
         public int maxAttackNum = 3;
         public float attackTimer = 2f;
-        public float attackCompleteTimer = 0.5f;
-        public int attackDamage = 10;
+        public float attackCompleteTimer;
+        public int attackDamage;
         public bool hitEnemy;
         [Space(10)]
 
@@ -145,7 +145,10 @@ namespace Player
         public float playerPosture;
         public int maxPlayerPosture = 100;
         public int minPlayerPosture = 0;
+        public int postureDamage;
+
         [Space(10)]
+
         #endregion posture variables
 
         #region Item Detection variables
@@ -425,15 +428,15 @@ namespace Player
             Vector3 ofs2 = new Vector3(-0.5f, 0, 0);
             Vector3 ofs3 = new Vector3(0.5f, 0, 0);
 
-            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
-            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
-            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, LayerMask.GetMask("floor"));
+            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 1.55f, floor);
+            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 1.55f, floor);
+            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 1.55f, floor);
 
 
 
             if (hit1 || hit2 || hit3)
             {
-                Debug.DrawRay(transform.position, Vector2.down * 0.55f, Color.green);
+                Debug.DrawRay(transform.position, Vector2.down * 1.55f, Color.green);
 
 
                 isGrounded = true;
@@ -441,7 +444,7 @@ namespace Player
 
             else
             {
-                Debug.DrawRay(transform.position, Vector2.down * 0.55f, Color.red);
+                Debug.DrawRay(transform.position, Vector2.down * 1.55f, Color.red);
 
                 isGrounded = false;
                 
