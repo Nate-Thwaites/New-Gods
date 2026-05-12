@@ -1,6 +1,6 @@
 using UnityEngine;
-using System;
-using Unity.VisualScripting.FullSerializer;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 namespace Player
 {
@@ -92,6 +92,20 @@ namespace Player
                     
                 }
             }
+
+            float dist = 1.5f;
+            Vector3 offset = new Vector3(0.75f, 0, 0);
+
+            bool wallHit = Physics2D.Raycast(player.transform.position - offset, Vector2.right, dist, player.floor);
+
+            if (wallHit)
+            {
+                Debug.DrawRay(player.transform.position - offset, Vector2.right * dist, Color.green);
+                player.rb.linearVelocity = new Vector2(0,player.rb.linearVelocity.y);
+
+
+            }
+
             base.LogicUpdate();
 
            

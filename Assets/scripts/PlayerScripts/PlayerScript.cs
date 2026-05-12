@@ -21,6 +21,7 @@ namespace Player
         [Header("Core variables")]
         public Animator anim;
         public EnemyScript enemyScript;
+
         [Space(10)]
         
         #endregion core variables
@@ -48,7 +49,9 @@ namespace Player
         public bool isGrounded;
         public LayerMask floor;
         public LayerMask slope;
+        public bool onSlope;
         public bool jumpDirChange;
+        
         [Space(10)]
 
         #endregion Jump and Movement variables
@@ -57,7 +60,7 @@ namespace Player
 
         [Header("Attack variables")]
         public Transform attackPoint;
-        public float attackRange = 0.5f;
+        public float attackRange = 1f;
         public LayerMask enemyLayer;
         public int maxAttackNum = 3;
         public float attackTimer = 2f;
@@ -227,7 +230,8 @@ namespace Player
                 playerHealth = maxPlayerHealth;
             }
 
-
+            attackTimer -= Time.deltaTime;
+            attackCompleteTimer -= Time.deltaTime;
 
             GroundCheck();
             ItemDetection();
@@ -259,10 +263,10 @@ namespace Player
 
             moveDir = moveAction.ReadValue<Vector2>().x;
 
-            attackTimer -= Time.deltaTime;
-            attackCompleteTimer -= Time.deltaTime;
+            
 
             
+
 
             sm.CurrentState.LogicUpdate();
         }
@@ -402,6 +406,7 @@ namespace Player
 
         #endregion leave parry coroutines
 
+        #region attack delay coroutine
         public IEnumerator AttackDelay()
         {
             yield return new WaitForSeconds(0.2f);
@@ -412,8 +417,8 @@ namespace Player
                 enemyScript.enemyHealth -= attackDamage;
             }
         }
+        #endregion attack delay coroutine
 
-       
         #region stun couroutines
         public IEnumerator PostureStun()
         {
@@ -430,40 +435,49 @@ namespace Player
             Vector3 ofs2 = new Vector3(-0.5f, 0, 0);
             Vector3 ofs3 = new Vector3(0.5f, 0, 0);
 
-            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.85f, floor);
-            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.85f, floor);
-            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.85f, floor);
+            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, floor);
+            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, floor);
+            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, floor);
 
-            bool slopeHit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.85f, slope);
-            bool slopeHit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.85f, slope);
-            bool slopeHit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.85f, slope);
+            bool slopeHit = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.75f, slope);
+
     
-            if (slopeHit1 || slopeHit2 || slopeHit3)
+            if (slopeHit)
             {
-                    Debug.DrawRay(transform.position, Vector2.down * 0.85f, Color.blue);
-    
-                    Physics2D.gravity = new Vector2(0, 0);
+                Debug.DrawRay(transform.position + ofs1, Vector2.down * 0.75f, Color.blue);
+                
+
+                isGrounded = true;
+                onSlope = true;
+                
+            }
+
+            else if(!slopeHit)
+            {
+                Debug.DrawRay(transform.position + ofs1, Vector2.down * 0.55f, Color.red);
+
+
+                isGrounded = false;
+                onSlope = false;
+
             }
 
             if (hit1 || hit2 || hit3)
             {
-                Debug.DrawRay(transform.position, Vector2.down * 0.85f, Color.green);
-
-
                 isGrounded = true;
             }
 
-            else
+            /*else if (!hit1 && !hit2 && !hit3)
             {
-                Debug.DrawRay(transform.position, Vector2.down * 0.85f, Color.red);
-
                 isGrounded = false;
                 
-            }
+            }*/
         }
 
 
-
+        
+            
+        
 
        
         public void ItemDetection()
@@ -529,6 +543,9 @@ namespace Player
 
         #endregion heal void
 
+
+    #region random num for enemy block
+
         public void RandomNumForEnemyBlock()
         {
             if (rng == null)
@@ -549,16 +566,8 @@ namespace Player
            
 
             Debug.Log(rngValue);
-
-            /* rng = RandomNumberGenerator.Create();
-
-             byte[] randomNumber = new byte[1];
-             rng.GetBytes(randomNumber);
-             int rngValue = randomNumber[0] % 100;
-
-             rngValue = enemyScript.blockOrParryChance;
-
-             Debug.Log(rngValue);*/
         }
+
+        #endregion random num for enemy block
     }
 }

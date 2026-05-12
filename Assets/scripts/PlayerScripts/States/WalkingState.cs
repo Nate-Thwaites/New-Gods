@@ -1,20 +1,19 @@
 using UnityEngine;
 
-
 namespace Player
 {
-    public class IdleState : State
+    public class WalkingState : State
     {
-        // constructor
-        public IdleState(PlayerScript player, StateMachine sm) : base(player, sm)
+        
+        public WalkingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
 
         public override void Enter()
         {
             base.Enter();
-            player.rb.linearVelocity = new Vector2(0, 0);
-            player.anim.Play("idle temp");
+            player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
+
 
 
 
@@ -32,18 +31,30 @@ namespace Player
 
         public override void LogicUpdate()
         {
+            base.LogicUpdate();
+            
+            player.rb.linearVelocity = new Vector2(10 * player.moveDir, player.rb.linearVelocity.y);
+
+            player.anim.Play("run anim");
+
+            if(player.onSlope)
+            {
+                player.rb.gravityScale = 5f;
+            }
+
             if (player.playerPosture > player.minPlayerPosture)
-            { 
-                player.playerPosture = player.playerPosture -3 * Time.deltaTime;
+            {
+                player.playerPosture = player.playerPosture - 3 * Time.deltaTime;
+
             }
 
 
-            
-            base.LogicUpdate();
 
-            if (player.CheckForRun())
+
+            if (player.CheckForIdle())
             {
-                sm.ChangeState(player.walkingState);
+                sm.ChangeState(player.idleState);
+
             }
 
             if (player.CheckForJump())
@@ -61,7 +72,7 @@ namespace Player
                 sm.ChangeState(player.attackState);
             }
 
-            if (player.CheckForBlock())
+            if(player.CheckForBlock())
             {
                 sm.ChangeState(player.blockingState);
             }

@@ -52,7 +52,6 @@ namespace Player
 
             if (player.moveDir > 0)
             {
-                //initVelocity -= 2;
 
                 if (player.rb.linearVelocity.x > 0)
                 {

@@ -1,26 +1,29 @@
 using UnityEngine;
 
+
 namespace Player
 {
-    public class WalkingState : State
+    public class IdleState : State
     {
-        
-        public WalkingState(PlayerScript player, StateMachine sm) : base(player, sm)
+        // constructor
+        public IdleState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
 
         public override void Enter()
         {
             base.Enter();
+            player.rb.linearVelocity = new Vector2(0, 0);
+            player.anim.Play("idle temp");
 
-
-
+           
 
         }
 
         public override void Exit()
         {
             base.Exit();
+            player.rb.gravityScale = 2.5f;
         }
 
         public override void HandleInput()
@@ -30,23 +33,30 @@ namespace Player
 
         public override void LogicUpdate()
         {
-            base.LogicUpdate();
-            
-            player.rb.linearVelocity = new Vector2(10 * player.moveDir, player.rb.linearVelocity.y);
-
-            player.anim.Play("run anim");
-
             if (player.playerPosture > player.minPlayerPosture)
-            {
-                player.playerPosture = player.playerPosture - 3 * Time.deltaTime;
-
+            { 
+                player.playerPosture = player.playerPosture -3 * Time.deltaTime;
             }
- 
 
-            if (player.CheckForIdle())
+            if (player.onSlope)
             {
-                sm.ChangeState(player.idleState);
+                //player.rb.bodyType = RigidbodyType2D.Kinematic;
+                player.rb.gravityScale = 0;
+                player.rb.linearVelocity = new Vector2(0, 0);
+            }
 
+            else
+            {
+                //player.rb.bodyType = RigidbodyType2D.Dynamic;
+                player.rb.gravityScale = 2.5f;
+            }
+
+
+            base.LogicUpdate();
+
+            if (player.CheckForRun())
+            {
+                sm.ChangeState(player.walkingState);
             }
 
             if (player.CheckForJump())
@@ -64,7 +74,7 @@ namespace Player
                 sm.ChangeState(player.attackState);
             }
 
-            if(player.CheckForBlock())
+            if (player.CheckForBlock())
             {
                 sm.ChangeState(player.blockingState);
             }

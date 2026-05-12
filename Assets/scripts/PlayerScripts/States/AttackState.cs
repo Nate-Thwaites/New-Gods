@@ -82,7 +82,7 @@ namespace Player
                     player.anim.Play("attack temp", 0);
                     player.attackDamage = 10;
                     player.postureDamage = 20;
-                    player.attackCompleteTimer = 0.5f;
+                    player.attackCompleteTimer = 0.2f;
 
 
                     break;
@@ -94,7 +94,7 @@ namespace Player
                     player.anim.Play("attack temp no2", 0);
                     player.attackDamage = 5;
                     player.postureDamage = 10;
-                    player.attackCompleteTimer = 0.7f;
+                    player.attackCompleteTimer = 0.4f;
 
                     break;
 
@@ -105,7 +105,7 @@ namespace Player
                     player.anim.Play("Attack temp no3", 0);
                     player.attackDamage = 10;
                     player.postureDamage = 20;
-                    player.attackCompleteTimer = 0.7f;
+                    player.attackCompleteTimer = 0.4f;
 
                     break;
 
@@ -116,7 +116,7 @@ namespace Player
                     player.anim.Play("attack temp no4", 0);
                     player.attackDamage = 20;
                     player.postureDamage = 40;
-                    player.attackCompleteTimer = 1f;
+                    player.attackCompleteTimer = 0.7f;
 
                     break;
 
@@ -143,7 +143,7 @@ namespace Player
         {
             base.LogicUpdate();
 
-
+            
 
             if (player.attackCompleteTimer <= 0)
             {
