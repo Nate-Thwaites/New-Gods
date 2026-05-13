@@ -15,8 +15,8 @@ namespace Player
         {
             base.Enter();
 
+            player.rb.linearVelocity = Vector2.zero;
 
-            
 
         }
 

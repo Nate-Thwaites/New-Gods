@@ -14,8 +14,8 @@ TagManager:
   - itemLayer
   - player
   - enemy
-  - slope
-  - 
+  - up slope
+  - down slope
   - 
   - 
   - 

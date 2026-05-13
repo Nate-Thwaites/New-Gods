@@ -1,3 +1,4 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace Player
@@ -12,9 +13,9 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-            player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
+            
 
-
+            player.anim.Play("run anim");
 
 
         }
@@ -29,27 +30,30 @@ namespace Player
             base.HandleInput();
         }
 
+
         public override void LogicUpdate()
         {
+
             base.LogicUpdate();
+
+            player.rb.linearVelocity = new Vector2(player.moveDir * player.speed, player.rb.linearVelocity.y);
             
-            player.rb.linearVelocity = new Vector2(10 * player.moveDir, player.rb.linearVelocity.y);
-
-            player.anim.Play("run anim");
-
-            if(player.onSlope)
+            if (player.moveDir != 0)
             {
-                player.rb.gravityScale = 5f;
+                player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
             }
-
+                      
             if (player.playerPosture > player.minPlayerPosture)
             {
                 player.playerPosture = player.playerPosture - 3 * Time.deltaTime;
 
             }
 
+           
 
+           
 
+            
 
             if (player.CheckForIdle())
             {
@@ -83,6 +87,9 @@ namespace Player
             base.PhysicsUpdate();
 
             
+
+
+
         }
     }
 }

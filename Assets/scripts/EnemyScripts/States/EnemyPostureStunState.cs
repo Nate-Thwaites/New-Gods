@@ -6,12 +6,11 @@ namespace Enemy
         public EnemyPostureStunState(EnemyScript enemy, EnemyStateMachine esm) : base(enemy, esm)
         {
         }
-
+        bool attackLanded;
         public override void Enter()
         {
             base.Enter();
-            enemy.postureBreakStunEnemy = true;
-            enemy.playerScript.attackDamage *= 4;
+            
 
         }
 
@@ -19,6 +18,7 @@ namespace Enemy
         {
             base.Exit();
             enemy.enemyPosture = enemy.minEnemyPosture;
+            enemy.playerScript.attackDamage /= 4;
         }
 
         public override void HandleInput()
@@ -33,33 +33,50 @@ namespace Enemy
 
             enemy.StartCoroutine(enemy.PostureBreakStun());
 
+            if (enemy.playerScript.hitEnemy)
+            {
+                attackLanded = true;
+                
+                enemy.erb.AddForce(5 * enemy.transform.right * 2f, ForceMode2D.Impulse);
+
+                enemy.playerScript.attackDamage *= 4;
+
+                enemy.postureBreakStunEnemy = false;
+            }
+            
+
             if (!enemy.postureBreakStunEnemy)
             {
-                enemy.playerScript.attackDamage /= 4;
 
-                if (enemy.CheckForChase())
-                {
-                    esm.ChangeState(enemy.enemyChaseState);
-                }
+                enemy.StartCoroutine(enemy.LeavePostureStun());
 
-                if (enemy.CheckForAttack())
+                if (enemy.leavePostureStunEnemy)
                 {
-                    esm.ChangeState(enemy.enemyAttackState);
-                }
 
-                if (enemy.CheckForParryStun())
-                {
-                    esm.ChangeState(enemy.enemyParryStunState);
-                }
+                    if (enemy.CheckForChase())
+                    {
+                        esm.ChangeState(enemy.enemyChaseState);
+                    }
 
-                if (enemy.CheckForBlock())
-                {
-                    esm.ChangeState(enemy.enemyBlockState);
-                }
+                    if (enemy.CheckForAttack())
+                    {
+                        esm.ChangeState(enemy.enemyAttackState);
+                    }
 
-                if (enemy.CheckForParry())
-                {
-                    esm.ChangeState(enemy.enemyParryState);
+                    if (enemy.CheckForParryStun())
+                    {
+                        esm.ChangeState(enemy.enemyParryStunState);
+                    }
+
+                    if (enemy.CheckForBlock())
+                    {
+                        esm.ChangeState(enemy.enemyBlockState);
+                    }
+
+                    if (enemy.CheckForParry())
+                    {
+                        esm.ChangeState(enemy.enemyParryState);
+                    }
                 }
             }
         }

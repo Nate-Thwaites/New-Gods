@@ -48,8 +48,9 @@ namespace Player
         public float moveDir;
         public bool isGrounded;
         public LayerMask floor;
-        public LayerMask slope;
-        public bool onSlope;
+        
+        
+        public int speed = 10;
         public bool jumpDirChange;
         
         [Space(10)]
@@ -214,7 +215,12 @@ namespace Player
         {
             playerHealthBar.UpdateHealthBar(playerHealth);
             playerPostureBar.UpdatePostureBar(playerPosture);
-            
+
+            GroundCheck();
+            ItemDetection();
+            PlayerHeal();
+
+
             if (playerPosture < 0)
             {
                 playerPosture = 0;
@@ -233,9 +239,7 @@ namespace Player
             attackTimer -= Time.deltaTime;
             attackCompleteTimer -= Time.deltaTime;
 
-            GroundCheck();
-            ItemDetection();
-            PlayerHeal();
+            
 
             if (blockAction.WasPressedThisFrame())
             {
@@ -439,39 +443,20 @@ namespace Player
             bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, floor);
             bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, floor);
 
-            bool slopeHit = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.75f, slope);
-
+            
     
-            if (slopeHit)
-            {
-                Debug.DrawRay(transform.position + ofs1, Vector2.down * 0.75f, Color.blue);
-                
-
-                isGrounded = true;
-                onSlope = true;
-                
-            }
-
-            else if(!slopeHit)
-            {
-                Debug.DrawRay(transform.position + ofs1, Vector2.down * 0.55f, Color.red);
-
-
-                isGrounded = false;
-                onSlope = false;
-
-            }
+         
 
             if (hit1 || hit2 || hit3)
             {
                 isGrounded = true;
             }
 
-            /*else if (!hit1 && !hit2 && !hit3)
+            else if (!hit1 && !hit2 && !hit3)
             {
                 isGrounded = false;
-                
-            }*/
+               
+            }
         }
 
 
@@ -532,7 +517,7 @@ namespace Player
 
         #region heal void
 
-        void PlayerHeal()
+        public void PlayerHeal()
         {
             if (hasHealItem && healAction.WasPressedThisFrame())
             {

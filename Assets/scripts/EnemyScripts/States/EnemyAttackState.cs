@@ -26,7 +26,6 @@ namespace Enemy
         {
             base.Enter();
 
-            //EnemyAttack();
             EnemyAttackSwitch();
 
             enemy.blockOrParryChance = 0;
@@ -43,7 +42,7 @@ namespace Enemy
         void EnemyAttack()
         {
             enemy.enemyAttackTimer = 1.5f;
-            enemy.enemyAttackCompleteTimer = 1f;
+
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)
             {
@@ -70,7 +69,7 @@ namespace Enemy
                     EnemyAttack();
                     
                     enemy.anim.Play("enemy attack 1", 0);
-
+                    enemy.enemyAttackCompleteTimer = 0.5f;
 
 
                     break;
@@ -80,6 +79,7 @@ namespace Enemy
                     EnemyAttack();
                     
                     enemy.anim.Play("enemy attack 2", 0);
+                    enemy.enemyAttackCompleteTimer = 0.5f;
 
 
                     break;
@@ -89,6 +89,7 @@ namespace Enemy
                     EnemyAttack();
                    
                     enemy.anim.Play("enemy attack 3", 0);
+                    enemy.enemyAttackCompleteTimer = 0.5f;
 
                     break;
 
@@ -97,6 +98,7 @@ namespace Enemy
                     EnemyAttack();
                     
                     enemy.anim.Play("enemy attack 4", 0);
+                    enemy.enemyAttackCompleteTimer = 0.5f;
 
                     break;
 

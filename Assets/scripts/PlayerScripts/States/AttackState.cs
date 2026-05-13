@@ -30,7 +30,6 @@ namespace Player
             base.Enter();
 
             player.rb.linearVelocity = new Vector2(0, 0);
-            //Attack();
             AttackSwitch();
            
             
@@ -56,14 +55,10 @@ namespace Player
                 if (player.hitEnemy)
                 {
                     player.StartCoroutine(player.AttackDelay());
-                    //player.enemyScript.enemyHealth -= 10;
+                    
                 }
-                /*if (!player.enemyScript.blockEnemy)
-                {
-                    player.enemyScript.enemyHealth -= 10;
-                }*/
+                
 
-                Debug.Log("enemy health: " + player.enemyScript.enemyHealth);
             }
 
 

@@ -35,6 +35,8 @@ namespace Player
 
         public override void LogicUpdate()
         {
+
+
             if (player.playerPosture > player.minPlayerPosture)
             {
                 player.playerPosture = player.playerPosture - Time.deltaTime;
@@ -42,6 +44,7 @@ namespace Player
 
             if (player.moveDir > 0)
             {
+                player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
                 if (player.rb.linearVelocity.x > 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
@@ -52,13 +55,14 @@ namespace Player
                     player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
                     
+
                 }
 
             }
 
             if(player.moveDir < 0)
             {
-                
+                player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
                 if (player.rb.linearVelocity.x < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);

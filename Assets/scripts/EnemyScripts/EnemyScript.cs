@@ -64,6 +64,7 @@ namespace Enemy
         public bool parryStunEnemy;
         public bool attackStunEnemy;
         public bool postureBreakStunEnemy;
+        public bool leavePostureStunEnemy;
         [Space(10)]
 
         #endregion stun variables
@@ -84,7 +85,7 @@ namespace Enemy
         #region health variables
 
         [Header("Health variables")]
-        public int maxEnemyHealth = 100;
+        public int maxEnemyHealth = 200;
         public int minEnemyHealth = 0;
         public int enemyHealth;
         [Space(10)]
@@ -392,7 +393,16 @@ namespace Enemy
         public IEnumerator PostureBreakStun()
         {
             yield return new WaitForSeconds(3f);
+            enemyPosture = minEnemyPosture;
+
             postureBreakStunEnemy = false;
+        }
+
+        public IEnumerator LeavePostureStun()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            leavePostureStunEnemy = true;
         }
         void EnemyDie()
         { 

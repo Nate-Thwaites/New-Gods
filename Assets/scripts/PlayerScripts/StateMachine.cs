@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Player
@@ -6,9 +7,13 @@ namespace Player
     {
         public State CurrentState { get; private set; }
         public State LastState { get; private set; }
+        private int lastChangeFrame = -1;
+
 
         public void Init(State startingState)
         {
+
+        
             CurrentState = startingState;
             LastState = null;
             startingState.Enter();
@@ -16,14 +21,24 @@ namespace Player
 
         public void ChangeState(State newState)
         {
+            if (lastChangeFrame == Time.frameCount)
+            {
+                return;
+            }
+
+            lastChangeFrame = Time.frameCount;
+
+            if (CurrentState != null)
+            {
+                CurrentState.Exit();
+            }
             //Debug.Log("Changing state to " + newState);
-            CurrentState.Exit();
 
             LastState = CurrentState;
             CurrentState = newState;
             newState.Enter();
 
-
+            
         }
 
         public void PhysicsUpdate()

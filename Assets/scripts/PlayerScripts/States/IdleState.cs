@@ -13,17 +13,16 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-            player.rb.linearVelocity = new Vector2(0, 0);
+            player.moveDir = 0;
             player.anim.Play("idle temp");
 
-           
+            
 
         }
 
         public override void Exit()
         {
             base.Exit();
-            player.rb.gravityScale = 2.5f;
         }
 
         public override void HandleInput()
@@ -33,23 +32,14 @@ namespace Player
 
         public override void LogicUpdate()
         {
+
             if (player.playerPosture > player.minPlayerPosture)
             { 
                 player.playerPosture = player.playerPosture -3 * Time.deltaTime;
             }
 
-            if (player.onSlope)
-            {
-                //player.rb.bodyType = RigidbodyType2D.Kinematic;
-                player.rb.gravityScale = 0;
-                player.rb.linearVelocity = new Vector2(0, 0);
-            }
 
-            else
-            {
-                //player.rb.bodyType = RigidbodyType2D.Dynamic;
-                player.rb.gravityScale = 2.5f;
-            }
+         
 
 
             base.LogicUpdate();
