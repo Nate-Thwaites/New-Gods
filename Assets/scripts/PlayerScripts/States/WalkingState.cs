@@ -36,22 +36,15 @@ namespace Player
 
             base.LogicUpdate();
 
-            player.rb.linearVelocity = new Vector2(player.moveDir * player.speed, player.rb.linearVelocity.y);
-            
-            if (player.moveDir != 0)
-            {
-                player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
-            }
+            player.rb.linearVelocity = new Vector2(player.facingDir * player.speed, player.rb.linearVelocity.y);
+
+            player.Flip();
                       
             if (player.playerPosture > player.minPlayerPosture)
             {
                 player.playerPosture = player.playerPosture - 3 * Time.deltaTime;
 
             }
-
-           
-
-           
 
             
 

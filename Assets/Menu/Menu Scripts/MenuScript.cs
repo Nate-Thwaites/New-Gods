@@ -31,12 +31,17 @@ public class MenuScript : MonoBehaviour
     {
         
     }
+    #region click anywhere to start
 
     public void ClickToStart()
     {
         clickAnywhereToStart.SetActive(false);
         mainMenu.SetActive(true);   
     }
+
+    #endregion click anywhere to start
+
+    #region main menu
 
     public void NewGame()
     {
@@ -48,6 +53,10 @@ public class MenuScript : MonoBehaviour
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
     }
+
+    #endregion main menu
+
+    #region settings menu
 
     public void ChangeMusicVolume()
     {
@@ -64,5 +73,17 @@ public class MenuScript : MonoBehaviour
     {
         PlayerPrefs.SetFloat("musicVolume", musicSlider.value);
     }
+
+    public void OpenControlMenu()
+    {
+
+    }
+
+    public void BackToMenu()
+    {
+        mainMenu.SetActive(true);
+        settingsMenu.SetActive(false);
+    }
+    #endregion settings menu 
 
 }

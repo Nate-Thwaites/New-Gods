@@ -45,7 +45,12 @@ namespace Player
 
         [Header("Jump and Movement variables")]
         public float jumpForce = 13f;
-        public float moveDir;
+        public float coyoteTime = 0.2f;
+        private float coyoteTimer;
+        public float inputBuffer = 0.2f;
+        private float inputTimer;
+        public Vector2 moveInput;
+        public float facingDir;
         public bool isGrounded;
         public LayerMask floor;
         
@@ -216,6 +221,13 @@ namespace Player
             playerHealthBar.UpdateHealthBar(playerHealth);
             playerPostureBar.UpdatePostureBar(playerPosture);
 
+            
+
+            if(!isGrounded)
+            {
+                coyoteTime -= Time.deltaTime;
+            }
+
             GroundCheck();
             ItemDetection();
             PlayerHeal();
@@ -265,7 +277,7 @@ namespace Player
 
             PlayerDie();
 
-            moveDir = moveAction.ReadValue<Vector2>().x;
+            moveInput.x = moveAction.ReadValue<Vector2>().x;
 
             
 
@@ -289,7 +301,7 @@ namespace Player
             sm.CurrentState.PhysicsUpdate();
 
 
-            //DoRayTest();
+            
 
 
         }
@@ -301,8 +313,7 @@ namespace Player
 
         public bool CheckForRun()
         {
-
-            if (Mathf.Abs(moveDir) > 0 && isGrounded)
+            if (Mathf.Abs(moveInput.x) > 0 && isGrounded)
             {
 
                 return true;
@@ -313,7 +324,7 @@ namespace Player
 
         public bool CheckForIdle()
         {
-            if (moveDir == 0 && isGrounded)
+            if (moveInput.x == 0 && isGrounded)
             {
 
                 return true;
@@ -324,10 +335,11 @@ namespace Player
 
         public bool CheckForJump()
         {
-            if (jumpAction.WasPressedThisFrame() && isGrounded)
+            if (jumpAction.WasPressedThisFrame() && coyoteTime > 0)
             {
-                
+                coyoteTime = 0f;
                 return true;
+                
             }
 
             return false;
@@ -527,6 +539,21 @@ namespace Player
         }
 
         #endregion heal void
+
+        public void Flip()
+        {
+            if (moveInput.x > 0.1f)
+            {
+                facingDir = 1f;
+            }
+
+            else if(moveInput.x < -0.1f)
+            {
+                facingDir = -1f;
+            }
+
+            transform.localScale = new Vector3(facingDir, 1f, 1f);
+        }
 
 
     #region random num for enemy block

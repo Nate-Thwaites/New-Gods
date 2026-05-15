@@ -13,10 +13,11 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-            player.moveDir = 0;
+            player.rb.linearVelocity = new Vector2 (0, 0);
             player.anim.Play("idle temp");
-
             
+
+
 
         }
 
@@ -38,8 +39,6 @@ namespace Player
                 player.playerPosture = player.playerPosture -3 * Time.deltaTime;
             }
 
-
-         
 
 
             base.LogicUpdate();

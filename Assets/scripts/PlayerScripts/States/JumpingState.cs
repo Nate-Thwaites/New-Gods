@@ -46,7 +46,7 @@ namespace Player
             }
 
 
-            if (player.moveDir > 0)
+            if (player.moveInput.x > 0)
             {
                 
                 if (player.rb.linearVelocity.x > 0)
@@ -62,12 +62,12 @@ namespace Player
                     
 
                 }
-                player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
+                player.transform.localScale = new Vector3(player.moveInput.x, 1f, 1f);
             }
 
-            if (player.moveDir < 0)
+            if (player.moveInput.x < 0)
             {
-                player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
+                player.transform.localScale = new Vector3(player.facingDir, 1f, 1f);
                 if (player.rb.linearVelocity.x < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
@@ -78,7 +78,7 @@ namespace Player
                     player.rb.linearVelocity = new Vector2(initVelocity * 0.5f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
 
-                    player.transform.localScale = new Vector3(player.moveDir, 1f, 1f);
+                    player.transform.localScale = new Vector3(player.facingDir, 1f, 1f);
 
                 }
 
@@ -87,14 +87,14 @@ namespace Player
 
             if ( player.rb.linearVelocity.x < 0.1f && player.rb.linearVelocity.x > -0.1f)
             {
-                if (player.moveDir > 0)
+                if (player.moveInput.x > 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
 
                 }
 
-                if (player.moveDir < 0)
+                if (player.moveInput.x < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
