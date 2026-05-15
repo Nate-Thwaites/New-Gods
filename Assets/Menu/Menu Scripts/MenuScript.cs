@@ -8,6 +8,8 @@ public class MenuScript : MonoBehaviour
     public GameObject clickAnywhereToStart;
     public GameObject mainMenu;
     public GameObject settingsMenu;
+    public GameObject keyboardControlMenu;
+    public GameObject gamepadControlMenu;
 
     [SerializeField] Slider musicSlider;
 
@@ -74,9 +76,23 @@ public class MenuScript : MonoBehaviour
         PlayerPrefs.SetFloat("musicVolume", musicSlider.value);
     }
 
-    public void OpenControlMenu()
+    public void OpenKeyboardControlMenu()
     {
+        settingsMenu.SetActive(false);
+        keyboardControlMenu.SetActive(true);
+    }
 
+    public void OpenGamepadControlMenu()
+    {
+        settingsMenu.SetActive(false);
+        gamepadControlMenu.SetActive(true);
+    }
+
+    public void BackToSettingsMenu()
+    {
+            settingsMenu.SetActive(true);
+            keyboardControlMenu.SetActive(false);
+            gamepadControlMenu.SetActive(false);
     }
 
     public void BackToMenu()
@@ -85,5 +101,12 @@ public class MenuScript : MonoBehaviour
         settingsMenu.SetActive(false);
     }
     #endregion settings menu 
+
+    #region quit
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    #endregion quit
 
 }

@@ -53,8 +53,9 @@ namespace Player
         public float facingDir;
         public bool isGrounded;
         public LayerMask floor;
-        
-        
+        public LayerMask wall;
+
+
         public int speed = 10;
         public bool jumpDirChange;
         
@@ -119,6 +120,7 @@ namespace Player
         public InputAction blockAction;
         public InputAction healAction;
         public InputAction interactAction;
+        public InputAction pauseAction;
         [Space(10)]
 
         #endregion input variables
@@ -194,7 +196,8 @@ namespace Player
             blockAction = InputSystem.actions.FindAction("Block");
             healAction = InputSystem.actions.FindAction("Heal");
             interactAction = InputSystem.actions.FindAction("Interact");
-            
+            pauseAction = InputSystem.actions.FindAction("Pause");
+
 
             itemMask = LayerMask.GetMask("itemLayer");
 
@@ -335,9 +338,9 @@ namespace Player
 
         public bool CheckForJump()
         {
-            if (jumpAction.WasPressedThisFrame() && coyoteTime > 0)
+            if (jumpAction.WasPressedThisFrame() && isGrounded)//coyoteTime > 0)
             {
-                coyoteTime = 0f;
+                //coyoteTime = 0f;
                 return true;
                 
             }
@@ -451,9 +454,9 @@ namespace Player
             Vector3 ofs2 = new Vector3(-0.5f, 0, 0);
             Vector3 ofs3 = new Vector3(0.5f, 0, 0);
 
-            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, floor);
-            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, floor);
-            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, floor);
+            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, floor | wall);
+            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, floor | wall);
+            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, floor | wall);
 
             
     
@@ -540,6 +543,7 @@ namespace Player
 
         #endregion heal void
 
+        #region player flip
         public void Flip()
         {
             if (moveInput.x > 0.1f)
@@ -554,9 +558,10 @@ namespace Player
 
             transform.localScale = new Vector3(facingDir, 1f, 1f);
         }
+        #endregion player flip
 
 
-    #region random num for enemy block
+        #region random num for enemy block
 
         public void RandomNumForEnemyBlock()
         {
