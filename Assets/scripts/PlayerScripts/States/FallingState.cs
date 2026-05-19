@@ -44,7 +44,7 @@ namespace Player
 
             if (player.moveInput.x > 0)
             {
-                player.transform.localScale = new Vector3(player.moveInput.x, 1f, 1f);
+                player.transform.localScale = new Vector3(player.facingDir, 1f, 1f);
                 if (player.rb.linearVelocity.x > 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);
@@ -62,7 +62,7 @@ namespace Player
 
             if(player.moveInput.x < 0)
             {
-                player.transform.localScale = new Vector3(player.moveInput.x, 1f, 1f);
+                player.transform.localScale = new Vector3(player.facingDir, 1f, 1f);
                 if (player.rb.linearVelocity.x < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity, player.rb.linearVelocity.y);

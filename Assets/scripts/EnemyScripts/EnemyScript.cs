@@ -227,7 +227,6 @@ namespace Enemy
                 return true;
             }
 
-            //blockEnemy = false;
             return false;
         }
 
@@ -238,7 +237,6 @@ namespace Enemy
                 return true;
             }
 
-            //parryEnemy = false;
             return false;
         }
 

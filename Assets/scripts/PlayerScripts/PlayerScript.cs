@@ -1,9 +1,11 @@
 using Enemy;
 using System.Collections;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -31,10 +33,16 @@ namespace Player
 
         [Header("UI variables")]
         public GameObject itemText;
-        public TMPro.TextMeshProUGUI stateText;
+        //public TMPro.TextMeshProUGUI stateText;
         public PlayerHealthBar playerHealthBar;
         public PlayerPostureBar playerPostureBar;
-
+        public bool gameIsPaused = false;
+        public GameObject pauseMenuUI;
+        public bool canPressButton;
+        public GameObject settingsMenu;
+        public GameObject keyboardControlMenu;
+        public GameObject gamepadControlMenu;
+        [SerializeField] Slider musicSlider;
 
         public TMPro.TextMeshProUGUI postureText;
         [Space(10)]
@@ -181,6 +189,17 @@ namespace Player
             playerHealthBar.SetMaxHealth(maxPlayerHealth);
             playerPostureBar.SetMaxPosture(maxPlayerPosture);
 
+           /* if (!PlayerPrefs.HasKey("MusicVolume"))
+            {
+                PlayerPrefs.SetFloat("MusicVolume", 1);
+                //LoadMusicVolume();
+            }
+
+            else
+            {
+                //LoadMusicVolume();
+            }
+*/
             hasHealItem = false;
             playerPosture = minPlayerPosture;
 
@@ -221,6 +240,20 @@ namespace Player
         // Update is called once per frame
         public void Update()
         {
+            if (pauseAction.WasPressedThisFrame())
+            {
+                if (gameIsPaused)
+                {
+                    canPressButton = true;
+                    Resume();
+                }
+                else
+                {
+                    canPressButton = false;
+                    Pause();
+                }
+            }
+
             playerHealthBar.UpdateHealthBar(playerHealth);
             playerPostureBar.UpdatePostureBar(playerPosture);
 
@@ -262,14 +295,18 @@ namespace Player
                 
 
             }
+          /*  if (pauseAction.WasPressedThisFrame())
+            {
+                print("pause");
+            }*/
 
             else if (blockAction.WasReleasedThisFrame())
             {
                 isBlocking = false;
             }
 
-            stateText.text = "State: " + sm.CurrentState;
-            postureText.text = "Posture: " + playerPostureBar;
+            /*stateText.text = "State: " + sm.CurrentState;
+            postureText.text = "Posture: " + playerPostureBar;*/
 
            
             if ((sm.CurrentState == null))
@@ -313,15 +350,17 @@ namespace Player
 
         #region state checks
 
-
+        
         public bool CheckForRun()
         {
-            if (Mathf.Abs(moveInput.x) > 0 && isGrounded)
+            if (canPressButton)
             {
+                if (Mathf.Abs(moveInput.x) > 0 && isGrounded)
+                {
 
-                return true;
+                    return true;
+                }
             }
-
             return false;
         }
 
@@ -474,7 +513,7 @@ namespace Player
             }
         }
 
-
+        
         
             
         
@@ -560,6 +599,64 @@ namespace Player
         }
         #endregion player flip
 
+        #region pause
+        
+        #region main pause menu
+        public void Resume()
+        {
+            pauseMenuUI.SetActive(false);
+            Time.timeScale = 1;
+            gameIsPaused = false;
+        }
+        public void Pause()
+        {
+            
+            pauseMenuUI.SetActive(true);
+            Time.timeScale = 0;
+            gameIsPaused = true;
+        }
+
+        public void Menu()
+        {
+            SceneManager.LoadSceneAsync("Menu");
+        }
+
+        public void OpenSettings()
+        {
+            settingsMenu.SetActive(true);
+            pauseMenuUI.SetActive(false);
+        }
+
+        #endregion main pause menu
+
+        #region pause settings
+        public void OpenKeyboardControls()
+        {
+            settingsMenu.SetActive(false);
+            keyboardControlMenu.SetActive(true);
+        }
+
+        public void OpenGamepadControls()
+        {
+            settingsMenu.SetActive(false);
+            gamepadControlMenu.SetActive(true);
+        }
+
+        public void BackToSettingsMenu()
+        {
+            settingsMenu.SetActive(true);
+            keyboardControlMenu.SetActive(false);
+            gamepadControlMenu.SetActive(false);
+        }
+
+        public void BackToPauseMenu()
+        {
+            pauseMenuUI.SetActive(true);
+            settingsMenu.SetActive(false);
+        }
+        #endregion pause settings
+
+        #endregion pause
 
         #region random num for enemy block
 
@@ -570,7 +667,7 @@ namespace Player
                 rng = RandomNumberGenerator.Create();
             }
 
-            // Use 4 bytes to produce a 32-bit unsigned int, then map to 1..100
+            
             byte[] buffer = new byte[4];
             rng.GetBytes(buffer);
             uint rand = System.BitConverter.ToUInt32(buffer, 0);

@@ -16,16 +16,7 @@ public class MenuScript : MonoBehaviour
 
     void Start()
     {
-        if (!PlayerPrefs.HasKey("MusicVolume"))
-        {
-            PlayerPrefs.SetFloat("MusicVolume", 1);
-            LoadMusicVolume();
-        }
-
-        else
-        {
-            LoadMusicVolume();
-        }
+        
     }
 
     // Update is called once per frame
@@ -60,21 +51,7 @@ public class MenuScript : MonoBehaviour
 
     #region settings menu
 
-    public void ChangeMusicVolume()
-    {
-        AudioListener.volume = musicSlider.value;
-        SaveMusicVolume();
-    }
-
-    private void LoadMusicVolume()
-    {
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
-    }
-
-    private void SaveMusicVolume()
-    {
-        PlayerPrefs.SetFloat("musicVolume", musicSlider.value);
-    }
+    
 
     public void OpenKeyboardControlMenu()
     {

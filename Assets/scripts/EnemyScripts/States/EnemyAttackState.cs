@@ -41,7 +41,7 @@ namespace Enemy
 
         void EnemyAttack()
         {
-            enemy.enemyAttackTimer = 1.5f;
+            //enemy.enemyAttackTimer = 1.5f;
 
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)

@@ -62,7 +62,7 @@ namespace Player
                     
 
                 }
-                player.transform.localScale = new Vector3(player.moveInput.x, 1f, 1f);
+                player.transform.localScale = new Vector3(player.facingDir, 1f, 1f);
             }
 
             if (player.moveInput.x < 0)
@@ -87,14 +87,14 @@ namespace Player
 
             if ( player.rb.linearVelocity.x < 0.1f && player.rb.linearVelocity.x > -0.1f)
             {
-                if (player.moveInput.x > 0)
+                if (player.facingDir > 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
 
                 }
 
-                if (player.moveInput.x < 0)
+                if (player.facingDir < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
