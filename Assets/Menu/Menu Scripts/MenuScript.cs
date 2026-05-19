@@ -67,9 +67,9 @@ public class MenuScript : MonoBehaviour
 
     public void BackToSettingsMenu()
     {
-            settingsMenu.SetActive(true);
-            keyboardControlMenu.SetActive(false);
-            gamepadControlMenu.SetActive(false);
+        settingsMenu.SetActive(true);
+        keyboardControlMenu.SetActive(false);
+        gamepadControlMenu.SetActive(false);
     }
 
     public void BackToMenu()

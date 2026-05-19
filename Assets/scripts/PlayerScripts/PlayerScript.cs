@@ -38,6 +38,7 @@ namespace Player
         public PlayerPostureBar playerPostureBar;
         public bool gameIsPaused = false;
         public GameObject pauseMenuUI;
+        public GameObject pauseMenuCanvas;
         public bool canPressButton;
         public GameObject settingsMenu;
         public GameObject keyboardControlMenu;
@@ -400,21 +401,24 @@ namespace Player
 
         public bool CheckForAttack()
         {
-            if(attackAction.WasPressedThisFrame() && attackCompleteTimer <= 0)
+            if (canPressButton)
             {
-                if (attackTimer >= 0)
+                if (attackAction.WasPressedThisFrame() && attackCompleteTimer <= 0)
                 {
-                    attackState.attackNum++;
-                }
+                    if (attackTimer >= 0)
+                    {
+                        attackState.attackNum++;
+                    }
 
-                if((int)attackState.attackNum > maxAttackNum || attackTimer < 0)
-                {
-                   
-                    attackState.attackNum = 0;
-                }
+                    if ((int)attackState.attackNum > maxAttackNum || attackTimer < 0)
+                    {
 
-                
-                return true;
+                        attackState.attackNum = 0;
+                    }
+
+
+                    return true;
+                }
             }
 
             return false;
@@ -604,13 +608,16 @@ namespace Player
         #region main pause menu
         public void Resume()
         {
+            enemyScript.enemyHealthCanvas.SetActive(true);
+            pauseMenuCanvas.SetActive(false);
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1;
             gameIsPaused = false;
         }
         public void Pause()
         {
-            
+            enemyScript.enemyHealthCanvas.SetActive(false);
+            pauseMenuCanvas.SetActive(true);
             pauseMenuUI.SetActive(true);
             Time.timeScale = 0;
             gameIsPaused = true;

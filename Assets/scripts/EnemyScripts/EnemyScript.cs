@@ -72,7 +72,7 @@ namespace Enemy
         #region UI variables
 
         [Header("UI variables")]
-
+        public GameObject enemyHealthCanvas;
         public TMPro.TextMeshProUGUI enemyStateText;
         public EnemyHealthBar enemyHealthBar;
         public EnemyPostureBar enemyPostureBar;
@@ -193,7 +193,7 @@ namespace Enemy
                 return;
             }
 
-            enemyStateText.text = "Enemy State: " + esm.CurrentState;
+            
 
 
             enemyAttackTimer -= Time.deltaTime;
