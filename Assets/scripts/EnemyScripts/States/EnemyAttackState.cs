@@ -31,7 +31,7 @@ namespace Enemy
             enemy.blockOrParryChance = 0;
             enemy.enemyMoveDir = 0;
 
-            if (enemy.playerScript.hitPlayer && !enemy.playerScript.isBlocking)
+            if (enemy.hitPlayer && !enemy.playerScript.isBlocking)
             {
                 //enemy.playerScript.playerHealth -= 10;
             }
@@ -46,10 +46,12 @@ namespace Enemy
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)
             {
-                enemy.playerScript.hitPlayer = true;
 
-                
-                
+                enemy.hitPlayer = true;
+                if (enemy.hitPlayer)
+                {
+                    //enemy.TakeDamage(enemy.playerScript);     
+                }
                 
                 
             }
@@ -70,7 +72,7 @@ namespace Enemy
                     
                     enemy.anim.Play("enemy attack 1", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
-
+                    enemy.enemyDamage = 20;
 
                     break;
 
@@ -80,7 +82,7 @@ namespace Enemy
                     
                     enemy.anim.Play("enemy attack 2", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
-
+                    enemy.enemyDamage = 20;
 
                     break;
 
@@ -90,7 +92,7 @@ namespace Enemy
                    
                     enemy.anim.Play("enemy attack 3", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
-
+                    enemy.enemyDamage = 20;
                     break;
 
                 case 3: // Swipe Down
@@ -99,6 +101,7 @@ namespace Enemy
                     
                     enemy.anim.Play("enemy attack 4", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
+                    enemy.enemyDamage = 20;
 
                     break;
 
@@ -109,7 +112,7 @@ namespace Enemy
         public override void Exit()
         {
             base.Exit();
-            enemy.playerScript.hitPlayer = false;
+            enemy.hitPlayer = false;
 
         }
 

@@ -43,18 +43,18 @@ namespace Player
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
             foreach (Collider2D enemy in hitEnemy)
             {
-                player.RandomNumForEnemyBlock();
+                player.RandomNumForEnemyBlock(enemy.GetComponent<EnemyScript>());
 
                 player.hitEnemy = true;
 
-                if(player.hitEnemy && player.enemyScript.postureBreakStunEnemy)
+                if(player.hitEnemy && enemy.GetComponent<EnemyScript>().postureBreakStunEnemy)
                 {
-                    player.enemyScript.postureBreakStunEnemy = false;
+                    enemy.GetComponent<EnemyScript>().postureBreakStunEnemy = false;
                 }
 
                 if (player.hitEnemy)
                 {
-                    player.StartCoroutine(player.AttackDelay());
+                    player.StartCoroutine(player.AttackDelay(enemy.GetComponent<EnemyScript>()));
                     
                 }
                 

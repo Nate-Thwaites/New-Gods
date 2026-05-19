@@ -22,7 +22,8 @@ namespace Player
         public Rigidbody2D rb;
         [Header("Core variables")]
         public Animator anim;
-        public EnemyScript enemyScript;
+        public EnemyScript enemy;
+
 
         [Space(10)]
         
@@ -44,6 +45,7 @@ namespace Player
         public GameObject keyboardControlMenu;
         public GameObject gamepadControlMenu;
         [SerializeField] Slider musicSlider;
+        public GameObject enemyHealthCanvas;
 
         public TMPro.TextMeshProUGUI postureText;
         [Space(10)]
@@ -93,7 +95,7 @@ namespace Player
 
         //public BlockingAndParrying blockingAndParrying;
 
-        public bool hitPlayer = false;
+        
         public bool isBlocking;
         public bool playerParry;
         public bool stunEnemy;
@@ -190,6 +192,8 @@ namespace Player
             playerHealthBar.SetMaxHealth(maxPlayerHealth);
             playerPostureBar.SetMaxPosture(maxPlayerPosture);
 
+            canPressButton = true;
+
            /* if (!PlayerPrefs.HasKey("MusicVolume"))
             {
                 PlayerPrefs.SetFloat("MusicVolume", 1);
@@ -207,6 +211,7 @@ namespace Player
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
             anim = GetComponent<Animator>();
+            
 
             playerHealth = maxPlayerHealth;
 
@@ -469,14 +474,16 @@ namespace Player
         #endregion leave parry coroutines
 
         #region attack delay coroutine
-        public IEnumerator AttackDelay()
+        public IEnumerator AttackDelay(EnemyScript enemy)
         {
+
             yield return new WaitForSeconds(0.2f);
             print("hit enemy");
             //hitEnemy = true;
-            if (!enemyScript.blockEnemy && !enemyScript.parryEnemy)
+            if (!enemy.blockEnemy && !enemy.parryEnemy)
             {
-                enemyScript.enemyHealth -= attackDamage;
+
+                enemy.enemyHealth -= attackDamage;
             }
         }
         #endregion attack delay coroutine
@@ -608,7 +615,7 @@ namespace Player
         #region main pause menu
         public void Resume()
         {
-            enemyScript.enemyHealthCanvas.SetActive(true);
+            enemyHealthCanvas.SetActive(true);
             pauseMenuCanvas.SetActive(false);
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1;
@@ -616,7 +623,7 @@ namespace Player
         }
         public void Pause()
         {
-            enemyScript.enemyHealthCanvas.SetActive(false);
+            enemyHealthCanvas.SetActive(false);
             pauseMenuCanvas.SetActive(true);
             pauseMenuUI.SetActive(true);
             Time.timeScale = 0;
@@ -667,7 +674,7 @@ namespace Player
 
         #region random num for enemy block
 
-        public void RandomNumForEnemyBlock()
+        public void RandomNumForEnemyBlock(EnemyScript enemy)
         {
             if (rng == null)
             {
@@ -680,7 +687,7 @@ namespace Player
             uint rand = System.BitConverter.ToUInt32(buffer, 0);
             int rngValue = (int)(rand % 100) + 1;
 
-            enemyScript.blockOrParryChance = rngValue; 
+            enemy.blockOrParryChance = rngValue; 
 
             
 

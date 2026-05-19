@@ -99,8 +99,10 @@ namespace Enemy
         public float enemyAttackCompleteTimer = 0.5f;
         public Transform enemyAttackPoint;
         public int maxEnemyAttackNum = 3;
-        public float enemyAttackRange = 0.5f;
+        public float enemyAttackRange = 5f;
         public bool attackReset;
+        public bool hitPlayer = false;
+        public int enemyDamage;
 
         [Space(10)]
 
@@ -196,7 +198,6 @@ namespace Enemy
             
 
 
-            enemyAttackTimer -= Time.deltaTime;
             enemyAttackCompleteTimer -= Time.deltaTime;
 
 
@@ -408,6 +409,16 @@ namespace Enemy
             {
                 Destroy(gameObject);
             }
+        }
+
+        public void TakeDamage(PlayerScript player)
+        {
+            player.playerHealth -= enemyDamage;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(enemyAttackPoint.position, enemyAttackRange);
         }
     }
 }

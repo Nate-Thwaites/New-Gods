@@ -1,3 +1,6 @@
+using Enemy;
+using JetBrains.Annotations;
+using System;
 using UnityEngine;
 
 
@@ -5,6 +8,8 @@ namespace Player
 {
     public class BlockingState : State
     {
+
+
        
         // constructor
         public BlockingState(PlayerScript player, StateMachine sm) : base(player, sm)
@@ -35,29 +40,33 @@ namespace Player
 
         public override void LogicUpdate()
         {
-            if (player.parryTimer > 0 && player.hitPlayer)
+
+            
+            DetectParry();
+            DetectBlock();
+
+           /* if (player.parryTimer > 0 && enemy.hitPlayer)
             {
+
                 Debug.Log("Parried attack");
                 player.playerParry = true;
-                player.enemyScript.parryStunEnemy = true;
+                player.enemy.parryStunEnemy = true;
                 if (player.playerParry)
                 {
-                    player.playerPosture += 10;
+                    player.enemy.enemyPosture += 10;
                 }
-            }
+            }*/
 
-            if (player.hitPlayer && player.isBlocking)
+
+       /*     if (enemy.hitPlayer && player.isBlocking)
             {
-                Debug.Log("Blocked attack");
-                //player.blockingAndParrying.hitPlayer = false;
-                //player.blockingAndParrying.playerParry = false;
-                player.isBlocking = false;
+               player.isBlocking = false;
 
                 if(!player.playerParry)
                 {
                     player.playerPosture += 10;
                 }
-            }
+            }*/
 
             
 
@@ -104,7 +113,42 @@ namespace Player
             }
         }
 
-        
+      
+
+        public void DetectParry()
+        {
+
+
+            EnemyScript enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyScript>();
+
+            //enemy.GetComponent<EnemyScript>()
+
+            if (player.parryTimer > 0 && enemy.hitPlayer)
+            {
+
+                Debug.Log("Parried attack");
+                player.playerParry = true;
+                enemy.parryStunEnemy = true;
+                if (player.playerParry)
+                {
+                    enemy.enemyPosture += 10;
+                }
+            }
+        }
+
+        public void DetectBlock()
+        {
+            EnemyScript enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyScript>();
+            //make array and use foreach loop to check for multiple enemies later
+            if (enemy.hitPlayer && player.isBlocking)
+            {
+                player.isBlocking = false;
+                if (!player.playerParry)
+                {
+                    player.playerPosture += 10;
+                }
+            }
+        }
 
         public override void PhysicsUpdate()
         {
