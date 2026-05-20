@@ -10,7 +10,7 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
-            Debug.Log("block");
+            //Debug.Log("block");
             enemy.blockEnemy = true;
             enemy.enemyPosture += enemy.playerScript.postureDamage;
         }
@@ -19,7 +19,7 @@ namespace Enemy
         {
             base.Exit();
             enemy.blockEnemy = false;
-            Debug.Log("leave block");
+            //Debug.Log("leave block");
         }
 
         public override void HandleInput()

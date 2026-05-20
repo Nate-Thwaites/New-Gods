@@ -1,7 +1,6 @@
 using Enemy;
 using System.Collections;
 using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -140,8 +139,7 @@ namespace Player
 
         [Header("Health variables")]
 
-        HealthScript healthScript;
-
+        public HealthScript health;
 
         [Space(10)]
 
@@ -466,26 +464,9 @@ namespace Player
         #endregion leave parry coroutines
 
         #region attack delay coroutine
-        public IEnumerator AttackDelay(EnemyScript enemy)
-        {
-           
-            yield return new WaitForSeconds(0.2f);
-            print("hit enemy");
-            //hitEnemy = true;
-            if (!enemy.blockEnemy && !enemy.parryEnemy)
-            {
-                //health.enemyHealth -= attackDamage;
+       
 
-                TakeDamage();
-            }
-        }
-
-        public void TakeDamage(HealthScript health)
-        {
-            health = GetComponent<HealthScript>();
-            health.enemyHealth -= attackDamage;
-
-        }
+       
         #endregion attack delay coroutine
 
         #region stun couroutines
@@ -687,7 +668,6 @@ namespace Player
 
            
 
-            Debug.Log(rngValue);
         }
 
         #endregion random num for enemy block

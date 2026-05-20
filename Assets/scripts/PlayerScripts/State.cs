@@ -8,12 +8,14 @@ namespace Player
         protected PlayerScript player;
 
         protected StateMachine sm;
+        protected HealthScript health;
 
 
         // base constructor
         protected State(PlayerScript player, StateMachine sm)
         {
             this.player = player;
+            this.health = player.health;
             this.sm = sm;
         }
 

@@ -54,7 +54,7 @@ namespace Player
 
                 if (player.hitEnemy)
                 {
-                    player.StartCoroutine(player.AttackDelay(enemy.GetComponent<EnemyScript>()));
+                    health.StartCoroutine(health.AttackDelay(enemy.GetComponent<EnemyScript>()));
                     
                 }
                 

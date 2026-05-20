@@ -21,17 +21,13 @@ namespace Enemy
 
         #endregion core variables
 
-        #region scriptable object, and manager script variables
+        #region health variables
 
-        [Header("Scriptable Object variables")]
-
-        public HealthManager healthManager;
-
-        //public BlockingAndParrying blockingAndParrying;
-
+        [Header("Health variables")]
+        public HealthScript health;
         [Space(10)]
 
-        #endregion scriptable object, and manager script variables
+        #endregion health variables
 
         #region StateMachine variables
 
@@ -363,21 +359,21 @@ namespace Enemy
         public IEnumerator Attackreset()
         {
             yield return new WaitForSeconds(1f);
-            print("reset attack");
+            //print("reset attack");
             attackReset = false;
         }
 
         public IEnumerator LeaveEnemyBlock()
         {
             yield return new WaitForSeconds(0.2f);
-            print("leave block");
+            //print("leave block");
             blockEnemy = false;
         }
 
         public IEnumerator LeaveEnemyParry()
         {
             yield return new WaitForSeconds(0.2f);
-            print("leave parry");
+            //print("leave parry");
             parryEnemy = false;
         }
 

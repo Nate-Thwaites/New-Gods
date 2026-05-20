@@ -11,7 +11,7 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
-            Debug.Log("parry");
+            //Debug.Log("parry");
             enemy.parryEnemy = true;
             enemy.playerScript.playerPosture += 10;
         }
@@ -20,7 +20,7 @@ namespace Enemy
         {
             base.Exit();
             enemy.parryEnemy = false;
-            Debug.Log("leave parry");
+            //Debug.Log("leave parry");
         }
 
         public override void HandleInput()

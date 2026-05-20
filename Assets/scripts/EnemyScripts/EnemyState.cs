@@ -6,11 +6,13 @@ namespace Enemy
     {
         protected EnemyScript enemy;
         protected EnemyStateMachine esm;
+        protected HealthScript health;
 
         // base constructor
         protected EnemyState(EnemyScript enemy, EnemyStateMachine esm)
         {
             this.enemy = enemy;
+            this.health = enemy.health;
             this.esm = esm;
         }
 
