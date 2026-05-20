@@ -37,9 +37,9 @@ namespace Player
         {
 
 
-            if (player.playerPosture > player.minPlayerPosture)
+            if (player.posture.posture > player.posture.minPosture)
             {
-                player.playerPosture = player.playerPosture - Time.deltaTime;
+                player.posture.posture = player.posture.posture - Time.deltaTime;
             }
 
             if (player.moveInput.x > 0)

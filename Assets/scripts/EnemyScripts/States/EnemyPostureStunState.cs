@@ -17,7 +17,7 @@ namespace Enemy
         public override void Exit()
         {
             base.Exit();
-            enemy.enemyPosture = enemy.minEnemyPosture;
+            enemy.posture.posture = enemy.posture.minPosture;
             enemy.playerScript.attackDamage /= 4;
         }
 

@@ -25,7 +25,6 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
-
             EnemyAttackSwitch();
 
             enemy.blockOrParryChance = 0;
@@ -42,16 +41,14 @@ namespace Enemy
         void EnemyAttack()
         {
             //enemy.enemyAttackTimer = 1.5f;
+            enemy = enemy.GetComponent<EnemyScript>();
 
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)
             {
 
                 enemy.hitPlayer = true;
-                if (enemy.hitPlayer)
-                {
-                    //enemy.TakeDamage(enemy.playerScript);     
-                }
+                
                 
                 
             }

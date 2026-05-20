@@ -9,6 +9,7 @@ namespace Player
 
         protected StateMachine sm;
         protected HealthScript health;
+        protected PostureScript posture;
 
 
         // base constructor
@@ -16,6 +17,7 @@ namespace Player
         {
             this.player = player;
             this.health = player.health;
+            this.posture = player.posture;
             this.sm = sm;
         }
 

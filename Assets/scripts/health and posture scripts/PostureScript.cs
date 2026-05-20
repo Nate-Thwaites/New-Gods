@@ -2,15 +2,28 @@ using UnityEngine;
 
 public class PostureScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public float posture;
+    public float maxPosture = 100f;
+    public float minPosture = 0f;
+    public float postureDamage;
+
+
     void Start()
     {
-        
+        posture = minPosture;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (posture < 0)
+        {
+            posture = 0;
+        }
+
+        if (posture > maxPosture)
+        {
+            posture = maxPosture;
+        }
     }
 }

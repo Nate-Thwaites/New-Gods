@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &21007579 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4207700659509273524, guid: 72306082874887347bf5cab9017c2227, type: 3}
-  m_PrefabInstance: {fileID: 1606479790471268512}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fabddbf00d0fa12469491f4bd58e788a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
 --- !u!1001 &22874662
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15316,7 +15305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1450206241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15329,14 +15318,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d08a384c26cc5548ae6f4bbfee6a300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthScript
-  maxPlayerHealth: 100
-  minPlayerHealth: 0
-  playerHealth: 0
-  maxEnemyHealth: 100
-  minEnemyHealth: 0
-  enemyHealth: 0
-  enemyHealthBar: {fileID: 21007579}
-  playerHealthBar: {fileID: 1699014844}
+  health: 0
+  maxHealth: 100
+  minHealth: 0
 --- !u!4 &1450206242
 Transform:
   m_ObjectHideFlags: 0
@@ -15511,6 +15495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e065738836fcd4e87760abcc4e627d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDie
+  health: {fileID: 0}
 --- !u!114 &1486578865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15523,14 +15508,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d08a384c26cc5548ae6f4bbfee6a300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthScript
-  maxPlayerHealth: 100
-  minPlayerHealth: 0
-  playerHealth: 0
-  maxEnemyHealth: 100
-  minEnemyHealth: 0
-  enemyHealth: 0
-  enemyHealthBar: {fileID: 1791284822}
-  playerHealthBar: {fileID: 1699014844}
+  health: 0
+  maxHealth: 100
+  minHealth: 0
+--- !u!114 &1486578871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486578852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f05cc095eb93c419b6c6530faad24e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PostureScript
+  posture: 0
+  maxPosture: 100
+  minPosture: 0
+  postureDamage: 0
 --- !u!1001 &1529110556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16908,17 +16904,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1791284822 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4207700659509273524, guid: 72306082874887347bf5cab9017c2227, type: 3}
-  m_PrefabInstance: {fileID: 2077547265}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fabddbf00d0fa12469491f4bd58e788a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
 --- !u!114 &1887698203 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
@@ -16947,6 +16932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e065738836fcd4e87760abcc4e627d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDie
+  health: {fileID: 0}
 --- !u!114 &1887698214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16959,14 +16945,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d08a384c26cc5548ae6f4bbfee6a300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthScript
-  maxPlayerHealth: 100
-  minPlayerHealth: 0
-  playerHealth: 0
-  maxEnemyHealth: 100
-  minEnemyHealth: 0
-  enemyHealth: 0
-  enemyHealthBar: {fileID: 21007579}
-  playerHealthBar: {fileID: 1699014844}
+  health: 0
+  maxHealth: 100
+  minHealth: 0
+--- !u!114 &1887698219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948870220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f05cc095eb93c419b6c6530faad24e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PostureScript
+  posture: 0
+  maxPosture: 100
+  minPosture: 0
+  postureDamage: 0
 --- !u!1 &1889604948
 GameObject:
   m_ObjectHideFlags: 0
@@ -17412,6 +17409,7 @@ GameObject:
   - component: {fileID: 1979418679}
   - component: {fileID: 1979418680}
   - component: {fileID: 1979418681}
+  - component: {fileID: 1979418682}
   m_Layer: 7
   m_Name: player
   m_TagString: Untagged
@@ -17539,11 +17537,8 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  health: {fileID: 1450206241}
-  playerPosture: 0
-  maxPlayerPosture: 100
-  minPlayerPosture: 0
-  postureDamage: 0
+  health: {fileID: 1979418681}
+  posture: {fileID: 1979418682}
   hasHealItem: 0
   HealItem: {fileID: 70357246}
 --- !u!50 &1979418673
@@ -17795,14 +17790,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d08a384c26cc5548ae6f4bbfee6a300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthScript
-  maxPlayerHealth: 100
-  minPlayerHealth: 0
-  playerHealth: 0
-  maxEnemyHealth: 100
-  minEnemyHealth: 0
-  enemyHealth: 0
-  enemyHealthBar: {fileID: 21007579}
-  playerHealthBar: {fileID: 1699014844}
+  health: 0
+  maxHealth: 100
+  minHealth: 0
+--- !u!114 &1979418682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979418670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f05cc095eb93c419b6c6530faad24e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PostureScript
+  posture: 0
+  maxPosture: 100
+  minPosture: 0
+  postureDamage: 0
 --- !u!1001 &2001540525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18589,11 +18595,19 @@ PrefabInstance:
     - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
       propertyPath: health
       value: 
-      objectReference: {fileID: 1450206241}
+      objectReference: {fileID: 1486578865}
     - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1979418670}
+    - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
+      propertyPath: posture
+      value: 
+      objectReference: {fileID: 1486578871}
+    - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
+      propertyPath: playerScript
+      value: 
+      objectReference: {fileID: 1979418671}
     - target: {fileID: 1249292623353206552, guid: 72306082874887347bf5cab9017c2227, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -18628,6 +18642,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7355020045583638426, guid: 72306082874887347bf5cab9017c2227, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1486578865}
+    - targetCorrespondingSourceObject: {fileID: 7355020045583638426, guid: 72306082874887347bf5cab9017c2227, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1486578871}
   m_SourcePrefab: {fileID: 100100000, guid: 72306082874887347bf5cab9017c2227, type: 3}
 --- !u!1 &2106189717
 GameObject:
@@ -24545,11 +24562,15 @@ PrefabInstance:
     - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
       propertyPath: health
       value: 
-      objectReference: {fileID: 1450206241}
+      objectReference: {fileID: 1887698214}
     - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1979418670}
+    - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
+      propertyPath: posture
+      value: 
+      objectReference: {fileID: 1887698219}
     - target: {fileID: 210720293239176073, guid: 72306082874887347bf5cab9017c2227, type: 3}
       propertyPath: playerScript
       value: 
@@ -24586,8 +24607,11 @@ PrefabInstance:
       insertIndex: 2
       addedObject: {fileID: 1887698214}
     - targetCorrespondingSourceObject: {fileID: 7355020045583638426, guid: 72306082874887347bf5cab9017c2227, type: 3}
-      insertIndex: -1
+      insertIndex: 6
       addedObject: {fileID: 1887698209}
+    - targetCorrespondingSourceObject: {fileID: 7355020045583638426, guid: 72306082874887347bf5cab9017c2227, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1887698219}
   m_SourcePrefab: {fileID: 100100000, guid: 72306082874887347bf5cab9017c2227, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -54,7 +54,7 @@ namespace Player
 
                 if (player.hitEnemy)
                 {
-                    health.StartCoroutine(health.AttackDelay(enemy.GetComponent<EnemyScript>()));
+                    enemy.GetComponent<EnemyScript>().StartCoroutine(enemy.GetComponent<EnemyScript>().AttackDelay());
                     
                 }
                 
@@ -76,7 +76,7 @@ namespace Player
 
                     player.anim.Play("attack temp", 0);
                     player.attackDamage = 10;
-                    player.postureDamage = 20;
+                    player.posture.postureDamage = 20;
                     player.attackCompleteTimer = 0.2f;
 
 
@@ -88,7 +88,7 @@ namespace Player
 
                     player.anim.Play("attack temp no2", 0);
                     player.attackDamage = 5;
-                    player.postureDamage = 10;
+                    player.posture.postureDamage = 10;
                     player.attackCompleteTimer = 0.4f;
 
                     break;
@@ -99,7 +99,7 @@ namespace Player
 
                     player.anim.Play("Attack temp no3", 0);
                     player.attackDamage = 10;
-                    player.postureDamage = 20;
+                    player.posture.postureDamage = 20;
                     player.attackCompleteTimer = 0.4f;
 
                     break;
@@ -110,7 +110,7 @@ namespace Player
 
                     player.anim.Play("attack temp no4", 0);
                     player.attackDamage = 20;
-                    player.postureDamage = 40;
+                    player.posture.postureDamage = 40;
                     player.attackCompleteTimer = 0.7f;
 
                     break;

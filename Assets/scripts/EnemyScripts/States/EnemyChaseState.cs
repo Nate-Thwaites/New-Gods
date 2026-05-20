@@ -31,9 +31,9 @@ namespace Enemy
             
             enemy.erb.linearVelocity = new Vector2(7 * enemy.enemyMoveDir, enemy.erb.linearVelocity.y);
 
-            if (enemy.enemyPosture > enemy.minEnemyPosture)
+            if (enemy.posture.posture > enemy.posture.minPosture)
             {
-                enemy.enemyPosture = enemy.enemyPosture - 2 * Time.deltaTime;
+                enemy.posture.posture = enemy.posture.posture - 2 * Time.deltaTime;
             }
 
 

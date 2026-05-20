@@ -159,10 +159,7 @@ namespace Player
 
         [Header("Posture variables")]
 
-        public float playerPosture;
-        public int maxPlayerPosture = 100;
-        public int minPlayerPosture = 0;
-        public int postureDamage;
+        public PostureScript posture;
 
         [Space(10)]
 
@@ -184,7 +181,7 @@ namespace Player
         void Start()
         {
             
-            playerPostureBar.SetMaxPosture(maxPlayerPosture);
+            playerPostureBar.SetMaxPosture(posture.maxPosture);
 
             canPressButton = true;
 
@@ -200,14 +197,16 @@ namespace Player
             }
 */
             hasHealItem = false;
-            playerPosture = minPlayerPosture;
-
+            
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
             anim = GetComponent<Animator>();
-            
 
-            
+            health = GetComponent<HealthScript>();
+            posture = GetComponent<PostureScript>();
+
+            playerHealthBar.SetMaxHealth(health.maxHealth);
+
 
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
@@ -240,6 +239,8 @@ namespace Player
         // Update is called once per frame
         public void Update()
         {
+            playerHealthBar.UpdateHealthBar(health.health);
+            playerPostureBar.UpdatePostureBar(posture.posture);
             if (pauseAction.WasPressedThisFrame())
             {
                 if (gameIsPaused)
@@ -255,9 +256,8 @@ namespace Player
             }
 
             
-            playerPostureBar.UpdatePostureBar(playerPosture);
 
-            
+            Die();
 
             if(!isGrounded)
             {
@@ -269,15 +269,7 @@ namespace Player
             PlayerHeal();
 
 
-            if (playerPosture < 0)
-            {
-                playerPosture = 0;
-            }
-
-            if (playerPosture > maxPlayerPosture)
-            {
-                playerPosture = maxPlayerPosture;
-            }
+            
 
             
 
@@ -432,7 +424,7 @@ namespace Player
 
         public bool CheckForPostureStun()
         {
-            if(playerPosture >= maxPlayerPosture)
+            if(posture.posture >= posture.maxPosture)
             {
                 
                 return true;
@@ -473,7 +465,7 @@ namespace Player
         public IEnumerator PostureStun()
         {
             yield return new WaitForSeconds(1f);
-            playerPosture = 0;
+            posture.posture = 0;
         }
 
         #endregion stun couroutines
@@ -548,7 +540,13 @@ namespace Player
 
         #region player death
 
-       
+        public void Die()
+        {
+            if (health.health <= health.minHealth)
+            {
+                SceneManager.LoadSceneAsync("Game");
+            }
+        }
 
         #endregion player death
 
@@ -561,7 +559,7 @@ namespace Player
             health = GetComponent<HealthScript>();
             if (hasHealItem && healAction.WasPressedThisFrame())
             {
-                health.playerHealth = +30;
+                health.health += 30;
                 hasHealItem = false;
             }
         }
@@ -669,6 +667,8 @@ namespace Player
            
 
         }
+
+        
 
         #endregion random num for enemy block
     }

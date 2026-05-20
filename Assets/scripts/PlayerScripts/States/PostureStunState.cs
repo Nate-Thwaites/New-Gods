@@ -37,7 +37,7 @@ namespace Player
 
             base.LogicUpdate();
 
-            if (player.playerPosture == player.minPlayerPosture)
+            if (player.posture.posture == player.posture.minPosture)
             {
 
                 if (player.CheckForRun())

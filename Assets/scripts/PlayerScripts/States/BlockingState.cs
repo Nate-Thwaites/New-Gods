@@ -40,8 +40,8 @@ namespace Player
 
         public override void LogicUpdate()
         {
-
             
+
             DetectParry();
             DetectBlock();
 
@@ -113,15 +113,28 @@ namespace Player
             }
         }
 
-      
+
 
         public void DetectParry()
         {
 
+            /*player.enemy = player.enemy.GetComponent<EnemyScript>();
+            if (player.enemy.hitPlayer && player.parryTimer > 0)
+            {
+                Debug.Log("Parried attack");
+                player.playerParry = true;
+                player.enemy.parryStunEnemy = true;
+            }
+
+
+            if (player.playerParry)
+            {
+                player.enemy.ParryPostureDamage();
+            }*/
 
             GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
 
-            //enemy.GetComponent<EnemyScript>()
+            
 
             foreach (GameObject e in enemy)
             {
@@ -137,29 +150,46 @@ namespace Player
 
                 if (player.playerParry)
                 {
-                    enemyScript.enemyPosture += 10;
+                    enemyScript.ParryPostureDamage();
                 }
             }
         }
 
+        
+
         public void DetectBlock()
         {
-            GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy"); //GetComponent<EnemyScript>();
-            //make array and use foreach loop to check for multiple enemies later
-            foreach (GameObject e in enemy)
+            /*player.enemy = player.enemy.GetComponent<EnemyScript>();
+            if (player.enemy.hitPlayer && player.isBlocking)
             {
-                EnemyScript enemyScript = e.GetComponent<EnemyScript>();
 
-                if (enemyScript.hitPlayer && player.isBlocking)
-                {
-                    player.isBlocking = false;
-                }
+                Debug.Log("Blocked attack");
+                player.isBlocking = false;
 
                 if (!player.playerParry)
                 {
-                    player.playerPosture += 10;
+                    player.posture.posture += 10;
                 }
-            }
+            }*/
+
+              GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy"); //GetComponent<EnemyScript>();
+               //make array and use foreach loop to check for multiple enemies later
+               foreach (GameObject e in enemy)
+               {
+                   EnemyScript enemyScript = e.GetComponent<EnemyScript>();
+
+                   if (enemyScript.hitPlayer && player.isBlocking)
+                   {
+                       player.isBlocking = false;
+
+                       if (!player.playerParry)
+                       {
+                           player.posture.posture += 10;
+                       }
+                   }
+
+
+               }
         }
 
         public override void PhysicsUpdate()

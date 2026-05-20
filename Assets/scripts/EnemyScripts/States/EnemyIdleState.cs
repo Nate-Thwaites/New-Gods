@@ -29,9 +29,9 @@ namespace Enemy
         {
             base.LogicUpdate();
 
-            if (enemy.enemyPosture > enemy.minEnemyPosture)
+            if (enemy.posture.posture > enemy.posture.minPosture)
             {
-                enemy.enemyPosture = enemy.enemyPosture - 3 * Time.deltaTime;
+                enemy.posture.posture = enemy.posture.posture - 3 * Time.deltaTime;
             }
 
             if (enemy.CheckForChase())

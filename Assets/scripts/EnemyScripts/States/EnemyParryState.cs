@@ -13,7 +13,7 @@ namespace Enemy
             base.Enter();
             //Debug.Log("parry");
             enemy.parryEnemy = true;
-            enemy.playerScript.playerPosture += 10;
+            enemy.posture.posture += 10;
         }
 
         public override void Exit()

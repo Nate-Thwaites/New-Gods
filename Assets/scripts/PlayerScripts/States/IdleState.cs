@@ -34,9 +34,9 @@ namespace Player
         public override void LogicUpdate()
         {
 
-            if (player.playerPosture > player.minPlayerPosture)
+            if (player.posture.posture > player.posture.minPosture)
             { 
-                player.playerPosture = player.playerPosture -3 * Time.deltaTime;
+                player.posture.posture = player.posture.posture -3 * Time.deltaTime;
             }
 
 

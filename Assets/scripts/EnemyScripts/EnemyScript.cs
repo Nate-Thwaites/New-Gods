@@ -72,19 +72,12 @@ namespace Enemy
         public TMPro.TextMeshProUGUI enemyStateText;
 
         public EnemyPostureBar enemyPostureBar;
+        public EnemyHealthBar enemyHealthBar;
 
 
         [Space(10)]
 
         #endregion UI variables
-
-        #region health variables
-
-        [Header("Health variables")]
-        
-        [Space(10)]
-
-        #endregion health variables
 
         #region enemy attack variables
 
@@ -130,9 +123,7 @@ namespace Enemy
         #region enemy posture variables
 
         [Header("Enemy posture variables")]
-        public float maxEnemyPosture = 100;
-        public float minEnemyPosture = 0;
-        public float enemyPosture;
+        public PostureScript posture;
 
         #endregion enemy posture variables
 
@@ -141,11 +132,15 @@ namespace Enemy
         void Start()
         {
             //enemyPostureBar.SetMaxPosture(maxEnemyPosture);
-            enemyPostureBar.SetMaxPosture(maxEnemyPosture);
+            enemyPostureBar.SetMaxPosture(posture.maxPosture);
+            enemyHealthBar.SetMaxHealth(health.maxHealth);
+            
 
 
             erb = GetComponent<Rigidbody2D>();
             esm = gameObject.AddComponent<EnemyStateMachine>();
+            health = health.GetComponent<HealthScript>();
+            posture = posture.GetComponent<PostureScript>();
 
             enemyIdleState = new EnemyIdleState(this, esm);
             enemyChaseState = new EnemyChaseState(this, esm);
@@ -169,10 +164,10 @@ namespace Enemy
         {
             DetectPlayer();
             DetectAttackPlayer();
-            
+            Die();
 
-            
-            enemyPostureBar.UpdatePostureBar(enemyPosture);
+            enemyHealthBar.UpdateHealthBar(health.health);
+            enemyPostureBar.UpdatePostureBar(posture.posture);
 
             if (player.transform.position.x < transform.position.x)
             {
@@ -294,7 +289,7 @@ namespace Enemy
 
         public bool CheckForPostureStun()
         {
-            if (enemyPosture >= maxEnemyPosture)
+            if (posture.posture >= posture.maxPosture)
             {
                 print("posture break");
                 return true;
@@ -387,7 +382,7 @@ namespace Enemy
         public IEnumerator PostureBreakStun()
         {
             yield return new WaitForSeconds(3f);
-            enemyPosture = minEnemyPosture;
+            posture.posture = posture.minPosture;
 
             postureBreakStunEnemy = false;
         }
@@ -399,15 +394,39 @@ namespace Enemy
             leavePostureStunEnemy = true;
         }
         
-
-        public void TakeDamage(HealthScript health)
+        public void Die()
+        {
+            if (health.health <= health.minHealth)
+            {
+                print("destroy enemy");
+                Destroy(gameObject);
+            }
+        }
+        /*public void TakeDamage(HealthScript health)
         {
             health.playerHealth -= enemyDamage;
-        }
+        }*/
 
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(enemyAttackPoint.position, enemyAttackRange);
+        }
+
+        public IEnumerator AttackDelay( )
+        {
+
+            yield return new WaitForSeconds(0.2f);
+            //hitEnemy = true;
+            if (!blockEnemy && !parryEnemy)
+            {
+                print("damage");
+                health.health -= LevelManager.instance.playerScript.attackDamage;
+            }
+        }
+
+        public void ParryPostureDamage()
+        {
+            posture.posture += 10;
         }
     }
 }
