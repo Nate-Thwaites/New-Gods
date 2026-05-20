@@ -119,30 +119,42 @@ namespace Player
         {
 
 
-            EnemyScript enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyScript>();
+            GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
 
             //enemy.GetComponent<EnemyScript>()
 
-            if (player.parryTimer > 0 && enemy.hitPlayer)
+            foreach (GameObject e in enemy)
             {
+                EnemyScript enemyScript = e.GetComponent<EnemyScript>();
 
-                Debug.Log("Parried attack");
-                player.playerParry = true;
-                enemy.parryStunEnemy = true;
+                if (enemyScript.hitPlayer && player.parryTimer > 0)
+                {
+                    Debug.Log("Parried attack");
+                    player.playerParry = true;
+                    enemyScript.parryStunEnemy = true;
+                }
+
+
                 if (player.playerParry)
                 {
-                    enemy.enemyPosture += 10;
+                    enemyScript.enemyPosture += 10;
                 }
             }
         }
 
         public void DetectBlock()
         {
-            EnemyScript enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyScript>();
+            GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy"); //GetComponent<EnemyScript>();
             //make array and use foreach loop to check for multiple enemies later
-            if (enemy.hitPlayer && player.isBlocking)
+            foreach (GameObject e in enemy)
             {
-                player.isBlocking = false;
+                EnemyScript enemyScript = e.GetComponent<EnemyScript>();
+
+                if (enemyScript.hitPlayer && player.isBlocking)
+                {
+                    player.isBlocking = false;
+                }
+
                 if (!player.playerParry)
                 {
                     player.playerPosture += 10;

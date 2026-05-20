@@ -74,7 +74,7 @@ namespace Enemy
         [Header("UI variables")]
         public GameObject enemyHealthCanvas;
         public TMPro.TextMeshProUGUI enemyStateText;
-        public EnemyHealthBar enemyHealthBar;
+
         public EnemyPostureBar enemyPostureBar;
 
 
@@ -85,9 +85,7 @@ namespace Enemy
         #region health variables
 
         [Header("Health variables")]
-        public int maxEnemyHealth = 200;
-        public int minEnemyHealth = 0;
-        public int enemyHealth;
+        
         [Space(10)]
 
         #endregion health variables
@@ -147,8 +145,9 @@ namespace Enemy
         void Start()
         {
             //enemyPostureBar.SetMaxPosture(maxEnemyPosture);
-            enemyHealthBar.SetMaxHealth(maxEnemyHealth);
             enemyPostureBar.SetMaxPosture(maxEnemyPosture);
+
+
             erb = GetComponent<Rigidbody2D>();
             esm = gameObject.AddComponent<EnemyStateMachine>();
 
@@ -162,7 +161,7 @@ namespace Enemy
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
-            enemyHealth = maxEnemyHealth;  
+            
 
             esm.Init(enemyIdleState);
 
@@ -174,9 +173,9 @@ namespace Enemy
         {
             DetectPlayer();
             DetectAttackPlayer();
-            EnemyDie();
+            
 
-            enemyHealthBar.UpdateHealthBar(enemyHealth);
+            
             enemyPostureBar.UpdatePostureBar(enemyPosture);
 
             if (player.transform.position.x < transform.position.x)
@@ -403,17 +402,11 @@ namespace Enemy
 
             leavePostureStunEnemy = true;
         }
-        void EnemyDie()
-        { 
-            if (enemyHealth <= minEnemyHealth)
-            {
-                Destroy(gameObject);
-            }
-        }
+        
 
-        public void TakeDamage(PlayerScript player)
+        public void TakeDamage(HealthScript health)
         {
-            player.playerHealth -= enemyDamage;
+            health.playerHealth -= enemyDamage;
         }
 
         private void OnDrawGizmos()

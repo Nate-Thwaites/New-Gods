@@ -140,11 +140,7 @@ namespace Player
 
         [Header("Health variables")]
 
-        public int maxPlayerHealth = 100;
-
-        public int minPlayerHealth = 0;
-
-        public int playerHealth;
+        HealthScript healthScript;
 
 
         [Space(10)]
@@ -189,7 +185,7 @@ namespace Player
         #region unity methods
         void Start()
         {
-            playerHealthBar.SetMaxHealth(maxPlayerHealth);
+            
             playerPostureBar.SetMaxPosture(maxPlayerPosture);
 
             canPressButton = true;
@@ -213,7 +209,7 @@ namespace Player
             anim = GetComponent<Animator>();
             
 
-            playerHealth = maxPlayerHealth;
+            
 
             moveAction = InputSystem.actions.FindAction("Move");
             jumpAction = InputSystem.actions.FindAction("Jump");
@@ -260,7 +256,7 @@ namespace Player
                 }
             }
 
-            playerHealthBar.UpdateHealthBar(playerHealth);
+            
             playerPostureBar.UpdatePostureBar(playerPosture);
 
             
@@ -285,10 +281,7 @@ namespace Player
                 playerPosture = maxPlayerPosture;
             }
 
-            if (playerHealth > maxPlayerHealth)
-            {
-                playerHealth = maxPlayerHealth;
-            }
+            
 
             attackTimer -= Time.deltaTime;
             attackCompleteTimer -= Time.deltaTime;
@@ -321,7 +314,6 @@ namespace Player
                 return;
             }
 
-            PlayerDie();
 
             moveInput.x = moveAction.ReadValue<Vector2>().x;
 
@@ -476,15 +468,23 @@ namespace Player
         #region attack delay coroutine
         public IEnumerator AttackDelay(EnemyScript enemy)
         {
-
+           
             yield return new WaitForSeconds(0.2f);
             print("hit enemy");
             //hitEnemy = true;
             if (!enemy.blockEnemy && !enemy.parryEnemy)
             {
+                //health.enemyHealth -= attackDamage;
 
-                enemy.enemyHealth -= attackDamage;
+                TakeDamage();
             }
+        }
+
+        public void TakeDamage(HealthScript health)
+        {
+            health = GetComponent<HealthScript>();
+            health.enemyHealth -= attackDamage;
+
         }
         #endregion attack delay coroutine
 
@@ -567,16 +567,7 @@ namespace Player
 
         #region player death
 
-        void PlayerDie()
-        {
-            if (playerHealth <= minPlayerHealth)
-            {
-                
-                SceneManager.LoadSceneAsync("Game");
-                sm.ChangeState(idleState);
-
-            }
-        }
+       
 
         #endregion player death
 
@@ -584,9 +575,12 @@ namespace Player
 
         public void PlayerHeal()
         {
+            HealthScript health;
+
+            health = GetComponent<HealthScript>();
             if (hasHealItem && healAction.WasPressedThisFrame())
             {
-                playerHealth = playerHealth + 30;
+                health.playerHealth = +30;
                 hasHealItem = false;
             }
         }
