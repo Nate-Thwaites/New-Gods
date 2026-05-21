@@ -22,13 +22,22 @@ namespace Player
         [Header("Core variables")]
         public Animator anim;
         public EnemyScript enemy;
+        public GameObject slipObject;
 
 
         [Space(10)]
-        
+
         #endregion core variables
 
+        #region Audio
 
+        [Header("Audio")]
+        public AudioManager am;
+        public AudioSource audioSource;
+
+        [Space(10)]
+
+        #endregion Audio
         #region UI variables
 
         [Header("UI variables")]
@@ -37,16 +46,21 @@ namespace Player
         public PlayerHealthBar playerHealthBar;
         public PlayerPostureBar playerPostureBar;
         public bool gameIsPaused = false;
+
+        
         public GameObject pauseMenuUI;
         public GameObject pauseMenuCanvas;
         public bool canPressButton;
         public GameObject settingsMenu;
         public GameObject keyboardControlMenu;
         public GameObject gamepadControlMenu;
+        public GameObject volumeSettings;
         [SerializeField] Slider musicSlider;
-        public GameObject enemyHealthCanvas;
 
-        public TMPro.TextMeshProUGUI postureText;
+        public GameObject deathScreen;
+        
+
+        public TMPro.TextMeshProUGUI healthItemText;
         [Space(10)]
 
         #endregion UI variables
@@ -82,7 +96,7 @@ namespace Player
         public int maxAttackNum = 3;
         public float attackTimer = 2f;
         public float attackCompleteTimer;
-        public int attackDamage;
+        public float attackDamage;
         public bool hitEnemy;
         [Space(10)]
 
@@ -141,6 +155,8 @@ namespace Player
 
         public HealthScript health;
 
+        public int healthItemCount;
+
         [Space(10)]
 
         #endregion health variables
@@ -174,38 +190,49 @@ namespace Player
 
         #endregion Item Detection variables
 
+        #region particle variables
+
+        [Header("Particle variables")]
+        public ParticleSystem particle;
+
+        #endregion particle variables
+
+        #region powerups
+
+        [Header("Power Up variables")]
+
+        public bool hasPowerup;
+        #endregion powerups
+
         #endregion variables
 
 
         #region unity methods
         void Start()
         {
-            
+            healthItemCount = 0;
             playerPostureBar.SetMaxPosture(posture.maxPosture);
+            playerHealthBar.SetMaxHealth(health.maxHealth);
+
+            Time.timeScale = 1f;
 
             canPressButton = true;
 
-           /* if (!PlayerPrefs.HasKey("MusicVolume"))
-            {
-                PlayerPrefs.SetFloat("MusicVolume", 1);
-                //LoadMusicVolume();
-            }
+            hasPowerup = false;
 
-            else
-            {
-                //LoadMusicVolume();
-            }
-*/
-            hasHealItem = false;
+
             
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
             anim = GetComponent<Animator>();
 
+            audioSource = GetComponent<AudioSource>();
+
             health = GetComponent<HealthScript>();
             posture = GetComponent<PostureScript>();
+            //am = am.GetComponent<AudioManager>();
 
-            playerHealthBar.SetMaxHealth(health.maxHealth);
+
 
 
             moveAction = InputSystem.actions.FindAction("Move");
@@ -241,12 +268,15 @@ namespace Player
         {
             playerHealthBar.UpdateHealthBar(health.health);
             playerPostureBar.UpdatePostureBar(posture.posture);
+
+
             if (pauseAction.WasPressedThisFrame())
             {
                 if (gameIsPaused)
                 {
-                    canPressButton = true;
+                    
                     Resume();
+                    canPressButton = true;
                 }
                 else
                 {
@@ -255,22 +285,19 @@ namespace Player
                 }
             }
 
-            
+            particle.transform.position = transform.position;
 
             Die();
 
-            if(!isGrounded)
-            {
-                coyoteTime -= Time.deltaTime;
-            }
+            
 
             GroundCheck();
-            ItemDetection();
+            //ItemDetection();
             PlayerHeal();
 
 
             
-
+            
             
 
             attackTimer -= Time.deltaTime;
@@ -294,8 +321,8 @@ namespace Player
                 isBlocking = false;
             }
 
-            /*stateText.text = "State: " + sm.CurrentState;
-            postureText.text = "Posture: " + playerPostureBar;*/
+            
+            healthItemText.text = "X " + healthItemCount;
 
            
             if ((sm.CurrentState == null))
@@ -365,11 +392,14 @@ namespace Player
 
         public bool CheckForJump()
         {
-            if (jumpAction.WasPressedThisFrame() && isGrounded)//coyoteTime > 0)
+            if (canPressButton)
             {
-                //coyoteTime = 0f;
-                return true;
-                
+                if (jumpAction.WasPressedThisFrame() && isGrounded)//coyoteTime > 0)
+                {
+                    //coyoteTime = 0f;
+                    return true;
+
+                }
             }
 
             return false;
@@ -413,10 +443,13 @@ namespace Player
 
         public bool CheckForBlock()
         {
-            if(isBlocking)
+            if (canPressButton)
             {
-                
-                return true;
+                if (isBlocking)
+                {
+
+                    return true;
+                }
             }
 
             return false;
@@ -474,8 +507,8 @@ namespace Player
         public void GroundCheck()
         {
             Vector3 ofs1 = new Vector3 (0,0,0);
-            Vector3 ofs2 = new Vector3(-0.5f, 0, 0);
-            Vector3 ofs3 = new Vector3(0.5f, 0, 0);
+            Vector3 ofs2 = new Vector3(-0.3f, 0, 0);
+            Vector3 ofs3 = new Vector3(0.3f, 0, 0);
 
             bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, floor | wall);
             bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, floor | wall);
@@ -487,23 +520,52 @@ namespace Player
 
             if (hit1 || hit2 || hit3)
             {
+                Debug.DrawRay(transform.position + ofs1, Vector2.down * 0.55f, Color.green);
+                Debug.DrawRay(transform.position + ofs2, Vector2.down * 0.55f, Color.green);
+                Debug.DrawRay(transform.position + ofs3, Vector2.down * 0.55f, Color.green);
                 isGrounded = true;
             }
 
             else if (!hit1 && !hit2 && !hit3)
             {
+                Debug.DrawRay(transform.position + ofs1, Vector2.down * 0.55f, Color.red);
+                Debug.DrawRay(transform.position + ofs2, Vector2.down * 0.55f, Color.red);
+                Debug.DrawRay(transform.position + ofs3, Vector2.down * 0.55f, Color.red);
                 isGrounded = false;
                
             }
         }
 
-        
-        
-            
-        
 
-       
-        public void ItemDetection()
+
+
+
+        private void OnTriggerEnter2D(Collider2D hit)
+        {
+            if (hit.gameObject.CompareTag("Heal Item"))
+            {
+                print("pick up");
+                Destroy(hit.gameObject);
+                healthItemCount += 1;
+
+                
+            }
+
+            if(hit.gameObject.CompareTag("Power Up"))
+            {
+
+               Destroy(hit.gameObject);
+               hasPowerup = true;
+
+            }
+
+        }
+
+
+
+
+
+        /*public void ItemDetection()
         {
            
 
@@ -530,23 +592,41 @@ namespace Player
 
             if (itemHit &&  interactAction.WasPressedThisFrame())
             {
-                print("pick up");
-                Destroy(HealItem);
-                hasHealItem = true;
+               
             }
-        }
+        }*/
 
         #endregion Raycast detection
-
+        
         #region player death
+
+        public IEnumerator DeathScreen()
+        {
+            yield return new WaitForSeconds(1.3f);
+            Time.timeScale = 0f;
+            deathScreen.SetActive(true);
+        }
 
         public void Die()
         {
             if (health.health <= health.minHealth)
             {
-                SceneManager.LoadSceneAsync("Game");
+                canPressButton = false;
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                anim.Play("Die", 0);
+                StartCoroutine(DeathScreen());
             }
         }
+
+        public void Restart()
+        {
+            SceneManager.LoadSceneAsync("Game");
+            
+            
+
+        }
+
+
 
         #endregion player death
 
@@ -557,10 +637,10 @@ namespace Player
             HealthScript health;
 
             health = GetComponent<HealthScript>();
-            if (hasHealItem && healAction.WasPressedThisFrame())
+            if (healthItemCount > 0 && healAction.WasPressedThisFrame())
             {
                 health.health += 30;
-                hasHealItem = false;
+                healthItemCount -= 1;
             }
         }
 
@@ -586,17 +666,20 @@ namespace Player
         #region pause
         
         #region main pause menu
+       
         public void Resume()
         {
-            enemyHealthCanvas.SetActive(true);
+            canPressButton = true;
+
             pauseMenuCanvas.SetActive(false);
             pauseMenuUI.SetActive(false);
-            Time.timeScale = 1;
+            Time.timeScale = 1; 
             gameIsPaused = false;
         }
+
+
         public void Pause()
         {
-            enemyHealthCanvas.SetActive(false);
             pauseMenuCanvas.SetActive(true);
             pauseMenuUI.SetActive(true);
             Time.timeScale = 0;
@@ -617,6 +700,12 @@ namespace Player
         #endregion main pause menu
 
         #region pause settings
+        public void OpenVolumeSettings()
+        {
+            volumeSettings.SetActive(true);
+            settingsMenu.SetActive(false);
+        }
+
         public void OpenKeyboardControls()
         {
             settingsMenu.SetActive(false);
@@ -634,6 +723,7 @@ namespace Player
             settingsMenu.SetActive(true);
             keyboardControlMenu.SetActive(false);
             gamepadControlMenu.SetActive(false);
+            volumeSettings.SetActive(false);
         }
 
         public void BackToPauseMenu()
@@ -668,8 +758,17 @@ namespace Player
 
         }
 
-        
+
 
         #endregion random num for enemy block
+       
+        public void RespawnDamage()
+        {
+            health.health = health.health - 10;
+        }
+        public void ParryParticle()
+        {
+            particle.Play();
+        }
     }
 }

@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Checkpoint
+  - Heal Item
+  - slip layer
+  - Power Up
   layers:
   - Default
   - TransparentFX
@@ -15,9 +19,9 @@ TagManager:
   - itemLayer
   - player
   - enemy
-  - up slope
-  - down slope
-  - 
+  - slipLayer
+  - checkpoint
+  - respawnZone
   - 
   - 
   - 

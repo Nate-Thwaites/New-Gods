@@ -10,7 +10,7 @@ namespace Enemy
         SwipeLeft,
         SwipeRight,
         SwipeUp,
-        SwipeDown
+        
     }
 
 
@@ -30,26 +30,26 @@ namespace Enemy
             enemy.blockOrParryChance = 0;
             enemy.enemyMoveDir = 0;
 
-            if (enemy.hitPlayer && !enemy.playerScript.isBlocking)
-            {
-                //enemy.playerScript.playerHealth -= 10;
-            }
+            
 
             enemy.seePlayer = false;
         }
 
         void EnemyAttack()
         {
-            //enemy.enemyAttackTimer = 1.5f;
+            enemy.enemyAttackTimer = 1.5f;
             enemy = enemy.GetComponent<EnemyScript>();
 
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
             foreach (Collider2D player in hitPlayer)
             {
-
+                
                 enemy.hitPlayer = true;
                 
-                
+                if(enemy.hitPlayer)
+                {
+                    enemy.playerScript.health.health -= enemy.enemyDamage; 
+                }
                 
             }
 
@@ -61,46 +61,47 @@ namespace Enemy
         {
             switch ((int)enemyAttackNum)
             {
-
-
-                case 0: //Swipe Left
+                case 0:
 
                     EnemyAttack();
-                    
-                    enemy.anim.Play("enemy attack 1", 0);
+
+                    //enemy.anim.Play("enemy attack 1", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
-                    enemy.enemyDamage = 20;
+                    enemy.enemyDamage = 10;
 
                     break;
 
-                case 1: //Swipe Right
+                case 1: //Swipe Left
 
+                    
                     EnemyAttack();
                     
-                    enemy.anim.Play("enemy attack 2", 0);
+                    //enemy.anim.Play("enemy attack 1", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
-                    enemy.enemyDamage = 20;
+                    enemy.enemyDamage = 10;
 
                     break;
 
-                case 2: // Swipe Up
+                case 2: //Swipe Right
+
+                    EnemyAttack();
+                    
+                    //enemy.anim.Play("enemy attack 2", 0);
+                    enemy.enemyAttackCompleteTimer = 0.5f;
+                    enemy.enemyDamage = 10;
+
+                    break;
+
+                case 3: // Swipe Up
 
                     EnemyAttack();
                    
-                    enemy.anim.Play("enemy attack 3", 0);
+                    //enemy.anim.Play("enemy attack 3", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
                     enemy.enemyDamage = 20;
                     break;
 
-                case 3: // Swipe Down
-
-                    EnemyAttack();
-                    
-                    enemy.anim.Play("enemy attack 4", 0);
-                    enemy.enemyAttackCompleteTimer = 0.5f;
-                    enemy.enemyDamage = 20;
-
-                    break;
+                
 
 
             }
@@ -110,7 +111,7 @@ namespace Enemy
         {
             base.Exit();
             enemy.hitPlayer = false;
-
+            
         }
 
         public override void HandleInput()
@@ -126,12 +127,15 @@ namespace Enemy
 
             if (enemy.CheckForIdle() || enemy.enemyAttackCompleteTimer >= 0 && enemy.enemyAttackCompleteTimer <= 0.6)
             {
+                enemy.anim.Play("enemy leave attack", 0);
+
                 esm.ChangeState(enemy.enemyIdleState);
             }
 
 
             if (enemy.CheckForChase())
             {
+                enemy.anim.Play("enemy leave attack", 0);
                 esm.ChangeState(enemy.enemyChaseState);
             }
 

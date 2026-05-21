@@ -40,8 +40,8 @@ namespace Player
 
         public override void LogicUpdate()
         {
-            
 
+            player.anim.Play("Block", 0);
             DetectParry();
             DetectBlock();
 
@@ -144,6 +144,7 @@ namespace Player
                 {
                     Debug.Log("Parried attack");
                     player.playerParry = true;
+                    player.ParryParticle();
                     enemyScript.parryStunEnemy = true;
                 }
 

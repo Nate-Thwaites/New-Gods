@@ -69,7 +69,7 @@ namespace Enemy
 
         [Header("UI variables")]
         public GameObject enemyHealthCanvas;
-        public TMPro.TextMeshProUGUI enemyStateText;
+        
 
         public EnemyPostureBar enemyPostureBar;
         public EnemyHealthBar enemyHealthBar;
@@ -134,7 +134,7 @@ namespace Enemy
             //enemyPostureBar.SetMaxPosture(maxEnemyPosture);
             enemyPostureBar.SetMaxPosture(posture.maxPosture);
             enemyHealthBar.SetMaxHealth(health.maxHealth);
-            
+
 
 
             erb = GetComponent<Rigidbody2D>();
@@ -152,7 +152,7 @@ namespace Enemy
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
-            
+
 
             esm.Init(enemyIdleState);
 
@@ -185,7 +185,7 @@ namespace Enemy
                 return;
             }
 
-            
+
 
 
             enemyAttackCompleteTimer -= Time.deltaTime;
@@ -253,15 +253,21 @@ namespace Enemy
             return false;
         }
 
+        public IEnumerator WaitForNextCase()
+        {
+            yield return new WaitForSeconds(0.35f);
+            enemyAttackState.enemyAttackNum++;
+        }
+
+
+
         public bool CheckForAttack()
         {
-            if (attackPlayer && enemyAttackCompleteTimer <= 0)
+            if (attackPlayer && enemyAttackCompleteTimer <= 0 )
             {
-                if (enemyAttackTimer > 0)
-                {
+                StartCoroutine(WaitForNextCase());
 
-                    enemyAttackState.enemyAttackNum++;
-                }
+
 
                 if ((int)enemyAttackState.enemyAttackNum > maxEnemyAttackNum || enemyAttackTimer < 0)
                 {
@@ -326,7 +332,7 @@ namespace Enemy
         {
             Vector2 lookDir = (player.transform.position - transform.position).normalized;
 
-            RaycastHit2D see = Physics2D.Raycast(transform.position, lookDir, 10f, LayerMask.GetMask("player") | LayerMask.GetMask("floor"));
+            RaycastHit2D see = Physics2D.Raycast(transform.position, lookDir, 10f, LayerMask.GetMask("player"));// | LayerMask.GetMask("floor"));
 
 
             if (see)
@@ -424,6 +430,11 @@ namespace Enemy
             }
         }
 
+
+     
+        
+
+        
         public void ParryPostureDamage()
         {
             posture.posture += 10;

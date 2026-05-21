@@ -12,12 +12,12 @@ public class PlayerHealthBar : MonoBehaviour
         playerScript = player.GetComponent<PlayerScript>();
     }
 
-    public void SetMaxHealth(int health)
+    public void SetMaxHealth(float health)
     {
         slider.maxValue = health;
         
     }
-    public void UpdateHealthBar(int health)
+    public void UpdateHealthBar(float health)
     {
         slider.value = health;
     }

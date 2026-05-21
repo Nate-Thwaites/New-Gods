@@ -10,6 +10,7 @@ public class MenuScript : MonoBehaviour
     public GameObject settingsMenu;
     public GameObject keyboardControlMenu;
     public GameObject gamepadControlMenu;
+    public GameObject volumeMenu;
 
     [SerializeField] Slider musicSlider;
 
@@ -51,7 +52,11 @@ public class MenuScript : MonoBehaviour
 
     #region settings menu
 
-    
+    public void OpenVolumeMenu()
+    {
+        settingsMenu.SetActive(false);
+        volumeMenu.SetActive(true);
+    }
 
     public void OpenKeyboardControlMenu()
     {

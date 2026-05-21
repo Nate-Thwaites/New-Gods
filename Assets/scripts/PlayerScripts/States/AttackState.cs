@@ -1,5 +1,5 @@
 using Enemy;
-using System.Security.Cryptography;
+using System;
 using UnityEngine;
 
 
@@ -28,7 +28,6 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-
             player.rb.linearVelocity = new Vector2(0, 0);
             AttackSwitch();
            
@@ -38,7 +37,8 @@ namespace Player
         void Attack()
         {
             player.attackTimer = 1.5f;
-            
+            player.audioSource.PlayOneShot(player.am.SFXClips[0]);
+
 
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);
             foreach (Collider2D enemy in hitEnemy)
@@ -46,8 +46,9 @@ namespace Player
                 player.RandomNumForEnemyBlock(enemy.GetComponent<EnemyScript>());
 
                 player.hitEnemy = true;
+               
 
-                if(player.hitEnemy && enemy.GetComponent<EnemyScript>().postureBreakStunEnemy)
+                if (player.hitEnemy && enemy.GetComponent<EnemyScript>().postureBreakStunEnemy)
                 {
                     enemy.GetComponent<EnemyScript>().postureBreakStunEnemy = false;
                 }
@@ -76,42 +77,61 @@ namespace Player
 
                     player.anim.Play("attack temp", 0);
                     player.attackDamage = 10;
+                    if (player.hasPowerup)
+                    {
+                        player.attackDamage *= 1.5f;
+                    }
                     player.posture.postureDamage = 20;
                     player.attackCompleteTimer = 0.2f;
-
+                    Debug.Log("Damage = " + player.attackDamage );
 
                     break;
 
                 case 1: //Swipe Right
 
                     Attack();
-
+                   
                     player.anim.Play("attack temp no2", 0);
                     player.attackDamage = 5;
+                    if (player.hasPowerup)
+                    {
+                        player.attackDamage *= 1.5f;
+                    }
                     player.posture.postureDamage = 10;
                     player.attackCompleteTimer = 0.4f;
+                    Debug.Log("Damage = " + player.attackDamage);
 
                     break;
 
                 case 2: // Swipe Up
 
                     Attack();
-
+                   
                     player.anim.Play("Attack temp no3", 0);
                     player.attackDamage = 10;
+                    if (player.hasPowerup)
+                    {
+                        player.attackDamage *= 1.5f;
+                    }
                     player.posture.postureDamage = 20;
                     player.attackCompleteTimer = 0.4f;
+                    Debug.Log("Damage = " + player.attackDamage);
 
                     break;
 
                 case 3: // Swipe Down
 
                     Attack();
-
+                    
                     player.anim.Play("attack temp no4", 0);
                     player.attackDamage = 20;
+                    if (player.hasPowerup)
+                    {
+                        player.attackDamage *= 1.5f;
+                    }
                     player.posture.postureDamage = 40;
                     player.attackCompleteTimer = 0.7f;
+                    Debug.Log("Damage = " + player.attackDamage);
 
                     break;
 
@@ -139,6 +159,7 @@ namespace Player
             base.LogicUpdate();
 
             
+
 
             if (player.attackCompleteTimer <= 0)
             {
