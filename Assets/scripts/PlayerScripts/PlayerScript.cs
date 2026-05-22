@@ -38,6 +38,7 @@ namespace Player
         [Space(10)]
 
         #endregion Audio
+
         #region UI variables
 
         [Header("UI variables")]
@@ -55,6 +56,7 @@ namespace Player
         public GameObject keyboardControlMenu;
         public GameObject gamepadControlMenu;
         public GameObject volumeSettings;
+        public GameObject endScreen;
         [SerializeField] Slider musicSlider;
 
         public GameObject deathScreen;
@@ -230,7 +232,7 @@ namespace Player
 
             health = GetComponent<HealthScript>();
             posture = GetComponent<PostureScript>();
-            //am = am.GetComponent<AudioManager>();
+            am = am.GetComponent<AudioManager>();
 
 
 
@@ -472,12 +474,12 @@ namespace Player
 
         #endregion state checks
 
-        #region attack debug temp
-        private void OnDrawGizmos()
+       // #region attack debug temp
+/*        private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(attackPoint.position, attackRange);
         }
-        #endregion attack debug temp
+        #endregion attack debug temp*/
 
         #region leave parry coroutine
         public IEnumerator LeaveParry()
@@ -559,6 +561,12 @@ namespace Player
 
             }
 
+
+            if(hit.gameObject.CompareTag("End Zone"))
+            {
+                Time.timeScale = 0f;
+                endScreen.SetActive(true);
+            }
         }
 
 

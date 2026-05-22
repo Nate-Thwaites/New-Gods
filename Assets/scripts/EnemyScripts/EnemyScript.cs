@@ -17,6 +17,8 @@ namespace Enemy
         public Rigidbody2D erb;
         [Header("Core variables")]
         public Animator anim;
+        public bool enemyIsGrounded;
+        public LayerMask floor;
         [Space(10)]
 
         #endregion core variables
@@ -39,6 +41,7 @@ namespace Enemy
         public EnemyBlockState enemyBlockState;
         public EnemyParryState enemyParryState;
         public EnemyPostureStunState enemyPostureStunState;
+        public EnemyAttackStunState enemyAttackStunState;
         public EnemyStateMachine esm;
         [Space(10)]
 
@@ -59,6 +62,7 @@ namespace Enemy
         [Header("Stun variables")]
         public bool parryStunEnemy;
         public bool attackStunEnemy;
+        public float attackStunTimer;
         public bool postureBreakStunEnemy;
         public bool leavePostureStunEnemy;
         [Space(10)]
@@ -86,7 +90,7 @@ namespace Enemy
         public float enemyAttackCompleteTimer = 0.5f;
         public Transform enemyAttackPoint;
         public int maxEnemyAttackNum = 3;
-        public float enemyAttackRange = 5f;
+        public float enemyAttackRange = 0.7f;
         public bool attackReset;
         public bool hitPlayer = false;
         public int enemyDamage;
@@ -149,6 +153,7 @@ namespace Enemy
             enemyBlockState = new EnemyBlockState(this, esm);
             enemyParryState = new EnemyParryState(this, esm);
             enemyPostureStunState = new EnemyPostureStunState(this, esm);
+            enemyAttackStunState = new EnemyAttackStunState(this, esm);
 
             player = GameObject.Find("player");
             playerScript = player.GetComponent<PlayerScript>();
@@ -165,7 +170,7 @@ namespace Enemy
             DetectPlayer();
             DetectAttackPlayer();
             Die();
-
+ 
             enemyHealthBar.UpdateHealthBar(health.health);
             enemyPostureBar.UpdatePostureBar(posture.posture);
 
@@ -263,9 +268,8 @@ namespace Enemy
 
         public bool CheckForAttack()
         {
-            if (attackPlayer && enemyAttackCompleteTimer <= 0 )
+            if (attackPlayer && enemyAttackCompleteTimer <= 0)
             {
-                StartCoroutine(WaitForNextCase());
 
 
 
@@ -303,12 +307,21 @@ namespace Enemy
             return false;
         }
 
+        public bool CheckForAttackStun()
+        {
+            if (attackStunEnemy)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void DetectAttackPlayer()
         {
-            float dist = 4;
+            float dist = 1.8f;
 
 
-            Vector3 offset = new Vector3(2, 0, 0);
+            Vector3 offset = new Vector3(0.9f, 0, 0);
 
             bool playerHit = Physics2D.Raycast(transform.position - offset, Vector2.right, dist, playerLayer);
 
@@ -385,6 +398,13 @@ namespace Enemy
             parryStunEnemy = false;
         }
 
+        public IEnumerator AttackStun()
+        {
+            yield return new WaitForSeconds(attackStunTimer);
+            attackPlayer = false;
+            attackStunEnemy = false;
+        }
+
         public IEnumerator PostureBreakStun()
         {
             yield return new WaitForSeconds(3f);
@@ -404,7 +424,7 @@ namespace Enemy
         {
             if (health.health <= health.minHealth)
             {
-                print("destroy enemy");
+               
                 Destroy(gameObject);
             }
         }
@@ -425,16 +445,16 @@ namespace Enemy
             //hitEnemy = true;
             if (!blockEnemy && !parryEnemy)
             {
-                print("damage");
                 health.health -= LevelManager.instance.playerScript.attackDamage;
             }
         }
 
 
-     
         
 
-        
+
+
+
         public void ParryPostureDamage()
         {
             posture.posture += 10;

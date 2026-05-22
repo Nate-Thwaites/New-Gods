@@ -46,7 +46,7 @@ namespace Player
                 player.RandomNumForEnemyBlock(enemy.GetComponent<EnemyScript>());
 
                 player.hitEnemy = true;
-               
+                enemy.GetComponent<EnemyScript>().attackStunEnemy = true;
 
                 if (player.hitEnemy && enemy.GetComponent<EnemyScript>().postureBreakStunEnemy)
                 {
@@ -55,8 +55,10 @@ namespace Player
 
                 if (player.hitEnemy)
                 {
+                    
                     enemy.GetComponent<EnemyScript>().StartCoroutine(enemy.GetComponent<EnemyScript>().AttackDelay());
                     
+
                 }
                 
 
@@ -77,13 +79,17 @@ namespace Player
 
                     player.anim.Play("attack temp", 0);
                     player.attackDamage = 10;
+
                     if (player.hasPowerup)
                     {
                         player.attackDamage *= 1.5f;
                     }
+
                     player.posture.postureDamage = 20;
-                    player.attackCompleteTimer = 0.2f;
-                    Debug.Log("Damage = " + player.attackDamage );
+                    player.attackCompleteTimer = 0.4f;
+                    player.enemy.attackStunEnemy = true;
+                    player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
+                    //Debug.Log("Damage = " + player.attackDamage );
 
                     break;
 
@@ -98,8 +104,10 @@ namespace Player
                         player.attackDamage *= 1.5f;
                     }
                     player.posture.postureDamage = 10;
-                    player.attackCompleteTimer = 0.4f;
-                    Debug.Log("Damage = " + player.attackDamage);
+                    player.attackCompleteTimer = 0.6f;
+                    player.enemy.attackStunEnemy = true;
+                    player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
+                    //Debug.Log("Damage = " + player.attackDamage);
 
                     break;
 
@@ -114,8 +122,10 @@ namespace Player
                         player.attackDamage *= 1.5f;
                     }
                     player.posture.postureDamage = 20;
-                    player.attackCompleteTimer = 0.4f;
-                    Debug.Log("Damage = " + player.attackDamage);
+                    player.attackCompleteTimer = 0.6f;
+                    player.enemy.attackStunEnemy = true;
+                    player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
+                    //Debug.Log("Damage = " + player.attackDamage);
 
                     break;
 
@@ -130,8 +140,10 @@ namespace Player
                         player.attackDamage *= 1.5f;
                     }
                     player.posture.postureDamage = 40;
-                    player.attackCompleteTimer = 0.7f;
-                    Debug.Log("Damage = " + player.attackDamage);
+                    player.attackCompleteTimer = 0.9f;
+                    player.enemy.attackStunEnemy = true;
+                    player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
+                    //Debug.Log("Damage = " + player.attackDamage);
 
                     break;
 

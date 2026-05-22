@@ -583,6 +583,8 @@ GameObject:
   - component: {fileID: 3831510933147503511}
   - component: {fileID: 6648719648441280441}
   - component: {fileID: 8065095015489147830}
+  - component: {fileID: -7684959590102099830}
+  - component: {fileID: -5132226670694403021}
   m_Layer: 8
   m_Name: enemy
   m_TagString: Enemy
@@ -681,7 +683,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyScript
   erb: {fileID: 0}
   anim: {fileID: 8065095015489147830}
-  healthManager: {fileID: 0}
+  enemyIsGrounded: 0
+  floor:
+    serializedVersion: 2
+    m_Bits: 8
+  health: {fileID: -7684959590102099830}
   esm: {fileID: 0}
   blockOrParryChance: 0
   blockEnemy: 0
@@ -691,19 +697,16 @@ MonoBehaviour:
   postureBreakStunEnemy: 0
   leavePostureStunEnemy: 0
   enemyHealthCanvas: {fileID: 6383447704429980399}
-  enemyStateText: {fileID: 0}
-  enemyHealthBar: {fileID: 4207700659509273524}
   enemyPostureBar: {fileID: 7913128486978739555}
-  maxEnemyHealth: 100
-  minEnemyHealth: 0
-  enemyHealth: 200
+  enemyHealthBar: {fileID: 4207700659509273524}
   enemyAttackTimer: 1.5
   enemyAttackCompleteTimer: 0.5
-  enemyAttackPoint: {fileID: 6375987126585762465}
+  enemyAttackPoint: {fileID: 0}
   maxEnemyAttackNum: 3
-  enemyAttackRange: 0.5
+  enemyAttackRange: 0.7
   attackReset: 0
   hitPlayer: 0
+  enemyDamage: 0
   seePlayer: 0
   attackPlayer: 0
   playerLayer:
@@ -713,9 +716,7 @@ MonoBehaviour:
   playerScript: {fileID: 0}
   enemySpeed: 4
   enemyMoveDir: 0
-  maxEnemyPosture: 100
-  minEnemyPosture: 0
-  enemyPosture: 0
+  posture: {fileID: -5132226670694403021}
 --- !u!61 &3831510933147503511
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -811,6 +812,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7684959590102099830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7355020045583638426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d08a384c26cc5548ae6f4bbfee6a300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthScript
+  health: 0
+  maxHealth: 100
+  minHealth: 0
+--- !u!114 &-5132226670694403021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7355020045583638426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f05cc095eb93c419b6c6530faad24e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PostureScript
+  posture: 0
+  maxPosture: 100
+  minPosture: 0
+  postureDamage: 0
 --- !u!1 &7909473898767636468
 GameObject:
   m_ObjectHideFlags: 0

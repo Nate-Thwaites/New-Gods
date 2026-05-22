@@ -27,6 +27,7 @@ namespace Enemy
             base.Enter();
             EnemyAttackSwitch();
 
+
             enemy.blockOrParryChance = 0;
             enemy.enemyMoveDir = 0;
 
@@ -37,21 +38,35 @@ namespace Enemy
 
         void EnemyAttack()
         {
-            enemy.enemyAttackTimer = 1.5f;
+            //enemy.enemyAttackTimer = 1.5f;
             enemy = enemy.GetComponent<EnemyScript>();
 
+            
+
             Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
-            foreach (Collider2D player in hitPlayer)
+            foreach (Collider2D hit in hitPlayer)
             {
-                
                 enemy.hitPlayer = true;
-                
-                if(enemy.hitPlayer)
+
+
+                HealthScript health = hit.GetComponent<HealthScript>();
+
+                if (health != null && !enemy.playerScript.isBlocking && !enemy.attackStunEnemy)
                 {
-                    enemy.playerScript.health.health -= enemy.enemyDamage; 
+                    health.health -= enemy.enemyDamage;
+
+                    //Debug.Log("Enemy Attack Damage = " + enemy.enemyDamage);
+
+
+                    /*if(enemy.hitPlayer)
+                    {
+                        enemy.playerScript.health.health -= enemy.enemyDamage; 
+                    }
+                    */
                 }
-                
             }
+
+           
 
                      
             
@@ -66,8 +81,9 @@ namespace Enemy
                     EnemyAttack();
 
                     //enemy.anim.Play("enemy attack 1", 0);
-                    enemy.enemyAttackCompleteTimer = 0.5f;
+                    enemy.enemyAttackCompleteTimer = 0.8f;
                     enemy.enemyDamage = 10;
+
 
                     break;
 
@@ -77,8 +93,10 @@ namespace Enemy
                     EnemyAttack();
                     
                     //enemy.anim.Play("enemy attack 1", 0);
-                    enemy.enemyAttackCompleteTimer = 0.5f;
+                    enemy.enemyAttackCompleteTimer = 0.8f;
                     enemy.enemyDamage = 10;
+
+                    
 
                     break;
 
@@ -87,8 +105,9 @@ namespace Enemy
                     EnemyAttack();
                     
                     //enemy.anim.Play("enemy attack 2", 0);
-                    enemy.enemyAttackCompleteTimer = 0.5f;
+                    enemy.enemyAttackCompleteTimer = 0.8f;
                     enemy.enemyDamage = 10;
+
 
                     break;
 
@@ -99,6 +118,8 @@ namespace Enemy
                     //enemy.anim.Play("enemy attack 3", 0);
                     enemy.enemyAttackCompleteTimer = 0.5f;
                     enemy.enemyDamage = 20;
+
+
                     break;
 
                 
@@ -123,7 +144,10 @@ namespace Enemy
         {
             base.LogicUpdate();
 
-          
+            if (enemy.CheckForAttackStun())
+            {
+                esm.ChangeState(enemy.enemyAttackStunState);
+            }
 
             if (enemy.CheckForIdle() || enemy.enemyAttackCompleteTimer >= 0 && enemy.enemyAttackCompleteTimer <= 0.6)
             {
@@ -158,6 +182,8 @@ namespace Enemy
             {
                 esm.ChangeState(enemy.enemyPostureStunState);
             }
+
+           
         }
 
         public override void PhysicsUpdate()

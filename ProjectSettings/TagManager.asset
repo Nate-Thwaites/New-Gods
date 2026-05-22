@@ -9,6 +9,7 @@ TagManager:
   - Heal Item
   - slip layer
   - Power Up
+  - End Zone
   layers:
   - Default
   - TransparentFX

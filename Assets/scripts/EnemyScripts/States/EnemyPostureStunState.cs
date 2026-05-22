@@ -6,11 +6,12 @@ namespace Enemy
         public EnemyPostureStunState(EnemyScript enemy, EnemyStateMachine esm) : base(enemy, esm)
         {
         }
-        bool attackLanded;
+        public bool attackLanded;
         public override void Enter()
         {
             base.Enter();
-            
+            enemy.erb.linearVelocity = new Vector2(0, 0);
+            enemy.playerScript.hitEnemy = false;
 
         }
 
@@ -29,7 +30,7 @@ namespace Enemy
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            enemy.erb.linearVelocity = new Vector2(0, 0);
+            
 
             enemy.StartCoroutine(enemy.PostureBreakStun());
 
@@ -39,19 +40,16 @@ namespace Enemy
                 
                 enemy.erb.AddForce(5 * enemy.transform.right * 2f, ForceMode2D.Impulse);
 
-                enemy.playerScript.attackDamage *= 4;
+                enemy.playerScript.attackDamage = 60;
 
                 enemy.postureBreakStunEnemy = false;
             }
             
 
-            if (!enemy.postureBreakStunEnemy)
+            if (attackLanded)
             {
 
-                enemy.StartCoroutine(enemy.LeavePostureStun());
-
-                if (enemy.leavePostureStunEnemy)
-                {
+                
 
                     if (enemy.CheckForChase())
                     {
@@ -77,7 +75,7 @@ namespace Enemy
                     {
                         esm.ChangeState(enemy.enemyParryState);
                     }
-                }
+                
             }
         }
 

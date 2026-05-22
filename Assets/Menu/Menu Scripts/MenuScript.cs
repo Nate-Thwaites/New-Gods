@@ -75,6 +75,7 @@ public class MenuScript : MonoBehaviour
         settingsMenu.SetActive(true);
         keyboardControlMenu.SetActive(false);
         gamepadControlMenu.SetActive(false);
+        volumeMenu.SetActive(false);
     }
 
     public void BackToMenu()

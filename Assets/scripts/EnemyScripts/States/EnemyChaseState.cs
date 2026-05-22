@@ -47,6 +47,14 @@ namespace Enemy
                 esm.ChangeState(enemy.enemyAttackState);
             }
 
+            if(enemy.CheckForAttackStun())
+            {
+                esm.ChangeState(enemy.enemyAttackStunState);
+            }
+             if (enemy.CheckForParryStun())
+            {
+                esm.ChangeState(enemy.enemyParryStunState);
+            }
 
         }
 

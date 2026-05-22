@@ -132,27 +132,32 @@ namespace Player
                 player.enemy.ParryPostureDamage();
             }*/
 
-            GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            EnemyScript parriedEnemy = null;
 
-            
-
-            foreach (GameObject e in enemy)
+            foreach (GameObject e in enemies)
             {
+                if (e == null) continue;
                 EnemyScript enemyScript = e.GetComponent<EnemyScript>();
+                if (enemyScript == null) continue;
 
                 if (enemyScript.hitPlayer && player.parryTimer > 0)
                 {
-                    Debug.Log("Parried attack");
+                    player.audioSource.PlayOneShot(player.am.SFXClips[1]);
+                    //Debug.Log("Parried attack");
                     player.playerParry = true;
                     player.ParryParticle();
                     enemyScript.parryStunEnemy = true;
-                }
 
-
-                if (player.playerParry)
-                {
-                    enemyScript.ParryPostureDamage();
+                    // remember which enemy was parried so we only apply posture damage once
+                    parriedEnemy = enemyScript;
+                    break;
                 }
+            }
+
+            if (player.playerParry && parriedEnemy != null)
+            {
+                parriedEnemy.ParryPostureDamage();
             }
         }
 
@@ -185,6 +190,7 @@ namespace Player
 
                        if (!player.playerParry)
                        {
+                           player.audioSource.PlayOneShot(player.am.SFXClips[2]);
                            player.posture.posture += 10;
                        }
                    }
