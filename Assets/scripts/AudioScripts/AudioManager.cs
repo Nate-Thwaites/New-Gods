@@ -15,9 +15,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicAudioSource;
     public AudioSource sfxAudioSource;
 
-    public const string masterVolume = "Master";
-    public const string musicVolume = "MusicVolume";
-    public const string sfxVolume = "SFXVolume";
+    public const string MASTER_KEY = "Master";
+    public const string MUSIC_KEY = "MusicVolume";
+    public const string SFX_KEY = "SFXVolume";
 
 
     private void Awake()
@@ -68,16 +68,16 @@ public class AudioManager : MonoBehaviour
 
     void LoadVolume()
     {
-        float masterVolumeValue = PlayerPrefs.GetFloat(masterVolume, 1f);
-        float musicVolumeValue = PlayerPrefs.GetFloat(musicVolume, 1f);
-        float sfxVolumeValue = PlayerPrefs.GetFloat(sfxVolume, 1f);
+        float masterVolume = PlayerPrefs.GetFloat(MASTER_KEY, 1f);
+        float musicVolume = PlayerPrefs.GetFloat(MUSIC_KEY, 1f);
+        float sfxVolume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
 
-        float safeMaster = Mathf.Max(masterVolumeValue, 0.0001f);
+        /*float safeMaster = Mathf.Max(masterVolumeValue, 0.0001f);
         float safeMusic = Mathf.Max(musicVolumeValue, 0.0001f);
-        float safeSfx = Mathf.Max(sfxVolumeValue, 0.0001f);
+        float safeSfx = Mathf.Max(sfxVolumeValue, 0.0001f);*/
 
-        mixer.SetFloat(SoundScript.MIXER_MASTER, Mathf.Log10(safeMaster) * 20);
-        mixer.SetFloat(SoundScript.MIXER_MUSIC, Mathf.Log10(safeMusic) * 20);
-        mixer.SetFloat(SoundScript.MIXER_SFX, Mathf.Log10(safeSfx) * 20);
+        mixer.SetFloat(SoundScript.MIXER_MASTER, Mathf.Log10(masterVolume) * 20);
+        mixer.SetFloat(SoundScript.MIXER_MUSIC, Mathf.Log10(musicVolume) * 20);
+        mixer.SetFloat(SoundScript.MIXER_SFX, Mathf.Log10(sfxVolume) * 20);
     }
 }

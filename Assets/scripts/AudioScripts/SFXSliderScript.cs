@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class SFXSliderScript : MonoBehaviour
 {
     [SerializeField] Slider sfxSlider;
+    public const string SFX_KEY = "SFXVolume";
     void Start()
     {
         if (!PlayerPrefs.HasKey("SFXVolume"))
@@ -20,7 +22,7 @@ public class SFXSliderScript : MonoBehaviour
 
     public void ChangeSFXVolume()
     {
-        AudioListener.volume = sfxSlider.value;
+        
         SaveSFXVolume();
     }
 

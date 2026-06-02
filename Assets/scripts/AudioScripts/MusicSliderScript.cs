@@ -20,7 +20,7 @@ public class MusicSliderScript : MonoBehaviour
 
     public void ChangeMusicVolume()
     {
-        AudioListener.volume = musicSlider.value;
+        
         SaveMusicVolume();
     }
 
