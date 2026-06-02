@@ -15,7 +15,9 @@ public class MenuScript : MonoBehaviour
     public GameObject volumeMenu;
     public Button newGameButton;
     public Button musicButton;
-
+    public Slider masterVolumeSlider;
+    public Button moveButton;
+    public Button jumpButton;
 
 
 
@@ -28,15 +30,15 @@ public class MenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        OnMouseOver();
+        //OnMouseOver();
     }
 
-    private void OnMouseOver()
+    /*private void OnMouseOver()
     {
         Button button = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         button.Select();
         print("mouse over " + button);
-    }
+    }*/
 
     #region click anywhere to start
 
@@ -61,6 +63,7 @@ public class MenuScript : MonoBehaviour
     {
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
+        musicButton.Select();
     }
 
     #endregion main menu
@@ -71,18 +74,21 @@ public class MenuScript : MonoBehaviour
     {
         settingsMenu.SetActive(false);
         volumeMenu.SetActive(true);
+        masterVolumeSlider.Select();
     }
 
     public void OpenKeyboardControlMenu()
     {
         settingsMenu.SetActive(false);
         keyboardControlMenu.SetActive(true);
+        moveButton.Select();
     }
 
     public void OpenGamepadControlMenu()
     {
         settingsMenu.SetActive(false);
         gamepadControlMenu.SetActive(true);
+        jumpButton.Select();
     }
 
     public void BackToSettingsMenu()
@@ -91,12 +97,14 @@ public class MenuScript : MonoBehaviour
         keyboardControlMenu.SetActive(false);
         gamepadControlMenu.SetActive(false);
         volumeMenu.SetActive(false);
+        musicButton.Select();
     }
 
     public void BackToMenu()
     {
         mainMenu.SetActive(true);
         settingsMenu.SetActive(false);
+        newGameButton.Select();
     }
     #endregion settings menu 
 

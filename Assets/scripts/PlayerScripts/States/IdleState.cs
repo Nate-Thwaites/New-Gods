@@ -39,7 +39,6 @@ namespace Player
                 if (player.posture.posture > player.posture.minPosture)
                 {
                     player.posture.posture = player.posture.posture - 2 * Time.deltaTime;
-                    Debug.Log("Posture decrea");
                 }
             }
 

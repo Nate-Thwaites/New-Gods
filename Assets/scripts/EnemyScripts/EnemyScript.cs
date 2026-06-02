@@ -353,7 +353,7 @@ namespace Enemy
         {
             Vector2 lookDir = (player.transform.position - transform.position).normalized;
 
-            RaycastHit2D see = Physics2D.Raycast(transform.position, lookDir, 10f, LayerMask.GetMask("player"));// | LayerMask.GetMask("floor"));
+            RaycastHit2D see = Physics2D.Raycast(transform.position, lookDir, 10f, LayerMask.GetMask("player") | LayerMask.GetMask("floor"));
 
 
             if (see)

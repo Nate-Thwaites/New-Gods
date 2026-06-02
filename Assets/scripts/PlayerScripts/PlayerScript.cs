@@ -48,7 +48,12 @@ namespace Player
         public PlayerPostureBar playerPostureBar;
         public bool gameIsPaused = false;
 
-        
+        public Button resumeButton;
+        public Button audioButton;
+        public Button moveButton;
+        public Button jumpButton;
+        public Slider masterVolumeSlider;
+
         public GameObject pauseMenuUI;
         public GameObject pauseMenuCanvas;
         public bool canPressButton;
@@ -733,6 +738,7 @@ namespace Player
             pauseMenuUI.SetActive(true);
             Time.timeScale = 0;
             gameIsPaused = true;
+            resumeButton.Select();
         }
 
         public void Menu()
@@ -744,6 +750,7 @@ namespace Player
         {
             settingsMenu.SetActive(true);
             pauseMenuUI.SetActive(false);
+            audioButton.Select();
         }
 
         #endregion main pause menu
@@ -753,18 +760,21 @@ namespace Player
         {
             volumeSettings.SetActive(true);
             settingsMenu.SetActive(false);
+            masterVolumeSlider.Select();
         }
 
         public void OpenKeyboardControls()
         {
             settingsMenu.SetActive(false);
             keyboardControlMenu.SetActive(true);
+            moveButton.Select();
         }
 
         public void OpenGamepadControls()
         {
             settingsMenu.SetActive(false);
             gamepadControlMenu.SetActive(true);
+            jumpButton.Select();
         }
 
         public void BackToSettingsMenu()
@@ -773,12 +783,14 @@ namespace Player
             keyboardControlMenu.SetActive(false);
             gamepadControlMenu.SetActive(false);
             volumeSettings.SetActive(false);
+            audioButton.Select();
         }
 
         public void BackToPauseMenu()
         {
             pauseMenuUI.SetActive(true);
             settingsMenu.SetActive(false);
+            resumeButton.Select();
         }
         #endregion pause settings
 
