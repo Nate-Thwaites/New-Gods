@@ -20,7 +20,7 @@ TagManager:
   - itemLayer
   - player
   - enemy
-  - slipLayer
+  - 
   - checkpoint
   - respawnZone
   - 

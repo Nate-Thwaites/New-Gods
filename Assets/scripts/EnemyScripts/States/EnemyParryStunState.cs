@@ -12,8 +12,11 @@ public class EnemyParryStunState : EnemyState
     {
         
         base.Enter();
-        Debug.Log("Enemy Stunned");
-        enemy.erb.AddForce(5 * enemy.transform.right * 0.2f, ForceMode2D.Impulse);
+        enemy.parryStunEnemy = true;
+        enemy.stunned = true;
+
+        enemy.StartCoroutine(enemy.ParryStun());
+        
     }
 
     public override void Exit()
@@ -30,7 +33,14 @@ public class EnemyParryStunState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        enemy.StartCoroutine(enemy.ParryStun());
+
+
+        enemy.erb.linearVelocity = Vector2.zero;
+
+        if (enemy.CheckForPostureStun())
+        {
+            esm.ChangeState(enemy.enemyPostureStunState);
+        }
 
         if (!enemy.parryStunEnemy)
         {
@@ -49,8 +59,19 @@ public class EnemyParryStunState : EnemyState
                 esm.ChangeState(enemy.enemyChaseState);
             }
 
-            
+            if(enemy.CheckForBlock())
+            {
+                esm.ChangeState(enemy.enemyBlockState);
+            }
+
+            if (enemy.CheckForParry())
+            {
+                esm.ChangeState(enemy.enemyParryState);
+            }
+
         }
+
+       
     }
 
     public override void PhysicsUpdate()

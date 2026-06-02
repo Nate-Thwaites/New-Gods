@@ -7,19 +7,27 @@ namespace Enemy
         {
         }
         public bool attackLanded;
+        //public float knockbackTime;
         public override void Enter()
         {
             base.Enter();
-            enemy.erb.linearVelocity = new Vector2(0, 0);
             enemy.playerScript.hitEnemy = false;
+            enemy.StartCoroutine(enemy.PostureBreakStun());
+            
+            enemy.playerScript.attackDamage = 60;
+            attackLanded = false;
+            enemy.parryStunEnemy = false;
+            enemy.stunned = true;
 
+            //knockbackTime = 0.02f;
         }
 
         public override void Exit()
         {
             base.Exit();
             enemy.posture.posture = enemy.posture.minPosture;
-            enemy.playerScript.attackDamage /= 4;
+
+            
         }
 
         public override void HandleInput()
@@ -32,49 +40,62 @@ namespace Enemy
             base.LogicUpdate();
             
 
-            enemy.StartCoroutine(enemy.PostureBreakStun());
 
+            enemy.playerScript.attackDamage = 60;
+
+            
             if (enemy.playerScript.hitEnemy)
             {
+                //enemy.erb.AddForce(5f * enemy.enemyFacingDir * enemy.transform.right, ForceMode2D.Impulse);
+
                 attackLanded = true;
-                
-                enemy.erb.AddForce(5 * enemy.transform.right * 2f, ForceMode2D.Impulse);
-
-                enemy.playerScript.attackDamage = 60;
-
+                enemy.StopCoroutine(enemy.PostureBreakStun());
                 enemy.postureBreakStunEnemy = false;
+
+                
+                //knockbackTime -= Time.deltaTime;
+
+                /*if (knockbackTime <= 0)
+                {
+                    enemy.playerScript.hitEnemy = false;
+                    knockbackTime = 0.02f;
+                    //enemy.StopCoroutine(enemy.PostureBreakStun());
+                }*/
+
+                   
             }
+           
             
 
-            if (attackLanded)
+            if (!enemy.postureBreakStunEnemy || enemy.playerScript.hitEnemy)
             {
-
                 
+                if (enemy.CheckForChase())
+                {
+                    esm.ChangeState(enemy.enemyChaseState);
+                }
 
-                    if (enemy.CheckForChase())
-                    {
-                        esm.ChangeState(enemy.enemyChaseState);
-                    }
 
-                    if (enemy.CheckForAttack())
-                    {
-                        esm.ChangeState(enemy.enemyAttackState);
-                    }
 
-                    if (enemy.CheckForParryStun())
-                    {
-                        esm.ChangeState(enemy.enemyParryStunState);
-                    }
+                if (enemy.CheckForAttack())
+                { 
+                    esm.ChangeState(enemy.enemyAttackState);
+                }
 
-                    if (enemy.CheckForBlock())
-                    {
-                        esm.ChangeState(enemy.enemyBlockState);
-                    }
+                if (enemy.CheckForParryStun())
+                {
+                    esm.ChangeState(enemy.enemyParryStunState);
+                }
 
-                    if (enemy.CheckForParry())
-                    {
-                        esm.ChangeState(enemy.enemyParryState);
-                    }
+                if (enemy.CheckForBlock())
+                {
+                    esm.ChangeState(enemy.enemyBlockState);
+                }
+
+                if (enemy.CheckForParry())
+                {
+                    esm.ChangeState(enemy.enemyParryState);
+                }
                 
             }
         }

@@ -5,18 +5,12 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public enum EnemyAttackType
-    {
-        SwipeLeft,
-        SwipeRight,
-        SwipeUp,
-        
-    }
+    
 
 
     public class EnemyAttackState : EnemyState
     {
-        public EnemyAttackType enemyAttackNum;
+       
 
         public EnemyAttackState(EnemyScript enemy, EnemyStateMachine esm) : base(enemy, esm)
         {
@@ -25,108 +19,23 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
-            EnemyAttackSwitch();
 
+            enemy.anim.Play("enemy attack 1", 0);
+            enemy.enemyAttackCompleteTimer = 0.8f;
+            enemy.enemyDamage = 10;
 
             enemy.blockOrParryChance = 0;
-            enemy.enemyMoveDir = 0;
+            enemy.erb.linearVelocity = Vector2.zero;
 
-            
 
             enemy.seePlayer = false;
+
+            enemy.StartCoroutine(enemy.LeaveAttack());
         }
 
-        void EnemyAttack()
-        {
-            //enemy.enemyAttackTimer = 1.5f;
-            enemy = enemy.GetComponent<EnemyScript>();
+      
 
-            
-
-            Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemy.enemyAttackPoint.position, enemy.enemyAttackRange, enemy.playerLayer);
-            foreach (Collider2D hit in hitPlayer)
-            {
-                enemy.hitPlayer = true;
-
-
-                HealthScript health = hit.GetComponent<HealthScript>();
-
-                if (health != null && !enemy.playerScript.isBlocking && !enemy.attackStunEnemy)
-                {
-                    health.health -= enemy.enemyDamage;
-
-                    //Debug.Log("Enemy Attack Damage = " + enemy.enemyDamage);
-
-
-                    /*if(enemy.hitPlayer)
-                    {
-                        enemy.playerScript.health.health -= enemy.enemyDamage; 
-                    }
-                    */
-                }
-            }
-
-           
-
-                     
-            
-        }
-
-        public void EnemyAttackSwitch()
-        {
-            switch ((int)enemyAttackNum)
-            {
-                case 0:
-
-                    EnemyAttack();
-
-                    //enemy.anim.Play("enemy attack 1", 0);
-                    enemy.enemyAttackCompleteTimer = 0.8f;
-                    enemy.enemyDamage = 10;
-
-
-                    break;
-
-                case 1: //Swipe Left
-
-                    
-                    EnemyAttack();
-                    
-                    //enemy.anim.Play("enemy attack 1", 0);
-                    enemy.enemyAttackCompleteTimer = 0.8f;
-                    enemy.enemyDamage = 10;
-
-                    
-
-                    break;
-
-                case 2: //Swipe Right
-
-                    EnemyAttack();
-                    
-                    //enemy.anim.Play("enemy attack 2", 0);
-                    enemy.enemyAttackCompleteTimer = 0.8f;
-                    enemy.enemyDamage = 10;
-
-
-                    break;
-
-                case 3: // Swipe Up
-
-                    EnemyAttack();
-                   
-                    //enemy.anim.Play("enemy attack 3", 0);
-                    enemy.enemyAttackCompleteTimer = 0.5f;
-                    enemy.enemyDamage = 20;
-
-
-                    break;
-
-                
-
-
-            }
-        }
+       
 
         public override void Exit()
         {
@@ -143,46 +52,55 @@ namespace Enemy
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-
-            if (enemy.CheckForAttackStun())
+            
+            if (enemy.leaveAttack)
             {
-                esm.ChangeState(enemy.enemyAttackStunState);
-            }
+                if (enemy.CheckForAttackStun())
+                {
+                    esm.ChangeState(enemy.enemyAttackStunState);
+                }
 
-            if (enemy.CheckForIdle() || enemy.enemyAttackCompleteTimer >= 0 && enemy.enemyAttackCompleteTimer <= 0.6)
-            {
-                enemy.anim.Play("enemy leave attack", 0);
+                if (enemy.CheckForIdle() || enemy.enemyAttackCompleteTimer >= 0 && enemy.enemyAttackCompleteTimer <= 0.6)
+                {
+                    enemy.anim.Play("enemy leave attack", 0);
 
-                esm.ChangeState(enemy.enemyIdleState);
-            }
+                    esm.ChangeState(enemy.enemyIdleState);
+                }
 
 
-            if (enemy.CheckForChase())
-            {
-                enemy.anim.Play("enemy leave attack", 0);
-                esm.ChangeState(enemy.enemyChaseState);
-            }
+                if (enemy.CheckForChase())
+                {
+                    enemy.anim.Play("enemy leave attack", 0);
+                    esm.ChangeState(enemy.enemyChaseState);
+                }
 
-            if (enemy.CheckForParryStun())
-            {
-                esm.ChangeState(enemy.enemyParryStunState);
-            }
+                if (enemy.CheckForParryStun())
+                {
+                    esm.ChangeState(enemy.enemyParryStunState);
+                }
 
-            if (enemy.CheckForBlock())
-            {
-                esm.ChangeState(enemy.enemyBlockState);
-            }
+                if (enemy.CheckForBlock())
+                {
+                    esm.ChangeState(enemy.enemyBlockState);
+                }
 
-            if(enemy.CheckForParry())
-            {
-                esm.ChangeState(enemy.enemyParryState);
-            }
+                if (enemy.CheckForParry())
+                {
+                    esm.ChangeState(enemy.enemyParryState);
+                }
 
-            if (enemy.CheckForPostureStun())
-            {
-                esm.ChangeState(enemy.enemyPostureStunState);
-            }
+                if (enemy.CheckForPostureStun())
+                {
+                    esm.ChangeState(enemy.enemyPostureStunState);
+                }
 
+                if(enemy.CheckForAttackStun())
+                {
+                    esm.ChangeState(enemy.enemyAttackStunState);
+                }
+
+                enemy.leaveAttack = false;
+            } 
            
         }
 

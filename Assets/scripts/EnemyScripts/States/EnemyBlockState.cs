@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 
 namespace Enemy
@@ -9,10 +10,14 @@ namespace Enemy
         }
         public override void Enter()
         {
+            PlayerScript playerScript = enemy.player.GetComponent<PlayerScript>();
             base.Enter();
             //Debug.Log("block");
             enemy.blockEnemy = true;
-            enemy.posture.posture += enemy.posture.postureDamage;
+            enemy.posture.posture += playerScript.posture.postureDamage;
+            Debug.Log("posture damage: " + playerScript.posture.postureDamage);
+            enemy.StartCoroutine(enemy.LeaveEnemyBlock());
+
         }
 
         public override void Exit()
@@ -32,7 +37,6 @@ namespace Enemy
             base.LogicUpdate();
 
 
-            enemy.StartCoroutine(enemy.LeaveEnemyBlock());
 
 
             if (!enemy.blockEnemy)

@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 
 namespace Enemy
@@ -10,10 +11,13 @@ namespace Enemy
 
         public override void Enter()
         {
+            PlayerScript playerScript = enemy.player.GetComponent<PlayerScript>();
             base.Enter();
             //Debug.Log("parry");
             enemy.parryEnemy = true;
-            enemy.posture.posture += 10;
+            playerScript.posture.posture += 10;
+            enemy.StartCoroutine(enemy.LeaveEnemyParry());
+            playerScript.parryStunned = true;
         }
 
         public override void Exit()
@@ -32,8 +36,8 @@ namespace Enemy
         {
             base.LogicUpdate();
 
-           
-            enemy.StartCoroutine(enemy.LeaveEnemyParry());
+
+            
 
 
             if (!enemy.parryEnemy)
@@ -47,8 +51,16 @@ namespace Enemy
                 {
                     esm.ChangeState(enemy.enemyAttackState);
                 }
+
+               
+
+
+
             }
-            
+            if (enemy.CheckForPostureStun())
+            {
+                esm.ChangeState(enemy.enemyPostureStunState);
+            }
         }
 
         public override void PhysicsUpdate()

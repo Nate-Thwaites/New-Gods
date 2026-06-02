@@ -144,11 +144,18 @@ namespace Player
                 if (enemyScript.hitPlayer && player.parryTimer > 0)
                 {
                     player.audioSource.PlayOneShot(player.am.SFXClips[1]);
-                    //Debug.Log("Parried attack");
+
+                    enemyScript.enemyDamage = 0;
                     player.playerParry = true;
                     player.ParryParticle();
                     enemyScript.parryStunEnemy = true;
+                    
+                    player.isBlocking = false;
 
+                    if (enemyScript.CheckForParryStun())
+                    {
+                        enemyScript.esm.ChangeState(enemyScript.enemyParryStunState);
+                    }
                     // remember which enemy was parried so we only apply posture damage once
                     parriedEnemy = enemyScript;
                     break;
@@ -165,21 +172,7 @@ namespace Player
 
         public void DetectBlock()
         {
-            /*player.enemy = player.enemy.GetComponent<EnemyScript>();
-            if (player.enemy.hitPlayer && player.isBlocking)
-            {
-
-                Debug.Log("Blocked attack");
-                player.isBlocking = false;
-
-                if (!player.playerParry)
-                {
-                    player.posture.posture += 10;
-                }
-            }*/
-
-              GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy"); //GetComponent<EnemyScript>();
-               //make array and use foreach loop to check for multiple enemies later
+               GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
                foreach (GameObject e in enemy)
                {
                    EnemyScript enemyScript = e.GetComponent<EnemyScript>();
@@ -187,23 +180,20 @@ namespace Player
                    if (enemyScript.hitPlayer && player.isBlocking)
                    {
                        player.isBlocking = false;
+                       enemyScript.hitPlayer = false;
 
                        if (!player.playerParry)
                        {
                            player.audioSource.PlayOneShot(player.am.SFXClips[2]);
-                           player.posture.posture += 10;
+                           player.posture.posture += 15;
                        }
                    }
-
-
                }
         }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-
-
         }
         
        

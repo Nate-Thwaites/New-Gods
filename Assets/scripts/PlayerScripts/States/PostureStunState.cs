@@ -12,16 +12,19 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-            Debug.Log("stun");
-            player.rb.AddForce(5 * player.transform.right * 0.5f, ForceMode2D.Impulse);
-
             
+            player.rb.AddForce(-15 * player.transform.right * player.facingDir, ForceMode2D.Impulse);
+
+            player.StartCoroutine(player.PostureStun());
+
 
         }
 
         public override void Exit()
         {
             base.Exit();
+
+            
         }
 
         public override void HandleInput()
@@ -32,13 +35,16 @@ namespace Player
         public override void LogicUpdate()
         {
 
-            player.StartCoroutine(player.PostureStun());
 
 
             base.LogicUpdate();
 
-            if (player.posture.posture == player.posture.minPosture)
+            if (player.posture.posture <= player.posture.minPosture)
             {
+                if (player.isGrounded)
+                {
+                    player.rb.linearVelocity = Vector2.zero;
+                }
 
                 if (player.CheckForRun())
                 {
@@ -54,6 +60,11 @@ namespace Player
                 {
                     sm.ChangeState(player.fallingState);
                 }
+
+                if (player.CheckForBlock())
+                {
+                    sm.ChangeState(player.blockingState);
+                }   
             }
 
 

@@ -1,3 +1,4 @@
+using player;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
@@ -9,11 +10,13 @@ namespace Player
         public WalkingState(PlayerScript player, StateMachine sm) : base(player, sm)
         {
         }
-
+        PlayerAnimSounds playerAnimSounds;
         public override void Enter()
         {
             base.Enter();
-            
+            playerAnimSounds = player.GetComponentInParent<PlayerAnimSounds>();
+
+
 
             player.anim.Play("run anim");
 
@@ -23,6 +26,8 @@ namespace Player
         public override void Exit()
         {
             base.Exit();
+            
+
         }
 
         public override void HandleInput()
@@ -37,7 +42,7 @@ namespace Player
             base.LogicUpdate();
 
             player.rb.linearVelocity = new Vector2(player.facingDir * player.speed, player.rb.linearVelocity.y);
-
+            playerAnimSounds.Footsteps();
             player.Flip();
                       
             if (player.posture.posture > player.posture.minPosture)
@@ -72,6 +77,16 @@ namespace Player
             if(player.CheckForBlock())
             {
                 sm.ChangeState(player.blockingState);
+            }
+
+            if(player.CheckForAttackStun())
+            {
+                sm.ChangeState(player.attackStunState);
+            }
+
+            if (player.CheckForPostureStun())
+            {
+                sm.ChangeState(player.postureStunState);
             }
         }
 

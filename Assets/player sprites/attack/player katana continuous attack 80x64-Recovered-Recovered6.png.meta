@@ -103,10 +103,10 @@ TextureImporter:
       name: player katana continuous attack 80x64-Recovered-Recovered6_0
       rect:
         serializedVersion: 2
-        x: 23
-        y: 14
-        width: 23
-        height: 40
+        x: 24
+        y: 15
+        width: 21
+        height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

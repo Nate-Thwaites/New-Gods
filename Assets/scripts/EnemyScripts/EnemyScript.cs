@@ -61,10 +61,11 @@ namespace Enemy
 
         [Header("Stun variables")]
         public bool parryStunEnemy;
-        public bool attackStunEnemy;
+        public bool attackStun;
         public float attackStunTimer;
         public bool postureBreakStunEnemy;
         public bool leavePostureStunEnemy;
+        public bool stunned;
         [Space(10)]
 
         #endregion stun variables
@@ -94,6 +95,8 @@ namespace Enemy
         public bool attackReset;
         public bool hitPlayer = false;
         public int enemyDamage;
+        public bool leaveAttack;
+        
 
         [Space(10)]
 
@@ -121,6 +124,7 @@ namespace Enemy
         [Header("enemy movement Variables")]
         public float enemySpeed = 4f;
         public int enemyMoveDir;
+        public float enemyFacingDir;
 
         #endregion enemy movement variables
 
@@ -139,7 +143,8 @@ namespace Enemy
             enemyPostureBar.SetMaxPosture(posture.maxPosture);
             enemyHealthBar.SetMaxHealth(health.maxHealth);
 
-
+            leaveAttack = false;
+            stunned = false;
 
             erb = GetComponent<Rigidbody2D>();
             esm = gameObject.AddComponent<EnemyStateMachine>();
@@ -167,10 +172,11 @@ namespace Enemy
         // Update is called once per frame
         void Update()
         {
+            attackStun = false;
             DetectPlayer();
             DetectAttackPlayer();
             Die();
- 
+
             enemyHealthBar.UpdateHealthBar(health.health);
             enemyPostureBar.UpdatePostureBar(posture.posture);
 
@@ -178,6 +184,9 @@ namespace Enemy
             {
                 enemyMoveDir = -1;
             }
+
+            
+           
 
             else
             {
@@ -191,7 +200,7 @@ namespace Enemy
             }
 
 
-
+            
 
             enemyAttackCompleteTimer -= Time.deltaTime;
 
@@ -218,9 +227,12 @@ namespace Enemy
 
         public bool CheckForBlock()
         {
-            if (blockOrParryChance <= 50 && blockOrParryChance > 0 && playerScript.hitEnemy)
+            if (!stunned)
             {
-                return true;
+                if (blockOrParryChance <= 50 && blockOrParryChance > 0 && playerScript.hitEnemy)
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -228,9 +240,12 @@ namespace Enemy
 
         public bool CheckForParry()
         {
-            if (blockOrParryChance <= 90 && blockOrParryChance > 50 && blockOrParryChance > 0 && playerScript.hitEnemy)
+            if (!stunned)
             {
-                return true;
+                if (blockOrParryChance <= 90 && blockOrParryChance > 50 && blockOrParryChance > 0 && playerScript.hitEnemy)
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -238,50 +253,42 @@ namespace Enemy
 
         public bool CheckForIdle()
         {
-            if (!seePlayer)
+            if (!stunned)
             {
-                return true;
+                if (!seePlayer)
+                {
+                    return true;
+                }
             }
-
             return false;
 
         }
 
         public bool CheckForChase()
         {
-            if (seePlayer && !attackPlayer)
+            if (!stunned)
             {
-                return true;
+                if (seePlayer && !attackPlayer)
+                {
+                    return true;
+                }
             }
-
 
             return false;
         }
 
-        public IEnumerator WaitForNextCase()
-        {
-            yield return new WaitForSeconds(0.35f);
-            enemyAttackState.enemyAttackNum++;
-        }
-
-
-
+       
         public bool CheckForAttack()
         {
-            if (attackPlayer && enemyAttackCompleteTimer <= 0)
+            if (!stunned)
             {
-
-
-
-                if ((int)enemyAttackState.enemyAttackNum > maxEnemyAttackNum || enemyAttackTimer < 0)
+                if (attackPlayer && enemyAttackCompleteTimer <= 0)
                 {
+                  
 
-                    enemyAttackState.enemyAttackNum = 0;
+                    return true;
                 }
-
-                return true;
             }
-
 
 
             return false;
@@ -289,9 +296,9 @@ namespace Enemy
 
         public bool CheckForParryStun()
         {
+            
             if (parryStunEnemy)
             {
-                print("stunned");
                 return true;
             }
             return false;
@@ -301,7 +308,8 @@ namespace Enemy
         {
             if (posture.posture >= posture.maxPosture)
             {
-                print("posture break");
+                postureBreakStunEnemy = true;
+
                 return true;
             }
             return false;
@@ -309,7 +317,7 @@ namespace Enemy
 
         public bool CheckForAttackStun()
         {
-            if (attackStunEnemy)
+            if (attackStun && !postureBreakStunEnemy)
             {
                 return true;
             }
@@ -321,7 +329,7 @@ namespace Enemy
             float dist = 1.8f;
 
 
-            Vector3 offset = new Vector3(0.9f, 0, 0);
+            Vector3 offset = new Vector3(0.9f, 0.3f, 0);
 
             bool playerHit = Physics2D.Raycast(transform.position - offset, Vector2.right, dist, playerLayer);
 
@@ -329,7 +337,7 @@ namespace Enemy
             {
                 Debug.DrawRay(transform.position - offset, Vector2.right * dist, Color.blue);
                 attackPlayer = true;
-
+                erb.linearVelocity = new Vector2(0, 0);
 
             }
 
@@ -370,11 +378,34 @@ namespace Enemy
 
         }
 
-        public IEnumerator Attackreset()
+        public void DealDamage()
         {
-            yield return new WaitForSeconds(1f);
+            if (!parryStunEnemy)
+            {
+                hitPlayer = true;
+
+
+                if (!playerScript.CheckForBlock() || !playerScript.CheckForBlock())
+                {
+
+                    playerScript.health.health -= enemyDamage;
+                    playerScript.attackStunned = true;
+
+                    playerScript.audioSource.PlayOneShot(playerScript.am.SFXClips[4]);
+
+
+
+                }
+            }
+        }
+
+
+
+        public IEnumerator LeaveAttack()
+        {
+            yield return new WaitForSeconds(0.5f);
             //print("reset attack");
-            attackReset = false;
+            leaveAttack = true;             
         }
 
         public IEnumerator LeaveEnemyBlock()
@@ -386,15 +417,15 @@ namespace Enemy
 
         public IEnumerator LeaveEnemyParry()
         {
-            yield return new WaitForSeconds(0.2f);
-            //print("leave parry");
+            yield return new WaitForSeconds(0.9f);
+            print("leave parry");
             parryEnemy = false;
         }
 
         public IEnumerator ParryStun()
         {
-            yield return new WaitForSeconds(0.5f);
-
+            yield return new WaitForSeconds(1f);
+            stunned = false;
             parryStunEnemy = false;
         }
 
@@ -402,62 +433,82 @@ namespace Enemy
         {
             yield return new WaitForSeconds(attackStunTimer);
             attackPlayer = false;
-            attackStunEnemy = false;
+            stunned = false;
         }
 
         public IEnumerator PostureBreakStun()
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1.2f);
             posture.posture = posture.minPosture;
-
+            stunned = false;
             postureBreakStunEnemy = false;
+
         }
 
-        public IEnumerator LeavePostureStun()
-        {
-            yield return new WaitForSeconds(0.5f);
-
-            leavePostureStunEnemy = true;
-        }
         
         public void Die()
         {
             if (health.health <= health.minHealth)
             {
-               
-                Destroy(gameObject);
+                stunned = true;
+                erb.linearVelocity = Vector2.zero;
+                anim.Play("Die", 0);
+                
             }
         }
-        /*public void TakeDamage(HealthScript health)
-        {
-            health.playerHealth -= enemyDamage;
-        }*/
 
-        private void OnDrawGizmos()
+        public void DestroyEnemy()
         {
-            Gizmos.DrawSphere(enemyAttackPoint.position, enemyAttackRange);
+            Destroy(gameObject);
+        }   
+
+        public void TakeDamage()
+        {
+            health.health -= playerScript.attackDamage;
         }
 
-        public IEnumerator AttackDelay( )
+        /*private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(enemyAttackPoint.position, enemyAttackRange);
+        }*/
+
+      /*  public IEnumerator AttackDelay( )
         {
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             //hitEnemy = true;
             if (!blockEnemy && !parryEnemy)
             {
                 health.health -= LevelManager.instance.playerScript.attackDamage;
             }
-        }
+        }*/
 
 
         
+        public void EnemyFlip()
+        {
+            SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+            if (sr == null) return;
 
+            if (player.transform.position.x < transform.position.x)
+            {
+                enemyFacingDir = 1;
+                sr.flipX = true;
+            }
+
+            else
+            {
+                enemyFacingDir = -1;
+                sr.flipX = false;
+            }
+
+        }
 
 
 
         public void ParryPostureDamage()
         {
-            posture.posture += 10;
+            posture.posture += 25;
         }
     }
 }

@@ -46,21 +46,18 @@ namespace Player
                 player.RandomNumForEnemyBlock(enemy.GetComponent<EnemyScript>());
 
                 player.hitEnemy = true;
-                enemy.GetComponent<EnemyScript>().attackStunEnemy = true;
+                enemy.GetComponent<EnemyScript>().attackStun = true;
 
-                if (player.hitEnemy && enemy.GetComponent<EnemyScript>().postureBreakStunEnemy)
+                /*if (player.hitEnemy && enemy.GetComponent<EnemyScript>().postureBreakStunEnemy)
                 {
                     enemy.GetComponent<EnemyScript>().postureBreakStunEnemy = false;
-                }
+                }*/
 
-                if (player.hitEnemy)
+                if(player.hitEnemy && !enemy.GetComponent<EnemyScript>().CheckForParry() && !enemy.GetComponent<EnemyScript>().CheckForBlock())
                 {
-                    
-                    enemy.GetComponent<EnemyScript>().StartCoroutine(enemy.GetComponent<EnemyScript>().AttackDelay());
-                    
-
+                    enemy.GetComponent<EnemyScript>().TakeDamage();
                 }
-                
+
 
             }
 
@@ -85,11 +82,10 @@ namespace Player
                         player.attackDamage *= 1.5f;
                     }
 
-                    player.posture.postureDamage = 20;
-                    player.attackCompleteTimer = 0.4f;
-                    player.enemy.attackStunEnemy = true;
+                    player.posture.postureDamage = 40;
+                    player.attackCompleteTimer = 0.3f;
+                    
                     player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
-                    //Debug.Log("Damage = " + player.attackDamage );
 
                     break;
 
@@ -103,11 +99,11 @@ namespace Player
                     {
                         player.attackDamage *= 1.5f;
                     }
-                    player.posture.postureDamage = 10;
-                    player.attackCompleteTimer = 0.6f;
-                    player.enemy.attackStunEnemy = true;
+                    player.posture.postureDamage = 30;
+                    player.attackCompleteTimer = 0.4f;
+                    
                     player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
-                    //Debug.Log("Damage = " + player.attackDamage);
+                    
 
                     break;
 
@@ -121,11 +117,10 @@ namespace Player
                     {
                         player.attackDamage *= 1.5f;
                     }
-                    player.posture.postureDamage = 20;
-                    player.attackCompleteTimer = 0.6f;
-                    player.enemy.attackStunEnemy = true;
+                    player.posture.postureDamage = 40;
+                    player.attackCompleteTimer = 0.4f;
+                    
                     player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
-                    //Debug.Log("Damage = " + player.attackDamage);
 
                     break;
 
@@ -139,11 +134,13 @@ namespace Player
                     {
                         player.attackDamage *= 1.5f;
                     }
-                    player.posture.postureDamage = 40;
-                    player.attackCompleteTimer = 0.9f;
-                    player.enemy.attackStunEnemy = true;
+                    player.posture.postureDamage = 60;
+                    player.attackCompleteTimer = 0.7f;
+                    
                     player.enemy.attackStunTimer = player.attackCompleteTimer + 0.1f;
-                    //Debug.Log("Damage = " + player.attackDamage);
+
+
+                    
 
                     break;
 
@@ -195,6 +192,15 @@ namespace Player
                     sm.ChangeState(player.fallingState);
                 }
 
+                if (player.CheckForAttackStun())
+                {
+                    sm.ChangeState(player.attackStunState);
+                }
+            }
+
+            if (player.CheckForParryStun())
+            {
+                sm.ChangeState(player.playerParryStunState);
             }
         }
 

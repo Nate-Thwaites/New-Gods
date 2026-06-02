@@ -11,7 +11,7 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
-
+            enemy.anim.Play("enemy walk", 0);
         }
 
         public override void Exit()
@@ -30,6 +30,9 @@ namespace Enemy
             base.LogicUpdate();
             
             enemy.erb.linearVelocity = new Vector2(7 * enemy.enemyMoveDir, enemy.erb.linearVelocity.y);
+
+            enemy.EnemyFlip();
+
 
             if (enemy.posture.posture > enemy.posture.minPosture)
             {

@@ -15,7 +15,7 @@ namespace Player
             base.Enter();
             player.rb.linearVelocity = new Vector2 (0, 0);
             player.anim.Play("idle temp");
-            
+            player.StartCoroutine(player.PostureDecrease());
 
 
 
@@ -24,6 +24,7 @@ namespace Player
         public override void Exit()
         {
             base.Exit();
+            player.delayPostureDecrease = false;
         }
 
         public override void HandleInput()
@@ -33,10 +34,13 @@ namespace Player
 
         public override void LogicUpdate()
         {
-
-            if (player.posture.posture > player.posture.minPosture)
-            { 
-                player.posture.posture = player.posture.posture -3 * Time.deltaTime;
+            if (player.delayPostureDecrease)
+            {
+                if (player.posture.posture > player.posture.minPosture)
+                {
+                    player.posture.posture = player.posture.posture - 2 * Time.deltaTime;
+                    Debug.Log("Posture decrea");
+                }
             }
 
 
@@ -66,6 +70,16 @@ namespace Player
             if (player.CheckForBlock())
             {
                 sm.ChangeState(player.blockingState);
+            }
+
+            if (player.CheckForAttackStun())
+            {
+                sm.ChangeState(player.attackStunState);
+            }
+
+            if (player.CheckForPostureStun())
+            {
+                sm.ChangeState(player.postureStunState);
             }
         }
 

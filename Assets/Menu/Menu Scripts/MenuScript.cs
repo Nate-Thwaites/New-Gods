@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Unity.VectorGraphics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,8 +13,11 @@ public class MenuScript : MonoBehaviour
     public GameObject keyboardControlMenu;
     public GameObject gamepadControlMenu;
     public GameObject volumeMenu;
+    public Button newGameButton;
+    public Button musicButton;
 
-    [SerializeField] Slider musicSlider;
+
+
 
 
     void Start()
@@ -23,14 +28,24 @@ public class MenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        OnMouseOver();
     }
+
+    private void OnMouseOver()
+    {
+        Button button = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        button.Select();
+        print("mouse over " + button);
+    }
+
     #region click anywhere to start
 
     public void ClickToStart()
     {
         clickAnywhereToStart.SetActive(false);
         mainMenu.SetActive(true);   
+        newGameButton.Select();
+        
     }
 
     #endregion click anywhere to start

@@ -100,6 +100,7 @@ namespace Player
         public float attackCompleteTimer;
         public float attackDamage;
         public bool hitEnemy;
+        public bool attackStunned;
         [Space(10)]
 
         #endregion Attack variables
@@ -114,6 +115,7 @@ namespace Player
         public bool isBlocking;
         public bool playerParry;
         public bool stunEnemy;
+        public bool parryStunned;
 
 
         //public bool isBlocking;
@@ -132,6 +134,8 @@ namespace Player
         public AttackState attackState;
         public BlockingState blockingState;
         public PostureStunState postureStunState;
+        public PlayerAttackStunState attackStunState;
+        public PlayerParryStunState playerParryStunState;
         public StateMachine sm;
         [Space(10)]
 
@@ -178,6 +182,7 @@ namespace Player
         [Header("Posture variables")]
 
         public PostureScript posture;
+        public bool delayPostureDecrease;
 
         [Space(10)]
 
@@ -222,8 +227,8 @@ namespace Player
 
             hasPowerup = false;
 
+            delayPostureDecrease = false;
 
-            
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
             anim = GetComponent<Animator>();
@@ -244,6 +249,7 @@ namespace Player
             healAction = InputSystem.actions.FindAction("Heal");
             interactAction = InputSystem.actions.FindAction("Interact");
             pauseAction = InputSystem.actions.FindAction("Pause");
+            
 
 
             itemMask = LayerMask.GetMask("itemLayer");
@@ -256,6 +262,8 @@ namespace Player
             attackState = new AttackState(this, sm);
             blockingState = new BlockingState(this, sm);
             postureStunState = new PostureStunState(this, sm);
+            attackStunState = new PlayerAttackStunState(this, sm);
+            playerParryStunState = new PlayerParryStunState(this, sm);
 
             // initialise the statemachine with the default state
             sm.Init(idleState);
@@ -271,16 +279,13 @@ namespace Player
             playerHealthBar.UpdateHealthBar(health.health);
             playerPostureBar.UpdatePostureBar(posture.posture);
 
+            
+
+
 
             if (pauseAction.WasPressedThisFrame())
             {
-                if (gameIsPaused)
-                {
-                    
-                    Resume();
-                    canPressButton = true;
-                }
-                else
+                if (!gameIsPaused)
                 {
                     canPressButton = false;
                     Pause();
@@ -305,23 +310,21 @@ namespace Player
             attackTimer -= Time.deltaTime;
             attackCompleteTimer -= Time.deltaTime;
 
-            
 
-            if (blockAction.WasPressedThisFrame())
+            
+            
+            if (blockAction.WasPressedThisFrame() && canPressButton)
             {
                 isBlocking = true;
-                
-
             }
-          /*  if (pauseAction.WasPressedThisFrame())
-            {
-                print("pause");
-            }*/
+
+
 
             else if (blockAction.WasReleasedThisFrame())
             {
                 isBlocking = false;
             }
+            
 
             
             healthItemText.text = "X " + healthItemCount;
@@ -449,9 +452,23 @@ namespace Player
             {
                 if (isBlocking)
                 {
-
+                    
                     return true;
                 }
+            }
+
+            
+
+
+
+            return false;
+        }
+
+        public bool CheckForParryStun()
+        {
+            if(parryStunned)
+            {
+                return true;
             }
 
             return false;
@@ -468,18 +485,21 @@ namespace Player
             return false;
         }
 
+        public bool CheckForAttackStun()
+        {
+            if (attackStunned)
+            {
+                return true;
+            }
 
+            return false;
+        }
 
 
 
         #endregion state checks
 
-       // #region attack debug temp
-/*        private void OnDrawGizmos()
-        {
-            Gizmos.DrawSphere(attackPoint.position, attackRange);
-        }
-        #endregion attack debug temp*/
+        
 
         #region leave parry coroutine
         public IEnumerator LeaveParry()
@@ -490,20 +510,38 @@ namespace Player
 
         #endregion leave parry coroutines
 
-        #region attack delay coroutine
-       
-
-       
-        #endregion attack delay coroutine
+        
 
         #region stun couroutines
         public IEnumerator PostureStun()
         {
-            yield return new WaitForSeconds(1f);
-            posture.posture = 0;
+            yield return new WaitForSeconds(0.4f);
+            
+            posture.posture = posture.minPosture;
+        }
+
+        public IEnumerator ParryStun()
+        {
+            yield return new WaitForSeconds(0.3f);
+            parryStunned = false;
+            canPressButton = true;
+        }
+
+        public IEnumerator AttackStun()
+        {
+            yield return new WaitForSeconds(0.3f);
+            attackStunned = false;
+            //print("attack stun over");
+            canPressButton = true;
         }
 
         #endregion stun couroutines
+
+        public IEnumerator PostureDecrease()
+        {
+            yield return new WaitForSeconds(0.2f);
+            delayPostureDecrease = true;
+        }
 
         #region Raycast detection 
         public void GroundCheck()
@@ -512,9 +550,9 @@ namespace Player
             Vector3 ofs2 = new Vector3(-0.3f, 0, 0);
             Vector3 ofs3 = new Vector3(0.3f, 0, 0);
 
-            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, floor | wall);
-            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, floor | wall);
-            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, floor | wall);
+            bool hit1 = Physics2D.Raycast(transform.position + ofs1, Vector2.down, 0.55f, floor);
+            bool hit2 = Physics2D.Raycast(transform.position + ofs2, Vector2.down, 0.55f, floor);
+            bool hit3 = Physics2D.Raycast(transform.position + ofs3, Vector2.down, 0.55f, floor);
 
             
     
@@ -567,6 +605,8 @@ namespace Player
                 Time.timeScale = 0f;
                 endScreen.SetActive(true);
             }
+
+            
         }
 
 
@@ -605,7 +645,7 @@ namespace Player
         }*/
 
         #endregion Raycast detection
-        
+
         #region player death
 
         public IEnumerator DeathScreen()
@@ -619,6 +659,7 @@ namespace Player
         {
             if (health.health <= health.minHealth)
             {
+                sm = null;
                 canPressButton = false;
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
                 anim.Play("Die", 0);
@@ -778,5 +819,7 @@ namespace Player
         {
             particle.Play();
         }
+
+      
     }
 }

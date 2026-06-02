@@ -168,12 +168,12 @@ TextureImporter:
       name: player run 48x55_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 9
-        width: 31
-        height: 32
+        x: 8
+        y: 10
+        width: 29
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -190,7 +190,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 799de3d7e3b91f944ab0f998791aeeab
     internalID: 0
     vertices: []
     indices: 

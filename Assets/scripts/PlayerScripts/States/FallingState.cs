@@ -129,15 +129,18 @@ namespace Player
 
                 }
             }
-            
-            
 
-            
+            if (player.CheckForAttackStun())
+            {
+                sm.ChangeState(player.attackStunState);
+            }
 
-            
-        
 
-    }
+
+
+
+
+        }
 
         public override void PhysicsUpdate()
         {

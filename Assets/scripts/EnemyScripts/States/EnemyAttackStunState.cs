@@ -13,7 +13,10 @@ namespace Enemy
             base.Enter();
             Debug.Log("Enemy Attack Stunned");
             enemy.erb.linearVelocity = new Vector2(0, 0);
-
+           
+            enemy.stunned = true;
+            enemy.attackPlayer = true;
+            enemy.StartCoroutine(enemy.AttackStun());
         }
 
         public override void Exit()
@@ -30,9 +33,9 @@ namespace Enemy
         {
             base.LogicUpdate();
 
-            enemy.StartCoroutine(enemy.AttackStun());
+            
 
-            if (!enemy.attackStunEnemy)
+            if (!enemy.stunned)
             {
                 //Debug.Log("Check For State");
                 if (enemy.CheckForAttack())

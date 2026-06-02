@@ -106,12 +106,12 @@ TextureImporter:
       name: enemy die4_0
       rect:
         serializedVersion: 2
-        x: 11
+        x: 0
         y: 0
-        width: 42
-        height: 53
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -133,7 +133,7 @@ TextureImporter:
         width: 36
         height: 13
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -150,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2ea7a2f04cab52447b16e7cb1da83057
     internalID: 0
     vertices: []
     indices: 
