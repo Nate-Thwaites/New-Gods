@@ -6,7 +6,7 @@ public class SFXSliderScript : MonoBehaviour
 {
     [SerializeField] Slider sfxSlider;
     public const string SFX_KEY = "SFXVolume";
-    void Start()
+    void Awake()
     {
         if (!PlayerPrefs.HasKey("SFXVolume"))
         {
@@ -28,11 +28,11 @@ public class SFXSliderScript : MonoBehaviour
 
     private void LoadSFXVolume()
     {
-        sfxSlider.value = PlayerPrefs.GetFloat("sfxVolume");
+        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
     }
 
     private void SaveSFXVolume()
     {
-        PlayerPrefs.SetFloat("sfxVolume", sfxSlider.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
     }
 }

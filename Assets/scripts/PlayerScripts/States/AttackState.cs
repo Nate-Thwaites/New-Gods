@@ -37,7 +37,7 @@ namespace Player
         void Attack()
         {
             player.attackTimer = 1.5f;
-            player.audioSource.PlayOneShot(player.am.SFXClips[0]);
+            player.audioSource.PlayOneShot(AudioManager.instance.SFXClips[0]);
 
 
             Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayer);

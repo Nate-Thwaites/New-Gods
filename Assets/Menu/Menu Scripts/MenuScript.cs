@@ -19,12 +19,17 @@ public class MenuScript : MonoBehaviour
     public Button moveButton;
     public Button jumpButton;
 
+    public AudioManager am;
 
+    public static float masterVolume = 0.5f;
 
 
     void Start()
     {
-        
+        am = AudioManager.instance.GetComponent<AudioManager>();
+
+        print("master vol= " + masterVolume);
+
     }
 
     // Update is called once per frame
@@ -47,7 +52,7 @@ public class MenuScript : MonoBehaviour
         clickAnywhereToStart.SetActive(false);
         mainMenu.SetActive(true);   
         newGameButton.Select();
-        
+        am.PlaySFXClip(5);
     }
 
     #endregion click anywhere to start
@@ -56,11 +61,13 @@ public class MenuScript : MonoBehaviour
 
     public void NewGame()
     {
+        am.PlaySFXClip(5);
         SceneManager.LoadSceneAsync("Game");
     }
 
     public void OpenSettings()
     {
+        am.PlaySFXClip(5);
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
         musicButton.Select();
@@ -72,6 +79,7 @@ public class MenuScript : MonoBehaviour
 
     public void OpenVolumeMenu()
     {
+        am.PlaySFXClip(5);
         settingsMenu.SetActive(false);
         volumeMenu.SetActive(true);
         masterVolumeSlider.Select();
@@ -79,6 +87,7 @@ public class MenuScript : MonoBehaviour
 
     public void OpenKeyboardControlMenu()
     {
+        am.PlaySFXClip(5);
         settingsMenu.SetActive(false);
         keyboardControlMenu.SetActive(true);
         moveButton.Select();
@@ -86,6 +95,7 @@ public class MenuScript : MonoBehaviour
 
     public void OpenGamepadControlMenu()
     {
+        am.PlaySFXClip(5);
         settingsMenu.SetActive(false);
         gamepadControlMenu.SetActive(true);
         jumpButton.Select();
@@ -93,6 +103,7 @@ public class MenuScript : MonoBehaviour
 
     public void BackToSettingsMenu()
     {
+        am.PlaySFXClip(5);
         settingsMenu.SetActive(true);
         keyboardControlMenu.SetActive(false);
         gamepadControlMenu.SetActive(false);
@@ -102,6 +113,7 @@ public class MenuScript : MonoBehaviour
 
     public void BackToMenu()
     {
+        am.PlaySFXClip(5);
         mainMenu.SetActive(true);
         settingsMenu.SetActive(false);
         newGameButton.Select();
@@ -111,8 +123,13 @@ public class MenuScript : MonoBehaviour
     #region quit
     public void QuitGame()
     {
+        am.PlaySFXClip(5);
         Application.Quit();
     }
     #endregion quit
 
+    public void PlayNoise()
+    {
+        am.PlaySFXClip(5);
+    }
 }

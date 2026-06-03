@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class MusicSliderScript : MonoBehaviour
 {
     [SerializeField] Slider musicSlider;
-    void Start()
+    void Awake()
     {
         if (!PlayerPrefs.HasKey("MusicVolume"))
         {
@@ -26,12 +26,12 @@ public class MusicSliderScript : MonoBehaviour
 
     private void LoadMusicVolume()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
     }
 
     private void SaveMusicVolume()
     {
-        PlayerPrefs.SetFloat("musicVolume", musicSlider.value);
+        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
     }
 
 }

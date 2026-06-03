@@ -25,7 +25,7 @@ namespace player
         {
             if (timer <= 0f)
             {
-                playerScript.audioSource.PlayOneShot(playerScript.am.SFXClips[3]);
+                playerScript.audioSource.PlayOneShot(AudioManager.instance.SFXClips[3]);
                 timer = Delay;
             }
 

@@ -1,8 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
-public class SoundScript : MonoBehaviour
+
+public class GameSoundScript : MonoBehaviour
 {
     [SerializeField] AudioMixer mixer;
     [SerializeField] Slider masterSlider;
@@ -46,7 +47,7 @@ public class SoundScript : MonoBehaviour
     void SetMasterVolume(float value)
     {
         mixer.SetFloat(MIXER_MASTER, Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
-        Debug.Log("Master volume set to: " + value);    
+        Debug.Log("Master volume set to: " + value);
     }
     void SetMusicVolume(float value)
     {

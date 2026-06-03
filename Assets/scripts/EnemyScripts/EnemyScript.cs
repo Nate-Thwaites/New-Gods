@@ -391,7 +391,7 @@ namespace Enemy
                     playerScript.health.health -= enemyDamage;
                     playerScript.attackStunned = true;
 
-                    playerScript.audioSource.PlayOneShot(playerScript.am.SFXClips[4]);
+                    playerScript.audioSource.PlayOneShot(AudioManager.instance.SFXClips[4]);
 
 
 

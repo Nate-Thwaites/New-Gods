@@ -13,8 +13,9 @@ namespace Enemy
             base.Enter();
             enemy.playerScript.hitEnemy = false;
             enemy.StartCoroutine(enemy.PostureBreakStun());
-            
-            enemy.playerScript.attackDamage = 60;
+
+            enemy.playerScript.attackDamage *= 3f;
+
             attackLanded = false;
             enemy.parryStunEnemy = false;
             enemy.stunned = true;
@@ -26,8 +27,8 @@ namespace Enemy
         {
             base.Exit();
             enemy.posture.posture = enemy.posture.minPosture;
+            //enemy.playerScript.attackDamage = ;
 
-            
         }
 
         public override void HandleInput()
@@ -41,13 +42,12 @@ namespace Enemy
             
 
 
-            enemy.playerScript.attackDamage = 60;
 
             
             if (enemy.playerScript.hitEnemy)
             {
                 //enemy.erb.AddForce(5f * enemy.enemyFacingDir * enemy.transform.right, ForceMode2D.Impulse);
-
+                Debug.Log(enemy.playerScript.attackDamage);
                 attackLanded = true;
                 enemy.StopCoroutine(enemy.PostureBreakStun());
                 enemy.postureBreakStunEnemy = false;
@@ -69,6 +69,7 @@ namespace Enemy
 
             if (!enemy.postureBreakStunEnemy || enemy.playerScript.hitEnemy)
             {
+                enemy.playerScript.attackDamage /= 3f;
                 
                 if (enemy.CheckForChase())
                 {

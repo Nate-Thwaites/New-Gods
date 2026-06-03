@@ -6,7 +6,6 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    public static bool isGameEnding = false;
 
     [SerializeField] AudioMixer mixer;
 
@@ -22,7 +21,6 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        isGameEnding = false;
 
         if (instance == null)
         {

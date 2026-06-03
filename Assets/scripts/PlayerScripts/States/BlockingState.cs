@@ -143,7 +143,7 @@ namespace Player
 
                 if (enemyScript.hitPlayer && player.parryTimer > 0)
                 {
-                    player.audioSource.PlayOneShot(player.am.SFXClips[1]);
+                    player.audioSource.PlayOneShot(AudioManager.instance.SFXClips[1]);
 
                     enemyScript.enemyDamage = 0;
                     player.playerParry = true;
@@ -184,7 +184,7 @@ namespace Player
 
                        if (!player.playerParry)
                        {
-                           player.audioSource.PlayOneShot(player.am.SFXClips[2]);
+                           player.audioSource.PlayOneShot(AudioManager.instance.SFXClips[2]);
                            player.posture.posture += 15;
                        }
                    }

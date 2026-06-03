@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class MasterVolumeSliderScript : MonoBehaviour
 {
     [SerializeField] Slider masterVolumeSlider;
-    void Start()
+    void Awake()
     {
         if (!PlayerPrefs.HasKey("MasterVolume"))
         {
@@ -26,11 +26,11 @@ public class MasterVolumeSliderScript : MonoBehaviour
 
     private void LoadMasterVolume()
     {
-        masterVolumeSlider.value = PlayerPrefs.GetFloat("masterVolume");
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume");
     }
 
     private void SaveMasterVolume()
     {
-        PlayerPrefs.SetFloat("masterVolume", masterVolumeSlider.value);
+        PlayerPrefs.SetFloat("MasterVolume", masterVolumeSlider.value);
     }
 }

@@ -32,7 +32,7 @@ namespace Player
         #region Audio
 
         [Header("Audio")]
-        public AudioManager am;
+        //public AudioManager am;
         public AudioSource audioSource;
 
         [Space(10)]
@@ -65,6 +65,10 @@ namespace Player
         public GameObject volumeSettings;
         public GameObject endScreen;
         [SerializeField] Slider musicSlider;
+
+        public MusicSliderScript musicSliderScript;
+        public MasterVolumeSliderScript masterVolumeSliderScript;
+        public SFXSliderScript sfxSliderScript;
 
         public GameObject deathScreen;
         
@@ -244,13 +248,17 @@ namespace Player
             sm = gameObject.AddComponent<StateMachine>();
             anim = GetComponent<Animator>();
 
-            audioSource = GetComponent<AudioSource>();
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            //am = AudioManager.instance.GetComponent<AudioManager>();
 
             health = GetComponent<HealthScript>();
             posture = GetComponent<PostureScript>();
-            am = am.GetComponent<AudioManager>();
+            
 
-
+            /*sfxSliderScript = sfxSliderScript.GetComponent<SFXSliderScript>();
+            musicSliderScript = musicSliderScript.GetComponent<MusicSliderScript>();    
+            masterVolumeSliderScript = masterVolumeSliderScript.GetComponent<MasterVolumeSliderScript>();*/
 
 
             moveAction = InputSystem.actions.FindAction("Move");
@@ -260,9 +268,11 @@ namespace Player
             healAction = InputSystem.actions.FindAction("Heal");
             interactAction = InputSystem.actions.FindAction("Interact");
             pauseAction = InputSystem.actions.FindAction("Pause");
-            
 
 
+           /* masterVolumeSliderScript.LoadMasterVolume();
+            musicSliderScript.LoadMusicVolume();
+            sfxSliderScript.LoadSFXVolume();*/
             itemMask = LayerMask.GetMask("itemLayer");
 
             // add new states here
@@ -290,7 +300,6 @@ namespace Player
             playerHealthBar.UpdateHealthBar(health.health);
             playerPostureBar.UpdatePostureBar(posture.posture);
 
-            
 
 
 
