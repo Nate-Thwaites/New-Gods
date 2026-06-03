@@ -4350,7 +4350,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D-Pad Up
+  m_text: D-Pad/Up
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}
   m_sharedMaterial: {fileID: -454217483747606957, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}
@@ -9288,7 +9288,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' /A|Left/ /D|Right'
+  m_text: ' /A|Left Arrow/ /D|Right Arrow'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}
   m_sharedMaterial: {fileID: -454217483747606957, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}

@@ -53,6 +53,8 @@ namespace Player
         public Button moveButton;
         public Button jumpButton;
         public Slider masterVolumeSlider;
+        public Button deathMenuButton;
+        public Button endButton;
 
         public GameObject pauseMenuUI;
         public GameObject pauseMenuCanvas;
@@ -168,6 +170,8 @@ namespace Player
 
         public int healthItemCount;
 
+        public bool dead;
+
         [Space(10)]
 
         #endregion health variables
@@ -233,6 +237,8 @@ namespace Player
             hasPowerup = false;
 
             delayPostureDecrease = false;
+
+            dead = false;
 
             rb = GetComponent<Rigidbody2D>();
             sm = gameObject.AddComponent<StateMachine>();
@@ -378,7 +384,7 @@ namespace Player
         
         public bool CheckForRun()
         {
-            if (canPressButton)
+            if (canPressButton && !dead)
             {
                 if (Mathf.Abs(moveInput.x) > 0 && isGrounded)
                 {
@@ -391,7 +397,7 @@ namespace Player
 
         public bool CheckForIdle()
         {
-            if (moveInput.x == 0 && isGrounded)
+            if (moveInput.x == 0 && isGrounded &&!dead)
             {
 
                 return true;
@@ -417,7 +423,7 @@ namespace Player
 
         public bool CheckForFall()
         {
-            if(rb.linearVelocity.y < 0 && !isGrounded)
+            if(rb.linearVelocity.y < 0 && !isGrounded && !dead)
             {
                
                 return true;
@@ -428,7 +434,7 @@ namespace Player
 
         public bool CheckForAttack()
         {
-            if (canPressButton)
+            if (canPressButton && !dead)
             {
                 if (attackAction.WasPressedThisFrame() && attackCompleteTimer <= 0)
                 {
@@ -453,7 +459,7 @@ namespace Player
 
         public bool CheckForBlock()
         {
-            if (canPressButton)
+            if (canPressButton && !dead)
             {
                 if (isBlocking)
                 {
@@ -471,7 +477,7 @@ namespace Player
 
         public bool CheckForParryStun()
         {
-            if(parryStunned)
+            if(parryStunned && !dead)
             {
                 return true;
             }
@@ -481,7 +487,7 @@ namespace Player
 
         public bool CheckForPostureStun()
         {
-            if(posture.posture >= posture.maxPosture)
+            if(posture.posture >= posture.maxPosture && !dead)
             {
                 
                 return true;
@@ -492,7 +498,7 @@ namespace Player
 
         public bool CheckForAttackStun()
         {
-            if (attackStunned)
+            if (attackStunned && !dead)
             {
                 return true;
             }
@@ -609,6 +615,7 @@ namespace Player
             {
                 Time.timeScale = 0f;
                 endScreen.SetActive(true);
+                endButton.Select();
             }
 
             
@@ -658,13 +665,14 @@ namespace Player
             yield return new WaitForSeconds(1.3f);
             Time.timeScale = 0f;
             deathScreen.SetActive(true);
+            deathMenuButton.Select();   
         }
 
         public void Die()
         {
             if (health.health <= health.minHealth)
             {
-                sm = null;
+                dead = true;
                 canPressButton = false;
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
                 anim.Play("Die", 0);
@@ -676,7 +684,7 @@ namespace Player
         {
             SceneManager.LoadSceneAsync("Game");
             
-            
+
 
         }
 

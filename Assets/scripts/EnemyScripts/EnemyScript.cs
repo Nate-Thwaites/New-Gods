@@ -266,7 +266,7 @@ namespace Enemy
 
         public bool CheckForChase()
         {
-            if (!stunned)
+            if (!stunned && !playerScript.dead)
             {
                 if (seePlayer && !attackPlayer)
                 {
@@ -280,7 +280,7 @@ namespace Enemy
        
         public bool CheckForAttack()
         {
-            if (!stunned)
+            if (!stunned && !playerScript.dead)
             {
                 if (attackPlayer && enemyAttackCompleteTimer <= 0)
                 {

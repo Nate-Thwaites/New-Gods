@@ -9138,7 +9138,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D-Pad Up
+  m_text: D-Pad/Up
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}
   m_sharedMaterial: {fileID: -454217483747606957, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}
@@ -22976,9 +22976,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.5647059, g: 0.5647059, b: 0.5647059, a: 1}
-    m_PressedColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 1}
-    m_SelectedColor: {r: 0.5647059, g: 0.5647059, b: 0.5647059, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -26411,7 +26411,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' /A|Left/ /D|Right'
+  m_text: ' /A|Left Arrow/ /D|Right Arrow'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}
   m_sharedMaterial: {fileID: -454217483747606957, guid: c7e6c9eea5f9f4f4985a88cb67ae7985, type: 2}
@@ -31365,9 +31365,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.5647059, g: 0.5647059, b: 0.5647059, a: 1}
-    m_PressedColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 1}
-    m_SelectedColor: {r: 0.5647059, g: 0.5647059, b: 0.5647059, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -32586,8 +32586,7 @@ MonoBehaviour:
   moveButton: {fileID: 542814776}
   jumpButton: {fileID: 1473234531}
   masterVolumeSlider: {fileID: 29977589}
-  deathMenuButton: {fileID: 1722688367}
-  endButton: {fileID: 728462283}
+  deathMenuButton: {fileID: 0}
   pauseMenuUI: {fileID: 1096351809}
   pauseMenuCanvas: {fileID: 1902555465}
   canPressButton: 0

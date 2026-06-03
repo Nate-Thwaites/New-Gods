@@ -229,40 +229,76 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         {
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
+
+            // If the selected binding is a composite, ResetBinding handles composite + parts.
             ResetBinding(action, bindingIndex);
-            /* if (action.bindings[bindingIndex].isComposite)
-             {
-                 // It's a composite. Remove overrides from part bindings.
-                 for (var i = bindingIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; ++i)
-                     action.RemoveBindingOverride(i);
-             }
-             else
-             {
-                 action.RemoveBindingOverride(bindingIndex);
-             }*/
+
+            Debug.Log($"Reset to default: action={action}, bindingIndex={bindingIndex}");
             UpdateBindingDisplay();
         }
 
         private void ResetBinding(InputAction action, int bindingIndex)
         {
-            InputBinding newBinding = action.bindings[bindingIndex];
-            string oldOverridePath = newBinding.overridePath;
+            // Snapshot binding info before removing overrides.
+            var targetBinding = action.bindings[bindingIndex];
+            var originalPath = targetBinding.path; // the path defined in the action (non-overridden)
+            var removedOverridePath = targetBinding.overridePath; // what we will remove
 
-            action.RemoveBindingOverride(bindingIndex);
+            // Remove override from the composite or single binding and
+            // from any part bindings that belong to a composite.
+            if (targetBinding.isComposite)
+            {
+                // Remove override on the composite itself (if any).
+                action.RemoveBindingOverride(bindingIndex);
 
-            foreach(InputAction otherAction in action.actionMap.actions)
+                // Remove overrides from parts following the composite.
+                for (var i = bindingIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; ++i)
+                    action.RemoveBindingOverride(i);
+            }
+            else if (targetBinding.isPartOfComposite)
+            {
+                // If we're resetting a part, remove the override for that part only.
+                action.RemoveBindingOverride(bindingIndex);
+            }
+            else
+            {
+                // Normal single binding.
+                action.RemoveBindingOverride(bindingIndex);
+            }
+
+            // After removing overrides from the target action, try to restore or clear
+            // overrides on other actions in the same action map that were pointing at
+            // the target's original path / effective path / override path.
+            foreach (InputAction otherAction in action.actionMap.actions)
             {
                 if (otherAction == action)
-                {
                     continue;
-                }
-                for(int i = 0; i < otherAction.bindings.Count; i++)
+
+                for (int i = 0; i < otherAction.bindings.Count; ++i)
                 {
-                    InputBinding binding = otherAction.bindings[i];
-                    if(binding.overridePath == newBinding.path)
-                    {
-                        otherAction.ApplyBindingOverride(i, oldOverridePath);
-                    }
+                    var otherBinding = otherAction.bindings[i];
+
+                    // Determine paths to compare against.
+                    var otherOverride = otherBinding.overridePath;
+                    var otherEffective = otherBinding.effectivePath;
+
+                    // Check if the other binding was referencing this binding's original path
+                    // (or was overridden to point to it). Use several checks to catch swapped cases.
+                    bool matchesTarget =
+                        !string.IsNullOrEmpty(otherOverride) && otherOverride.Equals(originalPath, StringComparison.OrdinalIgnoreCase) ||
+                        !string.IsNullOrEmpty(otherOverride) && removedOverridePath != null && otherOverride.Equals(removedOverridePath, StringComparison.OrdinalIgnoreCase) ||
+                        !string.IsNullOrEmpty(otherEffective) && otherEffective.Equals(originalPath, StringComparison.OrdinalIgnoreCase) ||
+                        !string.IsNullOrEmpty(otherEffective) && removedOverridePath != null && otherEffective.Equals(removedOverridePath, StringComparison.OrdinalIgnoreCase);
+
+                    if (!matchesTarget)
+                        continue;
+
+                    // If the target had an override before we removed it, re-apply that override
+                    // to keep any previously swapped binding association. Otherwise clear the override.
+                    if (!string.IsNullOrEmpty(removedOverridePath))
+                        otherAction.ApplyBindingOverride(i, removedOverridePath);
+                    else
+                        otherAction.RemoveBindingOverride(i);
                 }
             }
         }
