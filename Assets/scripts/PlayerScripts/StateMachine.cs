@@ -32,7 +32,6 @@ namespace Player
             {
                 CurrentState.Exit();
             }
-            //Debug.Log("Changing state to " + newState);
 
             LastState = CurrentState;
             CurrentState = newState;

@@ -15,7 +15,6 @@ namespace Enemy
 
         public void ChangeState(EnemyState newState)
         {
-            //Debug.Log("Changing state to " + newState);
             CurrentState.Exit();
 
             LastState = CurrentState;

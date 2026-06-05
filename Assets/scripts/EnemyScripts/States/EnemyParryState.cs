@@ -13,7 +13,6 @@ namespace Enemy
         {
             PlayerScript playerScript = enemy.player.GetComponent<PlayerScript>();
             base.Enter();
-            //Debug.Log("parry");
             enemy.parryEnemy = true;
             playerScript.posture.posture += 10;
             enemy.StartCoroutine(enemy.LeaveEnemyParry());
@@ -24,7 +23,6 @@ namespace Enemy
         {
             base.Exit();
             enemy.parryEnemy = false;
-            //Debug.Log("leave parry");
         }
 
         public override void HandleInput()

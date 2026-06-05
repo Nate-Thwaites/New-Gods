@@ -26,14 +26,12 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            print("do not destroy");
 
             LoadVolume();
             PlayMusicClip(0);
         }
         else
         {
-            print("do destroy");
             Destroy(gameObject);
         }
     }

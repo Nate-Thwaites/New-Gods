@@ -46,17 +46,14 @@ public class SoundScript : MonoBehaviour
     void SetMasterVolume(float value)
     {
         mixer.SetFloat(MIXER_MASTER, Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
-        Debug.Log("Master volume set to: " + value);    
     }
     void SetMusicVolume(float value)
     {
         mixer.SetFloat(MIXER_MUSIC, Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
-        Debug.Log("Music volume set to: " + value);
 
     }
     void SetSFXVolume(float value)
     {
         mixer.SetFloat(MIXER_SFX, Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
-        Debug.Log("SFX volume set to: " + value);
     }
 }

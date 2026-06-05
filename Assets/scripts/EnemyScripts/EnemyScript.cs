@@ -212,7 +212,6 @@ namespace Enemy
         {
             if ((esm.CurrentState == null))
             {
-                print("physics update null");
 
                 return;
             }
@@ -404,21 +403,19 @@ namespace Enemy
         public IEnumerator LeaveAttack()
         {
             yield return new WaitForSeconds(0.5f);
-            //print("reset attack");
+            
             leaveAttack = true;             
         }
 
         public IEnumerator LeaveEnemyBlock()
         {
             yield return new WaitForSeconds(0.2f);
-            //print("leave block");
             blockEnemy = false;
         }
 
         public IEnumerator LeaveEnemyParry()
         {
             yield return new WaitForSeconds(0.9f);
-            print("leave parry");
             parryEnemy = false;
         }
 

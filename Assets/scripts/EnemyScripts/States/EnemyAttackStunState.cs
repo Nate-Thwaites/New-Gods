@@ -11,7 +11,6 @@ namespace Enemy
         public override void Enter()
         {
             base.Enter();
-            Debug.Log("Enemy Attack Stunned");
             enemy.erb.linearVelocity = new Vector2(0, 0);
            
             enemy.stunned = true;
@@ -37,7 +36,6 @@ namespace Enemy
 
             if (!enemy.stunned)
             {
-                //Debug.Log("Check For State");
                 if (enemy.CheckForAttack())
                 {
                     esm.ChangeState(enemy.enemyAttackState);

@@ -32,7 +32,7 @@ namespace Player
         #region Audio
 
         [Header("Audio")]
-        //public AudioManager am;
+        public AudioManager am;
         public AudioSource audioSource;
 
         [Space(10)]
@@ -250,7 +250,7 @@ namespace Player
 
             audioSource = gameObject.GetComponent<AudioSource>();
 
-            //am = AudioManager.instance.GetComponent<AudioManager>();
+            am = AudioManager.instance.GetComponent<AudioManager>();
 
             health = GetComponent<HealthScript>();
             posture = GetComponent<PostureScript>();
@@ -373,7 +373,7 @@ namespace Player
         {
             if ((sm.CurrentState == null))
             {
-                print("physics update null");
+                
                 
                 return;
             }
@@ -551,7 +551,7 @@ namespace Player
         {
             yield return new WaitForSeconds(0.3f);
             attackStunned = false;
-            //print("attack stun over");
+            
             canPressButton = true;
         }
 
@@ -604,7 +604,7 @@ namespace Player
         {
             if (hit.gameObject.CompareTag("Heal Item"))
             {
-                print("pick up");
+                
                 Destroy(hit.gameObject);
                 healthItemCount += 1;
 
@@ -634,36 +634,7 @@ namespace Player
 
 
 
-        /*public void ItemDetection()
-        {
-           
-
-            float dist = 4;
-
-
-            Vector3 offset = new Vector3(2, 0, 0);
-
-            bool itemHit = Physics2D.Raycast(transform.position - offset, Vector2.right, dist, itemMask);
-
-            if (itemHit)
-            {
-                Debug.DrawRay(transform.position - offset, Vector2.right * dist, Color.green);
-                itemText.SetActive(true);
-
-               
-            }
-
-            else
-            {
-                Debug.DrawRay(transform.position - offset, Vector2.right * dist, Color.red);
-                itemText.SetActive(false);
-            }
-
-            if (itemHit &&  interactAction.WasPressedThisFrame())
-            {
-               
-            }
-        }*/
+        
 
         #endregion Raycast detection
 
@@ -746,6 +717,7 @@ namespace Player
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1; 
             gameIsPaused = false;
+            am.PlaySFXClip(5);
         }
 
 
@@ -760,11 +732,15 @@ namespace Player
 
         public void Menu()
         {
+            am.PlaySFXClip(5);
+
             SceneManager.LoadSceneAsync("Menu");
         }
 
         public void OpenSettings()
         {
+            am.PlaySFXClip(5);
+
             settingsMenu.SetActive(true);
             pauseMenuUI.SetActive(false);
             audioButton.Select();
@@ -775,6 +751,8 @@ namespace Player
         #region pause settings
         public void OpenVolumeSettings()
         {
+            am.PlaySFXClip(5);
+
             volumeSettings.SetActive(true);
             settingsMenu.SetActive(false);
             masterVolumeSlider.Select();
@@ -782,6 +760,8 @@ namespace Player
 
         public void OpenKeyboardControls()
         {
+            am.PlaySFXClip(5);
+
             settingsMenu.SetActive(false);
             keyboardControlMenu.SetActive(true);
             moveButton.Select();
@@ -789,6 +769,8 @@ namespace Player
 
         public void OpenGamepadControls()
         {
+            am.PlaySFXClip(5);
+
             settingsMenu.SetActive(false);
             gamepadControlMenu.SetActive(true);
             jumpButton.Select();
@@ -796,6 +778,8 @@ namespace Player
 
         public void BackToSettingsMenu()
         {
+            am.PlaySFXClip(5);
+
             settingsMenu.SetActive(true);
             keyboardControlMenu.SetActive(false);
             gamepadControlMenu.SetActive(false);
@@ -805,9 +789,17 @@ namespace Player
 
         public void BackToPauseMenu()
         {
+            am.PlaySFXClip(5);
+
             pauseMenuUI.SetActive(true);
             settingsMenu.SetActive(false);
             resumeButton.Select();
+        }
+
+        public void PlayNoise()
+        {
+            am.PlaySFXClip(5);
+
         }
         #endregion pause settings
 

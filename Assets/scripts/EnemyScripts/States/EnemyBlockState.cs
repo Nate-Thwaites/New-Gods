@@ -12,10 +12,8 @@ namespace Enemy
         {
             PlayerScript playerScript = enemy.player.GetComponent<PlayerScript>();
             base.Enter();
-            //Debug.Log("block");
             enemy.blockEnemy = true;
             enemy.posture.posture += playerScript.posture.postureDamage;
-            Debug.Log("posture damage: " + playerScript.posture.postureDamage);
             enemy.StartCoroutine(enemy.LeaveEnemyBlock());
 
         }
@@ -24,7 +22,7 @@ namespace Enemy
         {
             base.Exit();
             enemy.blockEnemy = false;
-            //Debug.Log("leave block");
+           
         }
 
         public override void HandleInput()

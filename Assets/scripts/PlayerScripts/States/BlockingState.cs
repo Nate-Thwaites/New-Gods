@@ -45,28 +45,7 @@ namespace Player
             DetectParry();
             DetectBlock();
 
-           /* if (player.parryTimer > 0 && enemy.hitPlayer)
-            {
-
-                Debug.Log("Parried attack");
-                player.playerParry = true;
-                player.enemy.parryStunEnemy = true;
-                if (player.playerParry)
-                {
-                    player.enemy.enemyPosture += 10;
-                }
-            }*/
-
-
-       /*     if (enemy.hitPlayer && player.isBlocking)
-            {
-               player.isBlocking = false;
-
-                if(!player.playerParry)
-                {
-                    player.playerPosture += 10;
-                }
-            }*/
+         
 
             
 
@@ -118,19 +97,7 @@ namespace Player
         public void DetectParry()
         {
 
-            /*player.enemy = player.enemy.GetComponent<EnemyScript>();
-            if (player.enemy.hitPlayer && player.parryTimer > 0)
-            {
-                Debug.Log("Parried attack");
-                player.playerParry = true;
-                player.enemy.parryStunEnemy = true;
-            }
-
-
-            if (player.playerParry)
-            {
-                player.enemy.ParryPostureDamage();
-            }*/
+            
 
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             EnemyScript parriedEnemy = null;

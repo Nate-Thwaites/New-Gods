@@ -21,7 +21,6 @@ namespace Enemy
         // These methods are common to all states
         public virtual void Enter()
         {
-            //Debug.Log("This is base.enter");
         }
 
         public virtual void HandleInput()

@@ -28,23 +28,17 @@ public class MenuScript : MonoBehaviour
     {
         am = AudioManager.instance.GetComponent<AudioManager>();
 
-        print("master vol= " + masterVolume);
+        
 
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        //OnMouseOver();
+        
     }
 
-    /*private void OnMouseOver()
-    {
-        Button button = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
-        button.Select();
-        print("mouse over " + button);
-    }*/
-
+   
     #region click anywhere to start
 
     public void ClickToStart()
@@ -131,5 +125,6 @@ public class MenuScript : MonoBehaviour
     public void PlayNoise()
     {
         am.PlaySFXClip(5);
+        
     }
 }

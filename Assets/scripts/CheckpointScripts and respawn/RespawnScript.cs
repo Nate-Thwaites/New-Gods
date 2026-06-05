@@ -22,7 +22,6 @@ public class RespawnScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Respawn"))
         {
-            print("damage taken");
             player.position = respawnPoint.position;
             LevelManager.instance.playerScript.RespawnDamage();
             

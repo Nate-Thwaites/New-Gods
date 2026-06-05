@@ -46,21 +46,12 @@ namespace Enemy
             
             if (enemy.playerScript.hitEnemy)
             {
-                //enemy.erb.AddForce(5f * enemy.enemyFacingDir * enemy.transform.right, ForceMode2D.Impulse);
-                Debug.Log(enemy.playerScript.attackDamage);
                 attackLanded = true;
                 enemy.StopCoroutine(enemy.PostureBreakStun());
                 enemy.postureBreakStunEnemy = false;
 
                 
-                //knockbackTime -= Time.deltaTime;
-
-                /*if (knockbackTime <= 0)
-                {
-                    enemy.playerScript.hitEnemy = false;
-                    knockbackTime = 0.02f;
-                    //enemy.StopCoroutine(enemy.PostureBreakStun());
-                }*/
+               
 
                    
             }

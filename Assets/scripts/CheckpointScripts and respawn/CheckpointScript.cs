@@ -20,7 +20,6 @@ public class CheckpointScript : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Checkpoint"))
         {
-            print("new Checkpoint");
             respawnPoint.position = other.transform.position;
         }
     }

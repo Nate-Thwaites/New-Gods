@@ -87,14 +87,14 @@ namespace Player
 
             if ( player.rb.linearVelocity.x < 0.1f && player.rb.linearVelocity.x > -0.1f)
             {
-                if (player.facingDir > 0)
+                if (player.moveInput.x > 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity + 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;
 
                 }
 
-                if (player.facingDir < 0)
+                if (player.moveInput.x < 0)
                 {
                     player.rb.linearVelocity = new Vector2(initVelocity - 3f, player.rb.linearVelocity.y);
                     player.jumpDirChange = true;

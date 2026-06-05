@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
         player = GameObject.Find("player");
         playerScript = player.GetComponent<PlayerScript>();
 
-        print("master vol= " + MenuScript.masterVolume);
+       
 
         MenuScript.masterVolume = 0.1f;
 
